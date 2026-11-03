@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "specification": {
+    "path": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.json",
+    "sha256": "e163cd30f8a75e206dc7f1447c14489f987d66deec6d66a2d100ee9338a6b4eb",
+    "bytes": 16923
+  },
+  "artifact": {
+    "path": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html",
+    "sha256": "ed64f5573604ad0a877596962646131952aad3a97e44bbcf9ed44e56749d5dca",
+    "bytes": 871986
+  },
+  "gates": {
+    "validate": "pass",
+    "deliver": "pass",
+    "check": "pass",
+    "browser-check": "fail"
+  },
+  "failedStage": "browser-check",
+  "diagnostics": [
+    {
+      "code": "viewer/browser-check-runtime",
+      "severity": "error",
+      "message": "browser-check could not complete its Chrome inspection.",
+      "subject": {
+        "artifact": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html"
+      },
+      "evidence": {
+        "reason": "Temporary directory ancestor identity is unavailable: C:\\Users\\arang\\AppData\\Local\\Temp"
+      },
+      "supportedFixes": [
+        "resolve the reported Chrome inspection error, then rerun browser-check"
+      ]
+    }
+  ],
+  "diagnosticSummary": {
+    "total": 1,
+    "shown": 1,
+    "truncated": false
+  },
+  "evidence": {
+    "receipt": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.finalize.json",
+    "summaryReceipt": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.finalize-summary.json",
+    "browserCheckReceipt": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.browser-check.json"
+  },
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-11-03T02:07:10.108Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  },
+  "visualReview": "not-requested",
+  "durationMs": 8943,
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  }
+}

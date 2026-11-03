@@ -1,0 +1,556 @@
+{
+  "schemaVersion": 1,
+  "ok": false,
+  "command": "finalize",
+  "status": "fail",
+  "type": "architecture",
+  "quality": "showcase",
+  "startedAt": "2026-11-03T02:52:49.673Z",
+  "specification": {
+    "path": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.json",
+    "sha256": "e163cd30f8a75e206dc7f1447c14489f987d66deec6d66a2d100ee9338a6b4eb",
+    "bytes": 16923
+  },
+  "artifact": {
+    "path": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html",
+    "sha256": "ed64f5573604ad0a877596962646131952aad3a97e44bbcf9ed44e56749d5dca",
+    "bytes": 871986
+  },
+  "stages": {
+    "validate": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": null,
+      "execution": "embedded-in-deliver",
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.json",
+        "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "D:\\Codigos\\GenerativeIA\\agentic-skills",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": true,
+        "command": "validate",
+        "specification": {
+          "sha256": "e163cd30f8a75e206dc7f1447c14489f987d66deec6d66a2d100ee9338a6b4eb",
+          "bytes": 16923
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        }
+      }
+    },
+    "deliver": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 4432,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "deliver",
+        "architecture",
+        "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.json",
+        "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html",
+        "--quality",
+        "showcase",
+        "--repo-root",
+        "D:\\Codigos\\GenerativeIA\\agentic-skills",
+        "--json"
+      ],
+      "receipt": {
+        "schemaVersion": 1,
+        "receiptId": "5014d4dd-d21a-40ce-ad92-6ad9fb143dee",
+        "ok": true,
+        "command": "deliver",
+        "type": "architecture",
+        "input": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.json",
+        "output": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html",
+        "specification": {
+          "sha256": "e163cd30f8a75e206dc7f1447c14489f987d66deec6d66a2d100ee9338a6b4eb",
+          "bytes": 16923
+        },
+        "artifact": {
+          "sha256": "ed64f5573604ad0a877596962646131952aad3a97e44bbcf9ed44e56749d5dca",
+          "bytes": 871986
+        },
+        "validation": {
+          "checksPassed": 9,
+          "checkCount": 9,
+          "compositionProfile": "showcase",
+          "compositionStatus": "pass",
+          "errors": 0,
+          "warnings": 0
+        },
+        "update": {
+          "status": "unavailable",
+          "installedVersion": null,
+          "availableVersion": null,
+          "releaseNotes": null,
+          "checkedAt": null,
+          "source": null,
+          "noticeRequired": false,
+          "noticeText": null,
+          "reason": "disabled"
+        }
+      }
+    },
+    "check": {
+      "status": "pass",
+      "exitCode": 0,
+      "durationMs": 994,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "check",
+        "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html",
+        "--require-provenance"
+      ],
+      "receipt": {
+        "ok": true,
+        "file": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html",
+        "artifact": {
+          "sha256": "ed64f5573604ad0a877596962646131952aad3a97e44bbcf9ed44e56749d5dca",
+          "bytes": 871986
+        },
+        "checks": [
+          {
+            "name": "single_svg",
+            "ok": true,
+            "details": [
+              "found 1 <svg> block(s)"
+            ]
+          },
+          {
+            "name": "finite_svg",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "orthogonal_arrows",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "label_route_clearance",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_crossings",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "relationship_corridors",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "container_border_runs",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "route_rhythm",
+            "ok": true,
+            "details": []
+          },
+          {
+            "name": "legend_clearance",
+            "ok": true,
+            "details": []
+          }
+        ],
+        "composition": {
+          "schemaVersion": 1,
+          "profile": "showcase",
+          "status": "pass",
+          "summary": {
+            "errors": 0,
+            "warnings": 0
+          },
+          "metrics": {
+            "properCrossings": 0,
+            "resolvedCrossovers": 6,
+            "ambiguousCorridors": 0,
+            "arrowheadCollisions": 0,
+            "containerBorderRuns": 0,
+            "labelRouteClearanceIssues": 0,
+            "labelCanvasOverflowIssues": 0,
+            "minLabelRouteClearance": 6.4,
+            "desktopReadabilityIssues": 0,
+            "viewportHeightIssues": 0,
+            "minProjectedNodeTextPx": 7.202675585284281,
+            "maxBends": 4,
+            "routesOverSuggestedBends": 4,
+            "maxStretch": 1.27,
+            "routesOverSuggestedStretch": 0,
+            "minSegmentPx": 14,
+            "minInteriorSegmentPx": 47,
+            "shortSegmentCount": 1,
+            "shortEndpointSegmentCount": 1,
+            "shortInteriorSegmentCount": 0,
+            "microSegmentCount": 0
+          },
+          "suggestedLimits": {
+            "bendsPerRelationship": 2,
+            "stretch": 1.35,
+            "segmentPx": 16,
+            "microSegmentPx": 8
+          },
+          "routeReview": {
+            "crossings": [
+              {
+                "left": {
+                  "from": "alb",
+                  "to": "eks",
+                  "label": "tráfico al clúster",
+                  "collectionIndex": 4,
+                  "artifactIndex": 5
+                },
+                "right": {
+                  "from": "users",
+                  "to": "eventbridge",
+                  "label": "productor de eventos por confirmar",
+                  "collectionIndex": 13,
+                  "artifactIndex": 14
+                },
+                "point": [
+                  706,
+                  418
+                ]
+              },
+              {
+                "left": {
+                  "from": "eks",
+                  "to": "partners",
+                  "label": "ejecución",
+                  "collectionIndex": 7,
+                  "artifactIndex": 8
+                },
+                "right": {
+                  "from": "eks",
+                  "to": "notifications",
+                  "label": "ejecución",
+                  "collectionIndex": 8,
+                  "artifactIndex": 9
+                },
+                "point": [
+                  956,
+                  420
+                ],
+                "sharedNode": "eks"
+              },
+              {
+                "left": {
+                  "from": "eks",
+                  "to": "partners",
+                  "label": "ejecución",
+                  "collectionIndex": 7,
+                  "artifactIndex": 8
+                },
+                "right": {
+                  "from": "transactions",
+                  "to": "eventbridge",
+                  "label": "productor de eventos por confirmar",
+                  "collectionIndex": 14,
+                  "artifactIndex": 15
+                },
+                "point": [
+                  942,
+                  420
+                ]
+              },
+              {
+                "left": {
+                  "from": "eks",
+                  "to": "notifications",
+                  "label": "ejecución",
+                  "collectionIndex": 8,
+                  "artifactIndex": 9
+                },
+                "right": {
+                  "from": "transactions",
+                  "to": "eventbridge",
+                  "label": "productor de eventos por confirmar",
+                  "collectionIndex": 14,
+                  "artifactIndex": 15
+                },
+                "point": [
+                  956,
+                  387
+                ]
+              },
+              {
+                "left": {
+                  "from": "eks",
+                  "to": "notifications",
+                  "label": "ejecución",
+                  "collectionIndex": 8,
+                  "artifactIndex": 9
+                },
+                "right": {
+                  "from": "partners",
+                  "to": "eventbridge",
+                  "label": "productor de eventos por confirmar",
+                  "collectionIndex": 15,
+                  "artifactIndex": 16
+                },
+                "point": [
+                  956,
+                  434
+                ]
+              },
+              {
+                "left": {
+                  "from": "transactions",
+                  "to": "eventbridge",
+                  "label": "productor de eventos por confirmar",
+                  "collectionIndex": 14,
+                  "artifactIndex": 15
+                },
+                "right": {
+                  "from": "partners",
+                  "to": "eventbridge",
+                  "label": "productor de eventos por confirmar",
+                  "collectionIndex": 15,
+                  "artifactIndex": 16
+                },
+                "point": [
+                  942,
+                  434
+                ],
+                "sharedNode": "eventbridge"
+              }
+            ],
+            "crowdedSides": [
+              {
+                "node": "eks",
+                "label": "Amazon EKS",
+                "side": "right",
+                "relationships": 4,
+                "sidePx": 64,
+                "neededPx": 74
+              }
+            ],
+            "detours": [
+              {
+                "relationship": {
+                  "from": "alb",
+                  "to": "eks",
+                  "label": "tráfico al clúster",
+                  "collectionIndex": 4,
+                  "artifactIndex": 5
+                },
+                "bends": 3,
+                "stretch": 1.262
+              },
+              {
+                "relationship": {
+                  "from": "eks",
+                  "to": "users",
+                  "label": "ejecución",
+                  "collectionIndex": 5,
+                  "artifactIndex": 6
+                },
+                "bends": 3,
+                "stretch": 1
+              },
+              {
+                "relationship": {
+                  "from": "transactions",
+                  "to": "eventbridge",
+                  "label": "productor de eventos por confirmar",
+                  "collectionIndex": 14,
+                  "artifactIndex": 15
+                },
+                "bends": 4,
+                "stretch": 1
+              },
+              {
+                "relationship": {
+                  "from": "eventbridge",
+                  "to": "rules",
+                  "label": "enrutamiento de eventos",
+                  "collectionIndex": 17,
+                  "artifactIndex": 18
+                },
+                "bends": 3,
+                "stretch": 1.27
+              }
+            ]
+          },
+          "leadingSpace": {
+            "measured": true,
+            "emptyTopPx": 150,
+            "emptyTopRatio": 0.171,
+            "occupiedTop": 150,
+            "viewBoxTop": 0,
+            "canvasHeight": 878,
+            "typicalNodeHeight": 60,
+            "reviewSuggested": false
+          },
+          "desktopReadability": {
+            "budgetBasis": "recognized-declared-wide",
+            "readerContract": "declared-wide-v1",
+            "availableDiagramWidth": 1346,
+            "actualBudgetPx": 1346,
+            "actualReaderWidth": 1376,
+            "desiredReaderWidth": 1431.5625,
+            "viewportCap": 1376,
+            "limit": "viewport-cap",
+            "requestedTargetPx": 7.5,
+            "requestedTargetMet": false,
+            "hardFloorPx": 6,
+            "hardFloorMet": true,
+            "minimumOwner": {
+              "kind": "edge",
+              "id": null,
+              "from": "clients",
+              "to": "gateway"
+            },
+            "minimumSourceTextPx": 8,
+            "minimumProjectedTextPx": 7.202675585284281,
+            "semanticTextCount": 52
+          },
+          "issues": []
+        },
+        "provenance": "current",
+        "deliveryReceiptId": "5014d4dd-d21a-40ce-ad92-6ad9fb143dee"
+      }
+    },
+    "browser-check": {
+      "status": "fail",
+      "exitCode": 1,
+      "durationMs": 1096,
+      "command": [
+        "C:\\Program Files\\nodejs\\node.exe",
+        "C:\\Users\\arang\\.agents\\skills\\archify\\bin\\archify.mjs",
+        "browser-check",
+        "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html",
+        "--json",
+        "--require-provenance"
+      ],
+      "execution": "in-process",
+      "receipt": {
+        "schemaVersion": 1,
+        "ok": false,
+        "command": "browser-check",
+        "evidenceKind": "automated-browser",
+        "status": "fail",
+        "visualReview": "not-requested",
+        "provenance": "current",
+        "deliveryReceiptId": "5014d4dd-d21a-40ce-ad92-6ad9fb143dee",
+        "artifact": {
+          "path": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html",
+          "sha256": "ed64f5573604ad0a877596962646131952aad3a97e44bbcf9ed44e56749d5dca",
+          "bytes": 871986
+        },
+        "state": {
+          "detail": "read",
+          "motion": "still"
+        },
+        "chrome": {
+          "status": "available",
+          "executable": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"
+        },
+        "diagnostics": [
+          {
+            "code": "viewer/browser-check-runtime",
+            "severity": "error",
+            "message": "browser-check could not complete its Chrome inspection.",
+            "subject": {
+              "artifact": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html"
+            },
+            "evidence": {
+              "reason": "Temporary directory ancestor identity is unavailable: C:\\Users\\arang\\AppData\\Local\\Temp"
+            },
+            "supportedFixes": [
+              "resolve the reported Chrome inspection error, then rerun browser-check"
+            ]
+          }
+        ],
+        "containment": {
+          "status": "fail",
+          "policy": "fit-or-reader-declared-readable-vertical-scroll",
+          "viewports": []
+        },
+        "themeStates": {
+          "status": "fail",
+          "viewports": []
+        },
+        "readability": {
+          "status": "fail",
+          "minimumProjectedNodeTextPx": 6,
+          "viewports": []
+        },
+        "viewerChrome": {
+          "status": "fail",
+          "viewports": []
+        },
+        "captures": {
+          "status": "not-requested",
+          "screenshots": [],
+          "contactSheet": null
+        },
+        "sidecars": {
+          "receipt": "reference-application.archify.browser-check.json",
+          "files": []
+        },
+        "error": "Temporary directory ancestor identity is unavailable: C:\\Users\\arang\\AppData\\Local\\Temp"
+      }
+    }
+  },
+  "browserCheck": {
+    "requested": true,
+    "ran": false
+  },
+  "diagnostics": [
+    {
+      "code": "viewer/browser-check-runtime",
+      "severity": "error",
+      "message": "browser-check could not complete its Chrome inspection.",
+      "subject": {
+        "artifact": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html"
+      },
+      "evidence": {
+        "reason": "Temporary directory ancestor identity is unavailable: C:\\Users\\arang\\AppData\\Local\\Temp"
+      },
+      "supportedFixes": [
+        "resolve the reported Chrome inspection error, then rerun browser-check"
+      ]
+    }
+  ],
+  "evidence": {
+    "receipt": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.finalize.json",
+    "summaryReceipt": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.finalize-summary.json",
+    "browserCheckReceipt": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.browser-check.json"
+  },
+  "visualReview": "not-requested",
+  "failedStage": "browser-check",
+  "finishedAt": "2026-11-03T02:52:58.616Z",
+  "durationMs": 8943,
+  "update": {
+    "status": "current",
+    "installedVersion": "3.2.0",
+    "availableVersion": "3.2.0",
+    "releaseNotes": null,
+    "checkedAt": "2026-11-03T02:07:10.108Z",
+    "source": "cache",
+    "noticeRequired": false,
+    "noticeText": null
+  }
+}

@@ -46,7 +46,9 @@ El diagrama también muestra una ruta compartida de eventos mediante EventBridge
 La vista logica de componentes se entrega en dos formatos editables y equivalentes: [Mermaid](component-diagram.mmd) y [Draw.io](component-diagram.drawio). Ambos describen los roles y relaciones inferidos del diagrama de referencia; no establecen despliegues verificados.
 ## 5. Vista de infraestructura y despliegue
 
-El diagrama editable de AWS está en [aws-infrastructure.drawio](aws-infrastructure.drawio). Este ejemplo usa formas nativas etiquetadas como fallback visual; en una entrega real, usa la biblioteca de iconos AWS de diagrams.net si está disponible, conservando el nombre legible de cada servicio. La vista está marcada como propuesta porque no hay configuración de despliegue.
+El diagrama editable de AWS está en [aws-infrastructure.drawio](aws-infrastructure.drawio). Usa stencils nativos AWS4, incluidas variantes de servicio como `endpoint` y `lambda_function`, y el tratamiento plano de color del XML de referencia compartido. Conserva los nombres completos de los servicios como etiquetas editables. La vista está marcada como propuesta porque no hay configuración de despliegue. Los módulos de aplicación están dentro de los límites de cómputo propuestos; este diagrama no sustituye a la vista lógica de componentes.
+
+La skill también incluye [una variante propuesta para Google Cloud](google-cloud-infrastructure.drawio) y [otra para Azure](azure-infrastructure.drawio). Google Cloud usa SVG oficiales de producto/categoría actualizados en 2025; las marcas de networking, bases de datos e integración son iconos de categoría para Cloud Load Balancing, Firestore y Pub/Sub. Azure usa SVG oficiales del paquete de arquitectura de Microsoft. Los SVG están incrustados para que cada `.drawio` sea portable; el texto, las conexiones y los límites siguen editables. Son ejemplos alternativos para una solicitud que nombre uno de esos proveedores; no forman parte de este paquete AWS, no son despliegues actuales ni equivalencias automáticas servicio por servicio. En una generación normal se entrega solo la nube seleccionada; si no se especifica, se usa AWS.
 
 ### Ruta de solicitudes
 
@@ -95,8 +97,13 @@ La fuente no incluye configuración de despliegue ni objetivos de servicio. Mult
 - [Diagrama de componentes Mermaid](component-diagram.mmd)
 - [Diagrama de componentes editable (Draw.io)](component-diagram.drawio)
 - [Diagrama de infraestructura AWS para Draw.io](aws-infrastructure.drawio)
+- [Ejemplo alternativo de infraestructura Google Cloud](google-cloud-infrastructure.drawio)
+- [Ejemplo alternativo de infraestructura Azure](azure-infrastructure.drawio)
 - [Diagrama de arquitectura Archify](reference-application.archify.html)
 - [Candidato fuente de Archify](reference-application.archify.json)
+- [Resumen de finalización de Archify](reference-application.archify.finalize-summary.json)
+
+Archify produjo el HTML mediante su flujo nativo `finalize architecture`. La validación estructural, la entrega y la comprobación estricta pasaron. El chequeo de Chrome quedó bloqueado porque este entorno no pudo verificar la identidad de su directorio temporal (`C:\Users\arang\AppData\Local\Temp`); no se declara validación de navegador ni revisión visual completa.
 
 ## 10. Fuente
 

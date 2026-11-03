@@ -22,7 +22,7 @@ Describe the system purpose, actors, external systems, scope, and top-level inte
 
 ## Component diagram
 
-Link both `component-diagram.mmd` and the editable `component-diagram.drawio`. Keep the two diagrams semantically aligned. Embed Mermaid here when useful; keep Draw.io XML in its standalone `.drawio` file.
+Link both `component-diagram.mmd` and the editable `component-diagram.drawio`. Keep the two diagrams semantically aligned. These are the logical component views; retain them alongside the additional cloud infrastructure Draw.io. Embed Mermaid here when useful; keep Draw.io XML in its standalone `.drawio` file.
 
 ## Runtime and integration paths
 
@@ -34,7 +34,7 @@ Describe data ownership, stores, important relationships, and flow. Mark unspeci
 
 ## Cloud infrastructure and deployment
 
-Name the selected target provider and explain whether the topology is configured, deployed, inferred, or proposed. Link `infrastructure.drawio`. If current providers differ from the target, link a separate `current-deployment.drawio` when current deployment is in scope. Include only evidenced or explicitly proposed network, runtime, ingress, and storage boundaries. Never describe a proposal as deployed.
+Name the selected target provider and explain whether the topology is configured, deployed, inferred, or proposed. Always link the additional, separate provider-named infrastructure Draw.io (`aws-infrastructure.drawio` by default, `google-cloud-infrastructure.drawio` for Google Cloud, or `azure-infrastructure.drawio` for Azure); it supplements and does not replace the component diagrams. Generate only the selected provider unless the user explicitly requests multi-cloud alternatives. If the user did not name a target provider, this is a proposed AWS design and must use native AWS service icons. A current stack hosted on other providers does not replace this target diagram. If current providers differ from the target, describe them as current or user-reported and link a separate `current-deployment.drawio` when useful. Include only evidenced or explicitly proposed network, runtime, ingress, and storage boundaries. Never describe a proposal as deployed.
 
 ## Security
 
@@ -52,6 +52,6 @@ List the decisions or missing sources needed to resolve material unknowns. Do no
 
 - Component diagram: `component-diagram.mmd`
 - Editable component diagram: `component-diagram.drawio`
-- Cloud infrastructure: `infrastructure.drawio`
+- Cloud infrastructure: `<provider>-infrastructure.drawio` (for example, `aws-infrastructure.drawio`)
 - Current deployment (only when separate): `current-deployment.drawio`
-- Archify architecture: `<system-name>.archify.html` (include only if Archify is installed and its generation workflow produced the file; omit this entry when unavailable)
+- Archify architecture: link the HTML and candidate JSON at the actual paths produced by the installed Archify Skill (required when installed; omit when unavailable)
