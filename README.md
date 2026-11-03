@@ -91,6 +91,16 @@ npx skills update --global
 
 Run `npx skills list` to view installed Skills. Use `npx skills update` without `--global` for project-installed Skills.
 
+Reinstall a globally installed Skill from a specific branch of this repository:
+
+```sh
+npx skills remove --global architecture-documentation
+
+npx skills add https://github.com/jac2206/agentic-skills/tree/master/skills/architecture-documentation --global --copy
+```
+
+Replace `master` with the branch containing your changes if they have not been merged there yet. The remove command deletes the global installation; the add command installs a copy from the selected branch.
+
 ## Skills
 
 ### Backend Documentation
