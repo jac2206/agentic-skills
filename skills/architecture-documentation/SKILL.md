@@ -6,7 +6,7 @@ description: >
   infrastructure view, and a native Archify architecture diagram when the
   Archify Skill is installed.
 metadata:
-  version: "1.6.0"
+  version: "1.7.0"
 ---
 
 # Architecture Documentation
@@ -50,7 +50,7 @@ Save artifacts under the project's established documentation location; use `docs
 - `component-diagram.mmd` and `component-diagram.drawio`: equivalent logical component views.
 - One separate infrastructure file for the selected provider: `aws-infrastructure.drawio`, `google-cloud-infrastructure.drawio`, or `azure-infrastructure.drawio`.
 - `current-deployment.drawio` only when a separate current-hosting view is useful and differs from the selected target design.
-- If Archify is installed, the native candidate JSON, finalized standalone HTML, and workflow receipt/summary at the paths prescribed by Archify.
+- If Archify is installed, its native candidate JSON, standalone HTML, and workflow receipt/summary when produced. Prefer the finalized HTML. If its CLI cannot run, use only a shell-unavailable fallback explicitly documented by the installed Archify Skill and label the result as a fallback, not finalized.
 
 The component diagrams and cloud infrastructure diagram are cumulative deliverables. Never use one as a substitute for another. If no target provider is named, use AWS and label the infrastructure diagram as a proposed AWS target. Generate only the selected/default provider unless the user requests multi-cloud alternatives.
 
@@ -61,7 +61,7 @@ The component diagrams and cloud infrastructure diagram are cumulative deliverab
 3. **Select the views.** Honor a named target cloud. Otherwise use proposed AWS, even when the user did not explicitly ask for a cloud diagram. Keep a reported/current host topology distinct from the target-cloud proposal. Use a logical component diagram for software responsibilities and relationships; use the infrastructure diagram for runtime placement, provider services, and evidence-backed or explicitly proposed boundaries.
 4. **Write the document.** Use `templates/architecture-document.md` if the project has no suitable template. Open with the application's actual purpose and capabilities when evidence exists. Describe only supported behavior, cite evidence, distinguish reported facts from proposals, and record unresolved questions. Do not overwrite the general project README.
 5. **Create the diagrams.** Keep Mermaid and component Draw.io consistent and cloud-agnostic. Create a separate editable infrastructure Draw.io using current native provider icons and readable service names. For AWS, prefer the current diagrams.net AWS4 service stencils and the user's visual reference, if supplied. For Google Cloud and Azure, prefer current official provider SVGs when built-in stencils are stale. Do not use generic component boxes as a cloud diagram or imply that proposed services are deployed.
-6. **Invoke Archify when available.** Check the active Skill catalog and installed Skill locations for `archify/SKILL.md`. If found, read and invoke the Archify Skill for its native architecture authoring workflow. Follow its candidate schema, repository guidance, matching example, CLI `finalize architecture` procedure, validation, and delivery paths. Preserve its candidate, HTML, and receipt, then link the actual outputs from `architecture.md`. Do not hand-author HTML or substitute another renderer. If Archify is absent, create no Archify artifacts. If its workflow fails, repair and retry the failing step where possible; report any remaining blocker and link only outputs actually produced.
+6. **Invoke Archify when available.** Check the active Skill catalog and installed Skill locations for `archify/SKILL.md`. If found, read and invoke it for native architecture authoring. Prefer its candidate schema, repository guidance, matching example, CLI `finalize architecture` workflow, validation, and delivery paths; preserve and link the actual candidate, HTML, and receipt. If a tool process cannot start, first follow any shell-unavailable fallback explicitly documented by that Archify version for native diagrams. Use its own template and authoring constraints; label the result as a fallback and do not claim CLI finalization, receipts, or validations that did not occur. Do not invent an alternate renderer. If Archify is absent, create no Archify artifacts. If both the native workflow and its documented fallback fail, report the blocker and link only outputs actually produced.
 7. **Cross-check and report.** Compare the document and all diagrams against the evidence map. Validate XML, cell IDs, edge references, Mermaid structure, links, and required output inventory. Report the selected provider, current/proposed status, Archify detection and output status, evidence gaps, and any blocked checks.
 
 ### Tool and environment failures
@@ -76,7 +76,7 @@ The component diagrams and cloud infrastructure diagram are cumulative deliverab
 - Label uncertain, user-reported, inferred, conflicting, and proposed claims accurately.
 - Keep `.drawio` XML in its own file; never paste raw or escaped XML into Markdown.
 - Keep current deployment and target-cloud proposal distinct. Do not treat illustrative services as verified deployment.
-- Do not create Archify files unless the installed Archify Skill produced them through its native workflow.
+- Do not create Archify files when the Skill is absent. When installed, use its native workflow or its documented shell-unavailable fallback; never invent an alternate renderer or claim that a fallback was CLI-finalized.
 - Do not modify application source code or deployment configuration as part of documentation generation.
 - Preserve project conventions and link artifacts from the architecture document.
 
@@ -94,7 +94,7 @@ The component diagrams and cloud infrastructure diagram are cumulative deliverab
 - Mermaid and component Draw.io describe the same logical topology; the provider-specific infrastructure diagram is a distinct deployment view.
 - The infrastructure diagram uses current provider icons, readable service names, and clear current/reported/proposed status.
 - XML is parseable, cell IDs are unique, edge endpoints resolve, and artifact links work.
-- When Archify is installed, its native workflow produces the linked candidate, HTML, and receipt. When absent, no Archify files are created.
+- When Archify is installed, the native workflow produces a linked candidate, finalized HTML, and receipt; if its documented shell-unavailable fallback is needed, the HTML is labeled as a fallback and no missing receipt or validation is claimed. When absent, no Archify files are created.
 
 ## Validation
 
@@ -103,13 +103,13 @@ The component diagrams and cloud infrastructure diagram are cumulative deliverab
 3. Check Mermaid syntax and compare its components and relationships with the component Draw.io and document.
 4. Confirm the infrastructure diagram is a provider-specific deployment view, not a repeated component map; confirm AWS is used and marked proposed when no provider was named.
 5. Check artifact links and locations. For a complete package, confirm the document, both component diagrams, and separate infrastructure diagram exist.
-6. Check Archify in the active catalog and installed locations. If available, invoke its native workflow and verify the receipt and actual outputs; distinguish structural validation, browser checks, and visual review. If absent, confirm no Archify artifacts were created.
+6. Check Archify in the active catalog and installed locations. If available, use its native workflow and verify the receipt and actual outputs. If a tool process cannot start, check the installed Archify Skill's documented shell-unavailable fallback; if used, report it as a fallback without claiming finalize receipts or gates. Distinguish structural validation, browser checks, and visual review. If Archify is absent, confirm no Archify artifacts were created.
 7. Report generated/missing status for each required artifact, the Archify result, and any evidence or tool blocker. Do not claim blocked checks passed.
 
 ## Composition
 
 - `backend-documentation` may provide verified backend behavior and structure; this Skill owns the system-wide architecture package and diagrams.
-- `archify` owns native candidate authoring, HTML rendering, validation, and delivery when installed. It does not replace evidence collection, the architecture document, or Draw.io deliverables.
+- `archify` owns native candidate authoring, HTML rendering, validation, and delivery when installed, including any fallback it documents for shell-unavailable native diagrams. It does not replace evidence collection, the architecture document, or Draw.io deliverables.
 
 ## References
 
