@@ -1,111 +1,112 @@
-# Documentación de arquitectura — aplicación de referencia
+# Reference Application Architecture
 
-> **Estado: arquitectura de referencia propuesta.** Este documento se reconstruyó a partir de `C:\Users\arang\Downloads\Diagramas ejemplo.drawio`, entregado como referencia visual. El repositorio actual no contiene código fuente, manifiestos de despliegue, infraestructura como código, especificación de API ni configuración operativa de la aplicación dibujada. Por ello, los componentes y relaciones describen el diseño de referencia; no representan un sistema verificado o desplegado.
+> **Status: proposed reference architecture.** This document was reconstructed from `C:\Users\arang\Downloads\Diagramas ejemplo.drawio`, supplied as a visual reference. The active repository contains no source code, deployment manifests, infrastructure as code, API specification, or operational configuration for the depicted application. The components and relationships therefore describe the reference design; they do not represent a verified or deployed system.
 
-## 1. Alcance y evidencia
+## 1. Scope and evidence
 
-El diagrama suministrado muestra una aplicación web y móvil, una entrada de API en AWS, capacidades de autenticación/autorización, una ruta serverless, otra ruta Kubernetes, servicios de dominio, persistencia y mensajería asíncrona. Esta documentación organiza esa topología en una vista de componentes y otra de infraestructura.
+The supplied diagram shows web and mobile clients, an AWS API entry point, authentication and authorization capabilities, a serverless path, a Kubernetes path, domain services, persistence, and asynchronous messaging. This document organizes that topology into a component view and an infrastructure view.
 
-Estado de evidencia:
+Evidence status:
 
-- **Visible en el diagrama:** clientes web y móvil; HTTPS/REST; API Gateway; Cognito; Lambda; Application Load Balancer; EKS; backends de usuarios, transacciones, partners y notificaciones; Aurora; DocumentDB; EventBridge; reglas y colas SQS.
-- **Interpretación propuesta:** API Gateway atiende tanto la ruta Lambda como la ruta ALB/EKS; EKS ejecuta los cuatro backends; cada servicio se asocia al almacén conectado en el dibujo; EventBridge dirige eventos a colas SQS.
-- **No definido:** nombre y propósito de la aplicación, contratos de API, cuenta/región/VPC exactos, exposición de red, contratos de eventos, consumidores de colas, función de Lambda, objetivos de disponibilidad, escalamiento, copias/recuperación, observabilidad, CI/CD y políticas de seguridad.
+- **Visible in the diagram:** web and mobile clients; HTTPS/REST; API Gateway; Cognito; Lambda; Application Load Balancer; EKS; user, transaction, partner, and notification backends; Aurora; DocumentDB; EventBridge; rules; and SQS queues.
+- **Proposed interpretation:** API Gateway serves both the Lambda path and the ALB/EKS path; EKS runs the four backends; each service is associated with the data store connected to it in the drawing; EventBridge routes events to SQS queues.
+- **Not defined:** application name and purpose, API contracts, exact AWS account/Region/VPC, network exposure, event contracts, queue consumers, Lambda purpose, availability targets, scaling, backup and recovery, observability, CI/CD, and security policies.
 
-Se usa AWS porque el diagrama de referencia ya contiene servicios de AWS. No hay evidencia para diseñar despliegues en Google Cloud o Azure.
+AWS is used because the reference diagram already contains AWS services. There is no evidence for a Google Cloud or Azure deployment design.
 
-## 2. Contexto del sistema
+## 2. System context
 
-El sistema tiene dos tipos de clientes: frontend web y aplicación móvil. Ambos envían solicitudes HTTPS/REST a API Gateway. Cognito aparece en el área de autenticación/autorización. El tráfico tiene dos rutas de cómputo dibujadas: una función Lambda y un ALB que lleva a un clúster EKS. El clúster agrupa backends separados para usuarios, transacciones, partners y notificaciones.
+The system has two client types: a web frontend and a mobile application. Both send HTTPS/REST requests to API Gateway. Cognito appears in the authentication and authorization area. The diagram shows two compute paths: a Lambda function and an ALB that forwards traffic to an EKS cluster. The cluster groups separate backends for users, transactions, partners, and notifications.
 
-El diagrama también muestra una ruta compartida de eventos mediante EventBridge, reglas y colas SQS. Las asociaciones visibles de persistencia son usuarios con Aurora, transacciones con DocumentDB, partners con Aurora y notificaciones con Aurora. No se especifican los eventos que emite cada servicio, los consumidores de las colas ni si las bases están aisladas por servicio. La asociación uno a uno entre servicio y almacén se conserva como propuesta basada en las conexiones visuales.
+The diagram also shows a shared event path through EventBridge, rules, and SQS queues. The visible persistence associations are users with Aurora, transactions with DocumentDB, partners with Aurora, and notifications with Aurora. The diagram does not specify which events each service publishes, who consumes the queues, or whether databases are isolated by service. The one-to-one service-to-store associations are retained as proposals based on the drawn connections.
 
-## 3. Responsabilidades de componentes
+## 3. Component responsibilities
 
-| Componente | Responsabilidad en esta referencia | Evidencia / estado |
-|---|---|---|
-| Frontend web | Cliente para usuarios que llama a la API HTTPS | Visible en el diagrama; comportamiento desconocido |
-| Aplicación móvil | Cliente móvil que llama a la API HTTPS | Visible; comportamiento desconocido |
-| Amazon API Gateway | Entrada de API y enrutamiento de solicitudes | Visible; rutas y políticas no especificadas |
-| Amazon Cognito | Capacidad de autenticación/autorización | Visible; flujo de identidad y punto de validación no especificados |
-| AWS Lambda | Ruta de cómputo serverless desde API Gateway | Visible; función y disparadores desconocidos |
-| Application Load Balancer | Enruta tráfico API al nivel de servicios Kubernetes | Visible; listeners, target groups y red desconocidos |
-| Amazon EKS | Ejecuta los workloads backend | Visible; topología y configuración desconocidas |
-| Backend de usuarios | Servicio/API del dominio de usuarios | Visible; implementación y contrato desconocidos |
-| Backend de transacciones | Servicio/API del dominio de transacciones | Visible; implementación y contrato desconocidos |
-| Backend de partners | Servicio/API del dominio de partners | Visible; implementación y contrato desconocidos |
-| Backend de notificaciones | Servicio del dominio de notificaciones | Visible; proveedores y consumidores desconocidos |
-| Amazon Aurora | Persistencia relacional asociada a varios servicios | Visible; motor, esquema y propiedad por confirmar |
-| Amazon DocumentDB | Persistencia documental asociada a transacciones | Visible; esquema y propiedad por confirmar |
-| Amazon EventBridge | Bus y enrutamiento de eventos | Visible; contratos y reglas desconocidos |
-| Reglas de EventBridge | Filtrado y direccionamiento hacia colas | Visible; condiciones no especificadas |
-| Amazon SQS | Destinos de mensajería asíncrona | Visible; consumidores, reintentos, DLQ y orden no especificados |
+| Component | Responsibility in this reference | Evidence / status |
+| --- | --- | --- |
+| Web frontend | Client that calls the API over HTTPS | Visible in the diagram; behavior unknown |
+| Mobile application | Mobile client that calls the API over HTTPS | Visible; behavior unknown |
+| Amazon API Gateway | API entry point and request routing | Visible; routes and policies unspecified |
+| Amazon Cognito | Authentication and authorization capability | Visible; identity flow and enforcement point unspecified |
+| AWS Lambda | Serverless compute path from API Gateway | Visible; function and triggers unknown |
+| Application Load Balancer | Routes API traffic to the Kubernetes service tier | Visible; listeners, target groups, and network unknown |
+| Amazon EKS | Runs backend workloads | Visible; topology and configuration unknown |
+| User backend | User-domain service/API | Visible; implementation and contract unknown |
+| Transaction backend | Transaction-domain service/API | Visible; implementation and contract unknown |
+| Partner backend | Partner-domain service/API | Visible; implementation and contract unknown |
+| Notification backend | Notification-domain service | Visible; providers and consumers unknown |
+| Amazon Aurora | Relational persistence associated with multiple services | Visible; engine, schema, and ownership need confirmation |
+| Amazon DocumentDB | Document persistence associated with transactions | Visible; schema and ownership need confirmation |
+| Amazon EventBridge | Event bus and routing | Visible; contracts and rules unknown |
+| EventBridge rules | Filter and route events to queues | Visible; conditions unspecified |
+| Amazon SQS | Asynchronous messaging destinations | Visible; consumers, retries, DLQ, and ordering unspecified |
 
-## 4. Diagrama de componentes
+## 4. Component diagram
 
-La vista logica de componentes se entrega en dos formatos editables y equivalentes: [Mermaid](component-diagram.mmd) y [Draw.io](component-diagram.drawio). Ambos describen los roles y relaciones inferidos del diagrama de referencia; no establecen despliegues verificados.
-## 5. Vista de infraestructura y despliegue
+The logical component view is available in two editable, equivalent formats: [Mermaid](component-diagram.mmd) and [Draw.io](component-diagram.drawio). Both describe roles and relationships inferred from the reference diagram; neither establishes a verified deployment.
 
-El diagrama editable de AWS está en [aws-infrastructure.drawio](aws-infrastructure.drawio). Usa stencils nativos AWS4, incluidas variantes de servicio como `endpoint` y `lambda_function`, y el tratamiento plano de color del XML de referencia compartido. Conserva los nombres completos de los servicios como etiquetas editables. La vista está marcada como propuesta porque no hay configuración de despliegue. Los módulos de aplicación están dentro de los límites de cómputo propuestos; este diagrama no sustituye a la vista lógica de componentes.
+## 5. Infrastructure and deployment view
 
-La skill también incluye [una variante propuesta para Google Cloud](google-cloud-infrastructure.drawio) y [otra para Azure](azure-infrastructure.drawio). Google Cloud usa SVG oficiales de producto/categoría actualizados en 2025; las marcas de networking, bases de datos e integración son iconos de categoría para Cloud Load Balancing, Firestore y Pub/Sub. Azure usa SVG oficiales del paquete de arquitectura de Microsoft. Los SVG están incrustados para que cada `.drawio` sea portable; el texto, las conexiones y los límites siguen editables. Son ejemplos alternativos para una solicitud que nombre uno de esos proveedores; no forman parte de este paquete AWS, no son despliegues actuales ni equivalencias automáticas servicio por servicio. En una generación normal se entrega solo la nube seleccionada; si no se especifica, se usa AWS.
+The editable AWS diagram is [aws-infrastructure.drawio](aws-infrastructure.drawio). It uses native AWS4 stencils, including service variants such as `endpoint` and `lambda_function`, and the flat color treatment from the supplied XML reference. Full service names remain editable labels. The view is marked as proposed because no deployment configuration was supplied. Application modules sit inside the proposed compute boundaries; this diagram does not replace the logical component view.
 
-### Ruta de solicitudes
+The Skill also includes [a proposed Google Cloud variant](google-cloud-infrastructure.drawio) and [an Azure variant](azure-infrastructure.drawio). Google Cloud uses official product/category SVGs updated in 2025; the networking, database, and integration marks are category icons for Cloud Load Balancing, Firestore, and Pub/Sub. Azure uses official SVGs from Microsoft's Architecture Center package. The SVGs are embedded so each `.drawio` file is portable, while text, connections, and boundaries remain editable. These are alternatives for a request naming one of those providers. They are not part of this AWS package, do not represent current deployments, and are not automatic service-by-service equivalents. A normal generation produces only the selected cloud; AWS is the default when no provider is specified.
 
-1. Un cliente web o móvil llama al endpoint HTTPS de la API.
-2. API Gateway es la entrada de API representada.
-3. Cognito es la capacidad de identidad representada; el flujo OAuth/OIDC y el punto de aplicación de políticas no están definidos.
-4. API Gateway dirige solicitudes a Lambda o a ALB/EKS. El diagrama no indica qué APIs usan cada ruta.
-5. El ALB reenvía solicitudes a workloads backend en EKS.
+### Request path
 
-### Ruta de datos
+1. A web or mobile client calls the API over HTTPS.
+2. API Gateway is the represented API entry point.
+3. Cognito is the represented identity capability; the OAuth/OIDC flow and policy enforcement point are undefined.
+4. API Gateway routes requests to Lambda or to ALB/EKS. The diagram does not say which APIs use each path.
+5. The ALB forwards requests to backend workloads in EKS.
 
-El dibujo asocia backends con Aurora y DocumentDB. No define esquemas, transacciones entre servicios, respaldos, cifrado ni objetivos de recuperación. Las conexiones deben tratarse como una propuesta de propiedad hasta confirmar el diseño de datos.
+### Data path
 
-### Ruta de eventos
+The drawing associates backends with Aurora and DocumentDB. It does not define schemas, cross-service transactions, backups, encryption, or recovery objectives. Treat the connections as proposed ownership until the data design is confirmed.
 
-La fuente muestra un bus, reglas y colas SQS, pero no identifica consumidores ni el ciclo de vida de los mensajes. Antes de producción hay que definir esquemas, garantías de entrega, reintentos, colas de mensajes fallidos (DLQ), idempotencia, retención y responsables.
+### Event path
 
-## 6. Límites y controles de seguridad
+The source shows an event bus, rules, and SQS queues, but does not identify consumers or message lifecycle behavior. Before production, define schemas, delivery guarantees, retries, dead-letter queues (DLQs), idempotency, retention, and ownership.
 
-El dibujo muestra Cognito y una entrada API, pero no demuestra que algún control esté implementado. Antes del despliegue, confirmar y documentar:
+## 6. Security boundaries and controls
 
-- Terminación TLS y cifrado en tránsito en cada salto.
-- User pools/identity pools, validación de tokens, scopes, roles e identidad entre servicios en Cognito.
-- Autorización, throttling, validación de solicitudes y protección contra abuso en API Gateway.
-- VPC, subredes, security groups, endpoints privados y salida de red para EKS, bases y colas.
-- Cifrado en reposo y propiedad de claves para almacenes, logs y colas.
-- Gestión y rotación de secretos, roles IAM de mínimo privilegio, auditoría y tratamiento de datos sensibles.
+The drawing shows Cognito and an API entry point, but does not prove that any control is implemented. Confirm and document the following before deployment:
 
-## 7. Disponibilidad y operación
+- TLS termination and encryption in transit at every hop.
+- Cognito user/identity pools, token validation, scopes, roles, and service identity.
+- Authorization, throttling, request validation, and abuse protection in API Gateway.
+- VPC, subnets, security groups, private endpoints, and network egress for EKS, databases, and queues.
+- At-rest encryption and key ownership for data stores, logs, and queues.
+- Secret management and rotation, least-privilege IAM roles, auditing, and sensitive-data handling.
 
-La fuente no incluye configuración de despliegue ni objetivos de servicio. Multi-AZ, escalamiento automático, health checks, failover de bases, respaldos, recuperación ante desastres, monitoreo, alertas, logs, trazas, estrategia de releases y control de costos quedan por definir. La presencia de iconos de servicios administrados no demuestra preparación para producción.
+## 7. Availability and operations
 
-## 8. Decisiones necesarias para implementar esta arquitectura
+The source contains no deployment configuration or service objectives. Multi-AZ deployment, autoscaling, health checks, database failover, backups, disaster recovery, monitoring, alerting, logs, traces, release strategy, and cost controls remain undefined. The presence of managed-service icons does not demonstrate production readiness.
 
-1. Definir propósito de la aplicación, actores, dominios de API y propiedad de endpoints.
-2. Asignar cada ruta API a Lambda o a un backend EKS; aclarar por qué se requieren ambas rutas de cómputo.
-3. Confirmar integración de Cognito y dónde se aplica autorización: API Gateway, servicios o ambos.
-4. Confirmar propietario de cada base, motor de Aurora, uso de DocumentDB, esquemas y aislamiento de datos.
-5. Definir productores, esquemas/versionado de eventos, reglas, consumidores SQS, reintentos, DLQ e idempotencia.
-6. Especificar cuenta/región AWS, VPC, subredes, ingreso/egreso, conectividad privada y entornos.
-7. Establecer disponibilidad, latencia, RPO/RTO, respaldos, escalamiento y objetivos de despliegue.
-8. Elegir observabilidad, auditoría, secretos, cifrado y controles CI/CD.
+## 8. Decisions required before implementation
 
-## 9. Artefactos
+1. Define the application's purpose, actors, API domains, and endpoint ownership.
+2. Assign each API route to Lambda or an EKS backend; explain why both compute paths are needed.
+3. Confirm Cognito integration and where authorization is enforced: API Gateway, services, or both.
+4. Confirm database ownership, the Aurora engine, DocumentDB usage, schemas, and data isolation.
+5. Define event producers, schemas and versions, rules, SQS consumers, retries, DLQs, and idempotency.
+6. Specify the AWS account and Region, VPC, subnets, ingress/egress, private connectivity, and environments.
+7. Establish availability, latency, RPO/RTO, backup, scaling, and deployment objectives.
+8. Choose observability, auditing, secrets, encryption, and CI/CD controls.
 
-- [Diagrama de componentes Mermaid](component-diagram.mmd)
-- [Diagrama de componentes editable (Draw.io)](component-diagram.drawio)
-- [Diagrama de infraestructura AWS para Draw.io](aws-infrastructure.drawio)
-- [Ejemplo alternativo de infraestructura Google Cloud](google-cloud-infrastructure.drawio)
-- [Ejemplo alternativo de infraestructura Azure](azure-infrastructure.drawio)
-- [Diagrama de arquitectura Archify](reference-application.archify.html)
-- [Candidato fuente de Archify](reference-application.archify.json)
-- [Resumen de finalización de Archify](reference-application.archify.finalize-summary.json)
+## 9. Artifacts
 
-Archify produjo el HTML mediante su flujo nativo `finalize architecture`. La validación estructural, la entrega y la comprobación estricta pasaron. El chequeo de Chrome quedó bloqueado porque este entorno no pudo verificar la identidad de su directorio temporal (`C:\Users\arang\AppData\Local\Temp`); no se declara validación de navegador ni revisión visual completa.
+- [Mermaid component diagram](component-diagram.mmd)
+- [Editable component diagram (Draw.io)](component-diagram.drawio)
+- [AWS infrastructure diagram (Draw.io)](aws-infrastructure.drawio)
+- [Google Cloud infrastructure alternative](google-cloud-infrastructure.drawio)
+- [Azure infrastructure alternative](azure-infrastructure.drawio)
+- [Archify architecture diagram](reference-application.archify.html)
+- [Archify source candidate](reference-application.archify.json)
+- [Archify finalization summary](reference-application.archify.finalize-summary.json)
 
-## 10. Fuente
+Archify produced the HTML through its native `finalize architecture` workflow. Structural validation, delivery, and the strict check passed. The Chrome check was blocked because this environment could not verify the identity of its temporary directory (`C:\Users\arang\AppData\Local\Temp`); browser validation and full visual review are not claimed.
 
-- Referencia entregada por el usuario: `C:\Users\arang\Downloads\Diagramas ejemplo.drawio` (entrada de solo lectura; no se copió al repositorio).
-- Repositorio inspeccionado: `AGENTS.md`, `README.md` y Skills disponibles. No se encontró implementación de la aplicación representada.
+## 10. Sources
+
+- User-supplied reference: `C:\Users\arang\Downloads\Diagramas ejemplo.drawio` (read-only input; not copied into the repository).
+- Inspected repository sources: `AGENTS.md`, `README.md`, and available Skills. No implementation of the depicted application was found.
