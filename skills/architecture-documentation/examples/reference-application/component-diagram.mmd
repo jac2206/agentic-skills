@@ -1,0 +1,32 @@
+flowchart LR
+  user[User]
+  subgraph clients[Client applications]
+    web[Web client]
+    mobile[Mobile client]
+  end
+  api[API entry<br/>HTTP / REST]
+  identity[Identity capability<br/>Flow unspecified]
+  subgraph backend[Backend capabilities<br/>Grouping proposed]
+    users[Users]
+    transactions[Transactions]
+    partners[Partners]
+    notifications[Notifications]
+  end
+  subgraph persistence[Persistence<br/>Ownership unspecified]
+    aurora[(Relational store<br/>Aurora shown in source)]
+    docdb[(Document store<br/>DocumentDB shown in source)]
+  end
+  eventbus[Event bus]
+  queues[Message queues<br/>Consumers unspecified]
+
+  user -->|Uses| web
+  user -->|Uses| mobile
+  web -->|Requests| api
+  mobile -->|Requests| api
+  api -.->|Identity checks: details unspecified| identity
+  api -->|Routes: mapping unspecified| users
+  api -->|Routes: mapping unspecified| transactions
+  users -->|Proposed persistence mapping| aurora
+  transactions -->|Proposed persistence mapping| docdb
+  transactions -.->|Proposed publish path| eventbus
+  eventbus -.->|Rules unspecified| queues

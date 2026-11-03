@@ -26,6 +26,11 @@ agentic-skills/
     │   ├── SKILL.md
     │   └── templates/
     │       └── use-case-document.md
+    ├── architecture-documentation/
+    │   ├── SKILL.md
+    │   ├── references/
+    │   ├── templates/
+    │   └── examples/
     ├── presentations/
     │   └── SKILL.md
     ├── project-documentation-blueprint/
@@ -68,7 +73,7 @@ Install every Skill globally:
 npx skills add jac2206/agentic-skills --skill '*' --agent codex --agent claude-code --global
 ```
 
-Replace `backend-documentation` with another Skill name, such as `html-presentations`, `project-documentation-blueprint`, or `skill-factory`.
+Replace `backend-documentation` with another Skill name, such as `architecture-documentation`, `project-documentation-blueprint`, or `skill-factory`.
 
 ### Update installed Skills
 
@@ -91,6 +96,10 @@ Run `npx skills list` to view installed Skills. Use `npx skills update` without 
 ### Backend Documentation
 
 Documents an existing backend from implementation evidence. It traces implemented use cases and maintains an evidence-based system overview and use-case documentation.
+
+### Architecture Documentation
+
+Creates evidence-based application architecture documentation with Mermaid component diagrams, editable cloud infrastructure diagrams in Draw.io XML, and optional Archify diagrams when that Skill is installed.
 
 ### HTML Presentations
 

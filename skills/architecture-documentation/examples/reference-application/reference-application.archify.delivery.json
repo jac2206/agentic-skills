@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "f198a14b-0f46-4790-bc21-eff80ed84e03",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.json",
+  "output": "D:\\Codigos\\GenerativeIA\\agentic-skills\\skills\\architecture-documentation\\examples\\reference-application\\reference-application.archify.html",
+  "specification": {
+    "sha256": "e163cd30f8a75e206dc7f1447c14489f987d66deec6d66a2d100ee9338a6b4eb",
+    "bytes": 16923
+  },
+  "artifact": {
+    "sha256": "ed64f5573604ad0a877596962646131952aad3a97e44bbcf9ed44e56749d5dca",
+    "bytes": 871986
+  }
+}

@@ -1,0 +1,390 @@
+{
+    "schema_version":  1,
+    "diagram_type":  "architecture",
+    "meta":  {
+                 "title":  "Arquitectura de referencia de la aplicación",
+                 "locale":  "es",
+                 "output":  "skills/architecture-documentation/examples/reference-application/reference-application.archify.html",
+                 "quality_profile":  "showcase"
+             },
+    "components":  [
+                       {
+                           "id":  "clients",
+                           "type":  "external",
+                           "label":  "Clientes web y móvil",
+                           "sublabel":  "HTTPS / REST",
+                           "pos":  [
+                                       40,
+                                       300
+                                   ],
+                           "size":  [
+                                        150,
+                                        64
+                                    ]
+                       },
+                       {
+                           "id":  "gateway",
+                           "type":  "cloud",
+                           "label":  "Amazon API Gateway",
+                           "sublabel":  "Entrada API propuesta",
+                           "pos":  [
+                                       250,
+                                       300
+                                   ],
+                           "size":  [
+                                        160,
+                                        64
+                                    ]
+                       },
+                       {
+                           "id":  "cognito",
+                           "type":  "security",
+                           "label":  "Amazon Cognito",
+                           "sublabel":  "AuthN / AuthZ; flujo pendiente",
+                           "pos":  [
+                                       250,
+                                       470
+                                   ],
+                           "size":  [
+                                        170,
+                                        64
+                                    ]
+                       },
+                       {
+                           "id":  "lambda",
+                           "type":  "backend",
+                           "label":  "AWS Lambda",
+                           "sublabel":  "Propósito pendiente",
+                           "pos":  [
+                                       480,
+                                       180
+                                   ],
+                           "size":  [
+                                        150,
+                                        64
+                                    ]
+                       },
+                       {
+                           "id":  "alb",
+                           "type":  "cloud",
+                           "label":  "Application Load Balancer",
+                           "sublabel":  "Ruta hacia EKS",
+                           "pos":  [
+                                       480,
+                                       330
+                                   ],
+                           "size":  [
+                                        180,
+                                        64
+                                    ]
+                       },
+                       {
+                           "id":  "eks",
+                           "type":  "cloud",
+                           "label":  "Amazon EKS",
+                           "sublabel":  "Backends — agrupación propuesta",
+                           "pos":  [
+                                       730,
+                                       330
+                                   ],
+                           "size":  [
+                                        190,
+                                        64
+                                    ]
+                       },
+                       {
+                           "id":  "users",
+                           "type":  "backend",
+                           "label":  "Backend de usuarios",
+                           "pos":  [
+                                       980,
+                                       150
+                                   ],
+                           "size":  [
+                                        170,
+                                        60
+                                    ]
+                       },
+                       {
+                           "id":  "transactions",
+                           "type":  "backend",
+                           "label":  "Backend de transacciones",
+                           "pos":  [
+                                       980,
+                                       270
+                                   ],
+                           "size":  [
+                                        190,
+                                        60
+                                    ]
+                       },
+                       {
+                           "id":  "partners",
+                           "type":  "backend",
+                           "label":  "Backend de partners",
+                           "pos":  [
+                                       980,
+                                       390
+                                   ],
+                           "size":  [
+                                        180,
+                                        60
+                                    ]
+                       },
+                       {
+                           "id":  "notifications",
+                           "type":  "backend",
+                           "label":  "Backend de notificaciones",
+                           "pos":  [
+                                       980,
+                                       510
+                                   ],
+                           "size":  [
+                                        195,
+                                        60
+                                    ]
+                       },
+                       {
+                           "id":  "aurora_users",
+                           "type":  "database",
+                           "label":  "Amazon Aurora",
+                           "sublabel":  "asociación users por confirmar",
+                           "pos":  [
+                                       1250,
+                                       150
+                                   ],
+                           "size":  [
+                                        195,
+                                        60
+                                    ]
+                       },
+                       {
+                           "id":  "docdb",
+                           "type":  "database",
+                           "label":  "Amazon DocumentDB",
+                           "sublabel":  "asociación transactions por confirmar",
+                           "pos":  [
+                                       1250,
+                                       270
+                                   ],
+                           "size":  [
+                                        205,
+                                        60
+                                    ]
+                       },
+                       {
+                           "id":  "aurora_partners",
+                           "type":  "database",
+                           "label":  "Amazon Aurora",
+                           "sublabel":  "asociación partners por confirmar",
+                           "pos":  [
+                                       1250,
+                                       390
+                                   ],
+                           "size":  [
+                                        195,
+                                        60
+                                    ]
+                       },
+                       {
+                           "id":  "aurora_notifications",
+                           "type":  "database",
+                           "label":  "Amazon Aurora",
+                           "sublabel":  "asociación notifications por confirmar",
+                           "pos":  [
+                                       1250,
+                                       510
+                                   ],
+                           "size":  [
+                                        205,
+                                        60
+                                    ]
+                       },
+                       {
+                           "id":  "eventbridge",
+                           "type":  "messagebus",
+                           "label":  "Amazon EventBridge",
+                           "sublabel":  "bus de eventos",
+                           "pos":  [
+                                       730,
+                                       680
+                                   ],
+                           "size":  [
+                                        190,
+                                        60
+                                    ]
+                       },
+                       {
+                           "id":  "rules",
+                           "type":  "cloud",
+                           "label":  "Reglas EventBridge",
+                           "sublabel":  "filtros por definir",
+                           "pos":  [
+                                       980,
+                                       680
+                                   ],
+                           "size":  [
+                                        190,
+                                        60
+                                    ]
+                       },
+                       {
+                           "id":  "sqs1",
+                           "type":  "messagebus",
+                           "label":  "Amazon SQS",
+                           "sublabel":  "cola 1; consumidor por definir",
+                           "pos":  [
+                                       1250,
+                                       650
+                                   ],
+                           "size":  [
+                                        195,
+                                        60
+                                    ]
+                       },
+                       {
+                           "id":  "sqs2",
+                           "type":  "messagebus",
+                           "label":  "Amazon SQS",
+                           "sublabel":  "cola 2; consumidor por definir",
+                           "pos":  [
+                                       1250,
+                                       750
+                                   ],
+                           "size":  [
+                                        195,
+                                        60
+                                    ]
+                       }
+                   ],
+    "connections":  [
+                        {
+                            "from":  "clients",
+                            "to":  "gateway",
+                            "label":  "HTTPS / REST",
+                            "variant":  "emphasis"
+                        },
+                        {
+                            "from":  "gateway",
+                            "to":  "cognito",
+                            "label":  "integración de identidad pendiente",
+                            "variant":  "security"
+                        },
+                        {
+                            "from":  "gateway",
+                            "to":  "lambda",
+                            "label":  "Ruta API; propósito pendiente"
+                        },
+                        {
+                            "from":  "gateway",
+                            "to":  "alb",
+                            "label":  "Ruta API"
+                        },
+                        {
+                            "from":  "alb",
+                            "to":  "eks",
+                            "label":  "tráfico al clúster"
+                        },
+                        {
+                            "from":  "eks",
+                            "to":  "users",
+                            "label":  "ejecución"
+                        },
+                        {
+                            "from":  "eks",
+                            "to":  "transactions",
+                            "label":  "ejecución"
+                        },
+                        {
+                            "from":  "eks",
+                            "to":  "partners",
+                            "label":  "ejecución"
+                        },
+                        {
+                            "from":  "eks",
+                            "to":  "notifications",
+                            "label":  "ejecución"
+                        },
+                        {
+                            "from":  "users",
+                            "to":  "aurora_users",
+                            "label":  "datos"
+                        },
+                        {
+                            "from":  "transactions",
+                            "to":  "docdb",
+                            "label":  "datos"
+                        },
+                        {
+                            "from":  "partners",
+                            "to":  "aurora_partners",
+                            "label":  "datos"
+                        },
+                        {
+                            "from":  "notifications",
+                            "to":  "aurora_notifications",
+                            "label":  "datos"
+                        },
+                        {
+                            "from":  "users",
+                            "to":  "eventbridge",
+                            "label":  "productor de eventos por confirmar",
+                            "variant":  "dashed"
+                        },
+                        {
+                            "from":  "transactions",
+                            "to":  "eventbridge",
+                            "label":  "productor de eventos por confirmar",
+                            "variant":  "dashed"
+                        },
+                        {
+                            "from":  "partners",
+                            "to":  "eventbridge",
+                            "label":  "productor de eventos por confirmar",
+                            "variant":  "dashed"
+                        },
+                        {
+                            "from":  "notifications",
+                            "to":  "eventbridge",
+                            "label":  "productor de eventos por confirmar",
+                            "variant":  "dashed"
+                        },
+                        {
+                            "from":  "eventbridge",
+                            "to":  "rules",
+                            "label":  "enrutamiento de eventos"
+                        },
+                        {
+                            "from":  "rules",
+                            "to":  "sqs1",
+                            "label":  "filtro de regla por confirmar",
+                            "variant":  "dashed"
+                        },
+                        {
+                            "from":  "rules",
+                            "to":  "sqs2",
+                            "label":  "filtro de regla por confirmar",
+                            "variant":  "dashed"
+                        }
+                    ],
+    "cards":  [
+                  {
+                      "dot":  "amber",
+                      "title":  "Evidencia",
+                      "items":  [
+                                    "Topología transcrita del diagrama Draw.io suministrado",
+                                    "No se encontró implementación ni despliegue de esta aplicación",
+                                    "Arquitectura de referencia propuesta, no producción verificada"
+                                ]
+                  },
+                  {
+                      "dot":  "cyan",
+                      "title":  "Por definir",
+                      "items":  [
+                                    "Rutas API para Lambda o EKS y propósito de Lambda",
+                                    "Contratos, productores y consumidores de eventos",
+                                    "Región, red, seguridad, disponibilidad y recuperación"
+                                ]
+                  }
+              ]
+}
