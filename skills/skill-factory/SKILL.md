@@ -1,594 +1,291 @@
 ---
 name: skill-factory
 description: >
-  Designs, creates, reviews, and improves reusable AI Skills following the
-  repository's official Skill template and design principles. Use when the user
-  asks to create a new Skill, improve an existing Skill, evaluate a Skill,
-  combine Skills, or determine whether a problem should be solved with a Prompt,
-  Skill, Workflow, Agent, or Application.
+  Designs, creates, reviews, and improves reusable AI Skills. Use when a user
+  wants to create or revise a Skill, assess its quality, compose Skill
+  responsibilities, or choose between a prompt, Skill, workflow, agent, or
+  application.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Skill Factory
 
-Design, create, evaluate, and improve reusable Skills for AI agents and systems.
-
-This Skill is responsible for turning a concrete capability or problem into a
-well-defined, reusable, maintainable, and composable Skill.
-
-It must not simply generate prompts or fill templates mechanically.
+Help users turn a repeatable capability into a focused, reusable, maintainable
+Skill, or assess and improve Skills they already have. Preserve the Skill's
+valid purpose and behavior when revising it.
 
 ## Purpose
 
-Provide a structured process for designing high-quality AI Skills.
+Choose the simplest abstraction that reliably solves the user's problem:
 
-The Skill must:
+**Prompt → Skill → Workflow → Agent → Application**
 
-- Understand the problem the user wants to solve.
-- Determine whether a Skill is actually the appropriate solution.
-- Define a clear and focused responsibility.
-- Design the Skill according to the repository's official template.
-- Make the Skill reusable across different contexts.
-- Define inputs, outputs, workflow, rules, constraints, tools, and validation.
-- Identify opportunities for composition with other Skills.
-- Detect unnecessary complexity or duplicated responsibilities.
-- Produce a complete `SKILL.md` ready to implement.
+Design Skills that are clear, composable, and testable. Do not create a Skill
+just because the user used the word “Skill”; determine whether a reusable
+capability is actually useful.
 
 ## When to use
 
 Use this Skill when the user asks to:
 
-- Create a new Skill.
-- Design a Skill.
-- Build a reusable AI capability.
-- Turn a process into a Skill.
-- Create a `SKILL.md`.
-- Improve an existing Skill.
-- Refactor a Skill.
-- Evaluate a Skill.
-- Review a Skill.
-- Combine multiple Skills.
-- Determine whether something should be a Prompt, Skill, Workflow, Agent, or Application.
-- Define the architecture of a Skill.
-- Validate whether a Skill follows the repository standard.
+- Create or design a Skill or `SKILL.md`.
+- Turn a repeatable process into a reusable capability.
+- Review, evaluate, refactor, or improve an existing Skill.
+- Decide how multiple Skills should be divided or composed.
+- Decide whether a problem calls for a prompt, Skill, workflow, agent, or application.
+- Check a Skill against repository conventions.
 
 ## When not to use
 
-Do not use this Skill when the user only wants:
-
-- A normal prompt.
-- A one-time answer.
-- A simple piece of text.
-- A code implementation unrelated to Skill design.
-- A presentation, document, application, or workflow itself.
-- A modification to an existing Skill that does not require architectural or structural reasoning.
-
-Do not create a Skill when a simpler solution is sufficient.
-
-Prefer the simplest appropriate abstraction:
-
-Prompt → Skill → Workflow → Agent → Application
-
-## Core Principles
-
-### 1. One clear responsibility
-
-Every Skill must solve one clearly defined problem.
-
-Do not create Skills that attempt to solve unrelated problems.
-
-If the requested capability contains multiple independent responsibilities,
-consider separating them into multiple Skills.
-
-### 2. Reusability
-
-A Skill should be useful across multiple projects, users, or contexts.
-
-Avoid instructions that depend unnecessarily on:
-
-- A specific project.
-- A specific user.
-- A single execution.
-- Temporary context.
-- Hardcoded implementation details.
-
-Project-specific information should only be included when it is an intentional
-constraint of the Skill.
-
-### 3. Composability
-
-Skills should be designed so they can work independently or as part of a
-larger workflow.
-
-Identify:
-
-- Upstream Skills that may provide inputs.
-- Downstream Skills that may consume outputs.
-
-Avoid duplicating responsibilities that belong to other Skills.
-
-### 4. Determinism
-
-Instructions should reduce ambiguity whenever possible.
-
-Prefer:
-
-- Explicit inputs.
-- Explicit outputs.
-- Ordered workflows.
-- Clear decision rules.
-- Defined constraints.
-- Verifiable quality criteria.
-
-Avoid vague instructions such as:
-
-- "Make it good."
-- "Use your best judgment."
-- "Be creative."
-
-When judgment is necessary, define the criteria that should guide it.
-
-### 5. Minimal sufficient complexity
-
-Do not make a Skill more complex than necessary.
-
-Only include:
-
-- Rules that materially affect the result.
-- Tools that provide real value.
-- Inputs that are actually required.
-- Validation that can meaningfully verify quality.
-
-The goal is not to maximize the number of instructions.
-
-The goal is to create the smallest reliable capability that solves the problem.
-
-### 6. Quality must be verifiable
-
-Every important Skill must define how its result can be evaluated.
-
-Quality criteria should be observable and testable whenever possible.
+Do not use this Skill for a one-time prompt or answer, ordinary content or code
+work, or implementing a capability whose Skill design is already settled.
+Use the smallest abstraction that fits the task.
 
 ## Inputs
 
-The Skill Factory accepts the following types of input.
+Use the information available in the request and repository. Relevant inputs
+may include:
 
-### Required
+- The problem, intended users, and expected outcome.
+- Existing `SKILL.md` files and their supporting resources.
+- Constraints, tools, target platforms, and repository conventions.
+- Existing Skills that may overlap or provide inputs.
 
-A description of the capability or problem the user wants to solve.
-
-This may be provided as:
-
-- A natural-language request.
-- A rough idea.
-- Existing instructions.
-- An existing Skill.
-- A process.
-- Multiple Skills that need to be combined.
-
-### Optional
-
-The user may also provide:
-
-- Existing `SKILL.md`.
-- Templates.
-- Examples.
-- Technical constraints.
-- Required tools.
-- Expected output format.
-- Existing Skills that should be reused.
-- Domain-specific requirements.
+Ask a concise question only when a missing decision materially affects the
+design and cannot be reasonably inferred. Otherwise, state a reasonable
+assumption and proceed.
 
 ## Outputs
 
-Depending on the user's request, produce one of the following.
+Match the deliverable to the request:
 
-### New Skill
+- **New Skill:** a complete `SKILL.md` and only the supporting resources that
+  have a clear purpose.
+- **Improved Skill:** an updated Skill that preserves its core responsibility
+  and valid behavior, with relevant supporting resources kept consistent.
+- **Evaluation:** findings, severity or impact, and actionable recommendations.
+  Do not rewrite files unless the user asked for changes.
+- **Composition design:** responsibility boundaries, dependencies, and the
+  proposed flow of inputs and outputs. Implement only when requested.
+- **Abstraction recommendation:** a reasoned choice among prompt, Skill,
+  workflow, agent, and application.
 
-A complete `SKILL.md` following the repository's official template.
+## Core principles
 
-### Improved Skill
+### One primary responsibility
 
-A revised complete `SKILL.md` preserving valid existing behavior while
-improving clarity, structure, reuse, composition, and validation.
+Describe the Skill's job in one sentence. Split independent capabilities when
+combining them would make the Skill harder to discover, use, or maintain.
 
-### Skill Evaluation
+### Reuse and composition
 
-A structured analysis identifying:
+Make the capability useful across projects where practical. Identify upstream
+inputs and downstream consumers only when that relationship is real. Do not
+duplicate another Skill's responsibility; define a handoff when composition
+works better.
 
-- Problems.
-- Ambiguities.
-- Redundancies.
-- Missing requirements.
-- Contradictions.
-- Risks.
-- Opportunities for simplification.
-- Opportunities for composition.
+### Clear, operational instructions
 
-### Skill Composition
+Define when to use and avoid the Skill, its inputs and outputs, its workflow,
+important rules and constraints, and how to judge the result. Make decisions
+explicit where ambiguity would change the outcome. Leave routine judgment to
+the agent when rigid rules add no value.
 
-A proposed architecture showing:
+### Smallest sufficient design
 
-- Shared responsibilities.
-- Independent responsibilities.
-- Dependencies.
-- Inputs and outputs.
-- Recommended Skill boundaries.
-
-### Abstraction Recommendation
-
-When appropriate, explicitly recommend one of:
-
-- Prompt
-- Skill
-- Workflow
-- Agent
-- Application
-
-instead of creating a Skill unnecessarily.
+Include only instructions and resources that improve decisions, consistency,
+or reliability. Prefer deterministic procedures for repeatable operations and
+use judgment for contextual work.
 
 ## Workflow
 
-Execute the following process.
+### 1. Select the requested mode
 
-### Step 1 — Understand the problem
+Identify whether the user wants creation, revision, evaluation, composition,
+or an abstraction recommendation. Follow only the applicable path below.
 
-Identify:
+### 2. Understand the capability and inspect evidence
 
-- What the user wants to accomplish.
-- Who or what will use the capability.
-- What should be automated or standardized.
-- What the expected result is.
-- What constraints exist.
+Identify the user's goal, intended user, expected result, constraints, and
+available inputs. For repository work, inspect the relevant Skill, its
+references, templates, examples, scripts, and existing conventions before
+proposing changes. Do not infer behavior that the source material does not
+support.
 
-Do not start writing the Skill before understanding the capability.
+### 3. Choose the simplest abstraction
 
-### Step 2 — Determine the appropriate abstraction
+Use a prompt for a one-off instruction; a Skill for a reusable capability
+with stable guidance; a workflow for a coordinated sequence; an agent when
+independent delegated work is needed; and an application when a persistent
+user-facing product is required. These are decision aids, not mandatory
+architecture layers.
 
-Evaluate whether the problem requires:
+If a Skill is appropriate, define its one-sentence responsibility and check
+for overlap with existing Skills.
 
-Prompt → Skill → Workflow → Agent → Application
+### 4. Define the contract
 
-Use the simplest abstraction that solves the problem correctly.
+Specify only relevant items:
 
-A Skill should be created only when the capability is:
+- Required and optional inputs, including useful defaults.
+- Expected outputs and their format.
+- The minimum workflow and meaningful decision points.
+- Rules, constraints, tools, and composition relationships that affect results.
+- Observable quality criteria and proportionate validation.
 
-- Reusable.
-- Structured.
-- Meaningfully more complex than a simple prompt.
-- Valuable as an independent capability.
+### 5. Decide which supporting resources add value
 
-### Step 3 — Define the responsibility
+Start with `SKILL.md`. Add a resource only when it solves a concrete need that
+would otherwise cause repeated work, excessive context, ambiguity, or errors.
+Keep all Skill-specific resources inside that Skill's directory.
 
-Write a single sentence describing what the Skill does.
+| Resource | Add it when | Do not add it when |
+| --- | --- | --- |
+| `references/` | Detailed domain guidance, policies, schemas, or mode-specific procedures are needed only for some tasks. Link each reference and say when to read it. | The material is short, generic, already available from an authoritative source, or repeats the main instructions. |
+| `templates/` | The Skill repeatedly produces a structured artifact and a reusable starting format improves consistency. Explain when and how to fill it. | A few instructions in `SKILL.md` are enough, or the template would be used once. |
+| `examples/` | A concrete example resolves ambiguity or teaches a non-obvious behavior. Keep examples illustrative, not hidden rules. | Examples merely restate instructions or exist to populate a directory. |
+| `scripts/` | Repeated deterministic work can be automated and automation materially improves correctness, speed, or repeatability. Document invocation, inputs, outputs, dependencies, and failure behavior. | The task depends on contextual judgment, is infrequent, or a script would add more maintenance than value. |
 
-Use the following test:
+For scripts, prefer the existing project runtime and dependencies when they
+fit. Otherwise, choose based on the target environment: Python is a practical
+portable choice for file, data, and validation utilities; Node.js fits
+JavaScript/TypeScript projects and their tooling; PowerShell fits Windows
+administration; and POSIX shell fits simple Unix command pipelines. These are
+defaults, not requirements. Avoid adding dependencies without a clear benefit.
+Make script behavior deterministic where possible and validate new or changed
+scripts when they are part of the requested work.
 
-"This Skill is responsible for..."
+Distinguish instructional examples inside a Skill from concrete artifacts
+generated by using it. Follow repository conventions for their locations;
+here, Skill examples belong in `skills/<skill-name>/examples/`, while generated
+demonstration artifacts belong in the appropriate `examples/<category>/`.
 
-If the sentence contains multiple unrelated responsibilities, reconsider the
-Skill boundary.
+### 6. Create, revise, or report
 
-### Step 4 — Define inputs and outputs
+- **Create:** use `skills/templates/skill-template.md` as the repository
+  starting point. Preserve its frontmatter fields and include only sections
+  relevant to the capability.
+- **Revise:** preserve the name, primary responsibility, and valid behavior
+  unless the user requests a scope change. Resolve contradictions, remove
+  duplication, improve clarity, and update any affected supporting resources.
+- **Evaluate:** report evidence-based findings and practical fixes. Do not
+  silently change the Skill.
+- **Compose:** recommend boundaries and handoffs; consolidate only when that
+  produces a more focused, reusable capability.
+- **Recommend an abstraction:** explain the choice briefly and provide the
+  requested prompt or design only if asked.
 
-Identify:
+Do not implement the capability described by a new Skill unless the user also
+requests its implementation.
 
-- Required inputs.
-- Optional inputs.
-- Expected outputs.
-- Output format.
-- Important constraints.
+### 7. Validate and present
 
-Inputs and outputs should be explicit enough for another Skill or workflow to
-consume them.
-
-### Step 5 — Design the workflow
-
-Define the minimum sequence of steps required to execute the capability.
-
-Prefer a simple flow such as:
-
-Input → Analyze → Transform → Validate → Output
-
-Add decision points only when they are necessary.
-
-### Step 6 — Define rules and constraints
-
-Identify:
-
-- Mandatory behavior.
-- Forbidden behavior.
-- Domain-specific rules.
-- Technical limitations.
-- Safety or quality requirements.
-
-Do not add rules that do not materially affect the result.
-
-### Step 7 — Identify tools
-
-Determine whether external tools are required.
-
-For each tool, define:
-
-- Purpose.
-- When it should be used.
-- When it should not be used.
-
-Do not introduce tools merely because they are available.
-
-### Step 8 — Design composition
-
-Determine whether the Skill should interact with other Skills.
-
-Define:
-
-### Upstream Skills
-
-Skills that may provide inputs.
-
-### Downstream Skills
-
-Skills that may consume outputs.
-
-If no meaningful composition exists, keep the section minimal.
-
-### Step 9 — Define quality criteria
-
-Create objective criteria for determining whether the Skill produced a valid
-result.
-
-Whenever possible, criteria should be testable.
-
-### Step 10 — Create examples
-
-Add examples that demonstrate the intended behavior.
-
-Examples must clarify the Skill without becoming hidden instructions.
-
-Keep instructions in the main Skill sections rather than inside examples.
-
-### Step 11 — Generate the Skill
-
-Create the complete `SKILL.md` using the repository's official template:
-
-`skills/_templates/skill-template.md`
-
-The generated Skill must preserve the template's frontmatter structure.
-
-Use only the sections that are relevant to the Skill.
-
-Do not add sections merely to satisfy the template.
-
-### Step 12 — Validate the Skill
-
-Before returning the result, verify:
-
-- The Skill has one clear primary responsibility.
-- The abstraction level is appropriate.
-- Inputs are clearly defined.
-- Outputs are clearly defined.
-- Workflow is understandable.
-- Rules are explicit.
-- Constraints are meaningful.
-- Tools are justified.
-- Composition is clear.
-- Quality criteria are verifiable.
-- Examples represent the intended behavior.
-- No unnecessary complexity was introduced.
-- No responsibilities were duplicated unnecessarily.
+Validate against the relevant criteria below. Report what changed or what you
+found, any important limitation, and checks performed. Do not claim a script,
+Skill, or workflow was tested unless it was actually exercised.
 
 ## Rules
 
 The Skill Factory must:
 
-- Follow the repository's official Skill template.
-- Prefer reusable capabilities over one-off instructions.
-- Prefer simple abstractions over unnecessary architecture.
-- Preserve valid behavior when improving an existing Skill.
-- Separate instructions from examples.
-- Keep Skills focused.
-- Make important behavior explicit.
-- Include validation for meaningful Skills.
-- Identify composition opportunities when they provide value.
+- Preserve user intent and the established scope.
+- Prefer the smallest reliable abstraction and resource set.
+- Keep instructions in `SKILL.md` and supporting detail in a linked resource
+  only when progressive disclosure helps.
+- Preserve valid behavior during revisions and check related resources for
+  consistency.
+- Distinguish requirements from recommendations and repository conventions.
+- Make recommendations specific and actionable.
 
 The Skill Factory must not:
 
-- Create a Skill merely because the user asks for "a Skill" if a simpler abstraction is clearly sufficient.
-- Create overly broad Skills.
-- Duplicate existing Skill responsibilities unnecessarily.
-- Add tools without a clear purpose.
-- Add sections without a reason.
-- Hide important instructions inside examples.
-- Replace a reusable capability with project-specific instructions without justification.
-- Optimize for Skill length instead of capability quality.
-
-## Constraints
-
-### Template constraint
-
-All generated Skills must follow:
-
-`skills/_templates/skill-template.md`
-
-unless the user explicitly requests a different structure.
-
-### Responsibility constraint
-
-A Skill must have one clear primary responsibility.
-
-### Reuse constraint
-
-The design should not depend unnecessarily on a single project or execution.
-
-### Validation constraint
-
-A Skill should define how its output can be checked whenever meaningful
-validation is possible.
-
-### Maintenance constraint
-
-Avoid unnecessary complexity that increases future maintenance.
+- Generate or rewrite files for an evaluation-only request.
+- Create resources or sections merely to fill a template.
+- Add tools, dependencies, scripts, or rigid steps without a concrete benefit.
+- Hide mandatory behavior in examples or duplicate guidance across files.
+- Expand a Skill into unrelated responsibilities.
 
 ## Tools
 
-### Required
-
-No specific external tool is required.
-
-The Skill Factory can design Skills using the information provided by the user
-and the repository conventions.
-
-### Optional
-
-Repository or file tools may be used when available to:
-
-- Inspect existing Skills.
-- Read the official template.
-- Compare existing Skills.
-- Detect duplicated responsibilities.
-- Validate repository structure.
-
-Use tools only when they provide useful information.
+No specific tool is required. Use repository and file tools when inspecting
+existing Skills, templates, supporting resources, or conventions will improve
+accuracy. Use external tools only when the requested design depends on
+information unavailable in the provided context or repository.
 
 ## Composition
 
-### Upstream Skills
+The Skill Factory may use existing Skills, templates, workflows, or domain
+documentation as inputs. Its outputs may feed implementation, documentation,
+validation, or human review workflows. Name specific upstream or downstream
+Skills only when the repository contains a meaningful relationship.
 
-The Skill Factory may consume:
+## Quality criteria
 
-- Existing Skills.
-- Skill templates.
-- Domain-specific research Skills.
-- Existing workflows.
-- Existing documentation.
+A created or revised Skill is ready when:
 
-### Downstream Skills
+- [ ] Its purpose and primary responsibility are clear and focused.
+- [ ] Its abstraction fits a repeatable user need.
+- [ ] Use cases, inputs, outputs, and workflow are understandable.
+- [ ] Rules and constraints affect the result and do not conflict.
+- [ ] Tools, composition, and supporting resources are justified or omitted.
+- [ ] Any references are linked and read conditionally where appropriate.
+- [ ] Any scripts document how to run them and have meaningful validation.
+- [ ] Examples clarify behavior without acting as hidden instructions.
+- [ ] Quality criteria and validation match the capability's complexity.
+- [ ] The official repository template and naming conventions are followed.
+- [ ] Existing behavior and related resources remain consistent after revision.
 
-The output of the Skill Factory may be consumed by:
-
-- Repository implementation workflows.
-- Code generation workflows.
-- Documentation workflows.
-- Testing and validation workflows.
-- Human review processes.
-
-The Skill Factory should not implement the generated Skill unless explicitly
-requested.
-
-## Quality Criteria
-
-The result is valid when:
-
-- [ ] The requested capability is clearly understood.
-- [ ] The correct abstraction has been selected.
-- [ ] The Skill has one clear primary responsibility.
-- [ ] Required inputs are clearly defined.
-- [ ] Expected outputs are clearly defined.
-- [ ] The workflow is deterministic where possible.
-- [ ] Rules and constraints are explicit.
-- [ ] Tools are justified.
-- [ ] Composition opportunities are identified when relevant.
-- [ ] Quality criteria are verifiable.
-- [ ] Examples demonstrate intended behavior.
-- [ ] The official Skill template is followed.
-- [ ] No unnecessary complexity was introduced.
-- [ ] Responsibilities are not unnecessarily duplicated.
+An evaluation is complete when each finding is supported by the Skill or its
+resources and recommendations are prioritized by practical impact. A
+composition design is complete when responsibilities and handoffs are clear.
 
 ## Examples
 
-### Example 1 — Creating a Skill
+### One-off request
 
-**Input**
+**Input:** “Give me a prompt to summarize one meeting.”
 
-Create a Skill that converts technical documentation into educational
-workshops.
+**Expected behavior:** Recommend a prompt; do not create a Skill unless the
+user's broader need shows a repeatable capability.
 
-**Expected behavior**
+### Repeated deterministic work
 
-The Skill Factory should:
+**Input:** “Create a Skill that validates the same structured files every day.”
 
-1. Determine that the capability is reusable.
-2. Define the Skill's responsibility.
-3. Define inputs such as documentation, audience, and learning objectives.
-4. Define outputs such as workshop structure and exercises.
-5. Define the workflow.
-6. Define quality criteria.
-7. Generate a complete `SKILL.md`.
+**Expected behavior:** Define the Skill's decision rules and outputs, then
+consider a small script if deterministic checks will reduce repeated effort
+or errors. Pick a language that fits the target runtime, document how to run
+it, and validate its behavior. Do not add a script if the checks are simple
+enough to state and perform reliably without one.
 
-**Output**
+### Evaluation request
 
-A complete Skill following the official repository template.
+**Input:** “Review this Skill and tell me what should improve.”
 
-### Example 2 — Not creating a Skill
-
-**Input**
-
-Give me a prompt to summarize a meeting.
-
-**Expected behavior**
-
-The Skill Factory should recognize that a reusable Skill may not be necessary.
-
-**Output**
-
-Recommend a Prompt instead of creating a Skill.
-
-### Example 3 — Improving an existing Skill
-
-**Input**
-
-Improve this Skill. It has too many responsibilities and duplicates another
-Skill.
-
-**Expected behavior**
-
-The Skill Factory should:
-
-1. Identify duplicated responsibilities.
-2. Separate unrelated responsibilities.
-3. Recommend appropriate Skill boundaries.
-4. Preserve useful existing behavior.
-5. Produce the improved Skill or composition architecture.
-
-### Example 4 — Combining Skills
-
-**Input**
-
-Combine these two Skills because both generate presentation content.
-
-**Expected behavior**
-
-The Skill Factory should determine:
-
-- What responsibilities overlap.
-- What responsibilities should remain independent.
-- Whether one Skill should consume the output of the other.
-- Whether combining them improves reuse or creates an overly broad Skill.
-
-**Output**
-
-A recommended composition or a consolidated Skill when appropriate.
+**Expected behavior:** Inspect its instructions and relevant resources, report
+evidence-based findings and recommendations, and leave files unchanged unless
+the user asks for edits.
 
 ## Validation
 
-Before returning the result:
+For each task, apply only the relevant checks:
 
-1. Verify that the requested problem is understood.
-2. Verify that the correct abstraction was selected.
-3. Verify that the Skill has one clear primary responsibility.
-4. Verify that the Skill follows the official template.
-5. Verify that inputs and outputs are explicit.
-6. Verify that the workflow is coherent.
-7. Verify that rules and constraints are necessary.
-8. Verify that tools are justified.
-9. Verify that composition is appropriate.
-10. Verify that quality criteria are testable.
-11. Verify that examples do not contain hidden instructions.
-12. Verify that no unnecessary complexity or duplication was introduced.
+1. Confirm the deliverable matches the requested mode; do not turn a review
+   into an unrequested rewrite.
+2. For creation or revision, confirm the Skill has a focused responsibility,
+   explicit contract, coherent workflow, and no conflicting instructions.
+3. Confirm the abstraction and each optional resource are justified by the
+   user's need; check resource paths and links.
+4. Confirm scripts have documented usage and were exercised when their
+   behavior is part of the requested deliverable.
+5. Confirm examples teach rather than silently impose behavior.
+6. Confirm the repository template, naming, and location conventions are
+   followed.
+7. Confirm revisions preserve intended behavior and keep related resources
+   consistent.
+8. State which checks were performed and distinguish inspection from execution.
 
 ---
 
-> Use only the sections that are relevant to the Skill.
-> Do not add sections merely to satisfy the template.
-> Keep the Skill focused, reusable, composable, and maintainable.
+Use only the sections and resources that serve the Skill's actual purpose.

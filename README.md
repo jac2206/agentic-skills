@@ -1,256 +1,143 @@
 # AI Skills
 
-A reusable library of Skills for AI agents.
+A reusable library of focused, composable capabilities for AI agents.
 
-This repository contains structured capabilities designed to help AI systems perform specialized tasks consistently, reliably and across different projects.
-
-The goal is not to build a collection of prompts.
-
-The goal is to build **reusable capabilities for AI systems**.
-
----
+This repository contains Skills that help AI systems perform specialized tasks consistently across projects. The goal is to build reusable capabilities, not a collection of one-off prompts.
 
 ## Philosophy
 
-AI capabilities can be organized into different levels of abstraction:
+Choose the simplest abstraction that solves the problem correctly:
 
 ```text
-Prompt
-  ↓
-Skill
-  ↓
-Workflow
-  ↓
-Agent
-  ↓
-Application
+Prompt → Skill → Workflow → Agent → Application
 ```
 
-We use the simplest abstraction that solves the problem correctly.
+A Skill is useful when a capability is reusable, specialized, structured, and valuable across multiple tasks. A one-time request may need only a prompt.
 
-A Skill should be created when a capability is:
-
-- Reusable.
-- Specialized.
-- Structured.
-- Valuable across multiple tasks.
-- Better represented as a repeatable workflow than as a single prompt.
-
----
-
-## Repository Structure
+## Repository structure
 
 ```text
-ai-skills/
-│
+agentic-skills/
 ├── AGENTS.md
 ├── README.md
-│
-├── skills/
-│   ├── presentations/
-│   │   └── SKILL.md
-│   │
-│   ├── testing/
-│   │   └── SKILL.md
-│   │
-│   ├── software-development/
-│   │   └── SKILL.md
-│   │
-│   ├── education/
-│   │   └── SKILL.md
-│   │
-│   ├── prompt-engineering/
-│   │   └── SKILL.md
-│   │
-│   └── automation/
-│       └── SKILL.md
-│
-└── tests/
+├── examples/                         # Concrete artifacts produced with Skills
+└── skills/
+    ├── backend-documentation/
+    │   ├── SKILL.md
+    │   └── templates/
+    │       └── use-case-document.md
+    ├── presentations/
+    │   └── SKILL.md
+    ├── project-documentation-blueprint/
+    │   └── SKILL.md
+    ├── skill-factory/
+    │   └── SKILL.md
+    └── templates/
+        └── skill-template.md
 ```
 
-Skills may start as a single `SKILL.md` file.
+Every Skill must have a `SKILL.md`. Add references, templates, examples, or scripts only when they provide real value. Keep Skill-specific resources inside that Skill's directory. The shared Skill authoring template lives under `skills/templates/`.
 
-As complexity increases, a Skill may introduce:
+Use the root `examples/` directory for concrete artifacts generated with Skills. Keep instructional examples and resources that belong to one Skill inside that Skill's directory.
+
+## Install a Skill
+
+The repository is the canonical source. Install Skills into Codex, Claude Code, or another supported agent with the [`skills` CLI](https://github.com/vercel-labs/skills). The CLI places or links each Skill into the selected agent's expected directory; no per-agent copies need to be maintained in this repository.
+
+Install one Skill for Codex and Claude Code in the current project:
+
+```sh
+npx skills add jac2206/agentic-skills --skill backend-documentation --agent codex --agent claude-code
+```
+
+Install that Skill globally so it is available across projects:
+
+```sh
+npx skills add jac2206/agentic-skills --skill backend-documentation --agent codex --agent claude-code --global
+```
+
+Install every Skill in the collection for both agents:
+
+```sh
+npx skills add jac2206/agentic-skills --skill '*' --agent codex --agent claude-code
+```
+
+Install every Skill globally:
+
+```sh
+npx skills add jac2206/agentic-skills --skill '*' --agent codex --agent claude-code --global
+```
+
+Replace `backend-documentation` with another Skill name, such as `html-presentations`, `project-documentation-blueprint`, or `skill-factory`.
+
+### Update installed Skills
+
+Update one globally installed Skill:
+
+```sh
+npx skills update backend-documentation --global
+```
+
+Update all globally installed Skills:
+
+```sh
+npx skills update --global
+```
+
+Run `npx skills list` to view installed Skills. Use `npx skills update` without `--global` for project-installed Skills.
+
+## Skills
+
+### Backend Documentation
+
+Documents an existing backend from implementation evidence. It traces implemented use cases and maintains an evidence-based system overview and use-case documentation.
+
+### HTML Presentations
+
+Creates presentation-grade HTML slide decks, with guidance for narrative, visual composition, diagrams, layout, and runtime validation.
+
+### Project Documentation Blueprint
+
+Analyzes project evidence and produces a structured visual blueprint for project documentation, including narrative and diagram guidance.
+
+### Skill Factory
+
+Designs, creates, reviews, and improves reusable Skills, and helps choose whether a problem needs a prompt, Skill, workflow, agent, or application.
+
+## Skill design
+
+Each Skill should define, in proportion to its complexity:
+
+- Purpose and when to use it.
+- When not to use it.
+- Inputs and outputs.
+- A clear workflow.
+- Rules and constraints.
+- Measurable quality criteria and validation.
+
+Skills should have one clear responsibility, remain reusable across projects, and compose with other Skills without duplicating their work.
+
+## Composition
+
+Skills can be combined into a larger workflow while retaining separate responsibilities. For example:
 
 ```text
-references/
-templates/
-examples/
-scripts/
+Research → Content Development → Presentation Design → Generation → QA
 ```
 
-Only add these directories when they provide meaningful value.
+## Contributing
 
----
+When adding or improving a Skill:
 
-# Skills
+1. Identify the problem and confirm that a Skill is the right abstraction.
+2. Define one clear responsibility, inputs, and outputs.
+3. Write the workflow, rules, and constraints.
+4. Add measurable quality criteria and validation.
+5. Review related resources for consistency.
+6. Keep the Skill focused, composable, and as simple as possible.
 
-## Presentations
+Follow the repository's `AGENTS.md` instructions. Repository documentation and Skill definitions are written in English; generated artifacts should use the language requested by the user or present in the input material.
 
-Creates presentation structures and presentation-ready content based on audience, objective, narrative, duration and visual requirements.
+## Licensing
 
-The Skill can be used for:
-
-- Presentations.
-- Talks.
-- Keynotes.
-- Masterclasses.
-- Workshops.
-- Technical presentations.
-- Executive presentations.
-- Educational presentations.
-- Slide decks.
-- Turning documents or scripts into presentations.
-
----
-
-## Testing
-
-Provides guidance for designing and implementing automated tests.
-
-It can cover:
-
-- Unit testing.
-- Integration testing.
-- API testing.
-- End-to-end testing.
-- Test doubles.
-- Coverage.
-- Mutation testing.
-
----
-
-## Software Development
-
-Provides reusable development practices for designing, implementing, reviewing and improving software.
-
-Potential areas include:
-
-- Architecture.
-- Backend.
-- Frontend.
-- APIs.
-- Databases.
-- Testing.
-- Security.
-- CI/CD.
-- Cloud.
-
----
-
-## Education
-
-Provides reusable patterns for designing educational content.
-
-Examples include:
-
-- Classes.
-- Workshops.
-- Exercises.
-- Laboratories.
-- Evaluations.
-- Student guides.
-- Progressive learning paths.
-
----
-
-## Prompt Engineering
-
-Provides structured approaches for designing:
-
-- Prompts.
-- System instructions.
-- Guardrails.
-- Knowledge bases.
-- RAG workflows.
-- AI assistants.
-- AI workflows.
-
----
-
-## Automation
-
-Provides reusable patterns for designing and implementing automated processes.
-
-Examples include:
-
-- API integrations.
-- ETL.
-- File processing.
-- Notifications.
-- Scheduled processes.
-- Data synchronization.
-- AI-powered automation.
-
----
-
-# Skill Design
-
-Every Skill should define:
-
-- Purpose.
-- When to use.
-- When not to use.
-- Inputs.
-- Outputs.
-- Workflow.
-- Rules.
-- Constraints.
-- Quality criteria.
-- Validation.
-
-Complex Skills may also include:
-
-```text
-references/
-templates/
-examples/
-scripts/
-```
-
----
-
-# Composition
-
-Skills should be composable.
-
-For example:
-
-```text
-Research
-    ↓
-Content Development
-    ↓
-Presentation Design
-    ↓
-Presentation Generation
-    ↓
-Presentation QA
-```
-
-The objective is to avoid large monolithic Skills that attempt to perform every responsibility.
-
----
-
-# Contributing
-
-When creating a new Skill:
-
-1. Identify the specific capability.
-2. Determine whether it really needs to be a Skill.
-3. Define its responsibility.
-4. Create the `SKILL.md`.
-5. Define inputs and outputs.
-6. Define the workflow.
-7. Add quality criteria.
-8. Add validation.
-9. Add references or templates only when necessary.
-10. Test the Skill with representative scenarios.
-
----
-
-# License
-
-This repository is intended to contain reusable AI Skills.
-
-Individual Skills may define their own license in their frontmatter.
+This repository does not currently define a licensing policy for individual Skills. Do not add a `license` field to Skill frontmatter unless the repository adopts one.
