@@ -7,13 +7,27 @@ Use `.drawio` as an editable diagrams.net document. The file is XML with an `mxf
 - Include base cells `id="0"` and `id="1"` with `id="1"` parented to `0`.
 - Give each vertex and edge a unique, stable `id`.
 - Vertices use `vertex="1"`, `parent="1"`, a Draw.io `style`, a human-readable `value`, and an `mxGeometry` child with `x`, `y`, `width`, `height`, and `as="geometry"`.
-- Edges use `edge="1"`, `parent="1"`, valid `source` and `target` cell IDs, a style with an arrowhead, a readable `value` label when the relationship is not self-evident, and relative geometry.
+- Edges use `edge="1"`, `parent="1"`, valid `source` and `target` cell IDs, a style with an arrowhead, and relative geometry. Keep edge `value` empty in the reference house style; put a short editable text annotation next to the connector when its meaning is not self-evident.
 - Escape XML special characters in `value` text. Use `&#xa;` for line breaks.
 - Use native editable shapes and text. Do not embed a rendered screenshot as the diagram.
 
 ## Architecture layout
 
 Place clients to the left, ingress and identity next, compute in the center, and data/messaging or external dependencies to the right or below. Use containers only for real or clearly marked proposed boundaries. Label protocols, asynchronous paths, ownership, and unconfirmed mappings. Avoid making the visual imply a deployment fact that the evidence does not support.
+
+## Matching a visual reference
+
+When the user supplies an image or points to an existing diagram as a style reference, inspect it before drawing and compare these dimensions:
+
+- Canvas background, grid, contrast, and overall aspect ratio.
+- Reading direction, tier order, grouping, and boundary treatment.
+- Provider icon generation, icon size, and use of editable service labels.
+- Color palette, typography hierarchy, label length, and whitespace.
+- Connector color, line weight, routing, arrowheads, and placement of explanatory notes.
+
+Carry over the visual language, not unverified nodes or relationships. Keep labels concise; put long explanations in a note or legend away from connectors. After authoring, render the diagram and compare it with the reference. Fix visible differences that are not required by the architecture. `scripts/check_drawio.py` checks XML structure and limited geometry heuristics; it does not compare styles, detect stale or blank provider glyphs, assess connector-label collisions, or decide whether two diagrams look alike. If rendering is unavailable, report that visual matching could not be verified.
+
+For the supplied house-style linter, use sharp orthogonal connectors (`edgeStyle=orthogonalEdgeStyle;rounded=0`), leave edge labels empty, and place any explanatory caption in a separate text cell. Keep service names in separate editable text cells rather than embedding them in provider icon/image cells. AWS4 resource icons use 78×78 px primary icons or 46×46 px secondary icons with a white stroke; do not apply those fixed dimensions or stroke rules to official Google Cloud or Azure SVGs.
 
 ## Cloud deployment view
 
@@ -47,14 +61,16 @@ Parse the document with a standard XML parser. Then check:
 4. Every component in scope is present and relationships agree with the evidence map.
 5. Open the `.drawio` in diagrams.net when available. Confirm provider icons render, labels are readable, and edges and spacing remain clear at normal zoom.
 
-A successful XML parse verifies syntax and references, not that diagrams.net rendered the diagram correctly. Run [`scripts/check_drawio.py`](../scripts/check_drawio.py) for structure and layout heuristics; it can flag likely overlaps, but only a rendered visual review can assess visual quality. The script needs Python 3.10+ and no third-party packages:
+A successful XML parse verifies syntax and references, not that diagrams.net rendered the diagram correctly. Run [`scripts/check_drawio.py`](../scripts/check_drawio.py) for structure, label/icon overlap, inline-label, connector-style, and route-crossing checks. Run [`scripts/render_drawio.py`](../scripts/render_drawio.py) for a preview when diagrams.net Desktop is available; only rendered visual review can assess icon rendering or visual similarity. The scripts need Python 3.10+ and no third-party packages:
 
 ```powershell
-py -3 <skill-directory>/scripts/check_drawio.py docs/architecture
+py -3 <skill-directory>/scripts/check_drawio.py docs/architecture/component-diagram.drawio docs/architecture/aws-infrastructure.drawio
+py -3 <skill-directory>/scripts/render_drawio.py preview docs/architecture/aws-infrastructure.drawio %TEMP%\aws-infrastructure-preview.png
 ```
 
 ```sh
-python3 <skill-directory>/scripts/check_drawio.py docs/architecture
+python3 <skill-directory>/scripts/check_drawio.py docs/architecture/component-diagram.drawio docs/architecture/aws-infrastructure.drawio
+python3 <skill-directory>/scripts/render_drawio.py preview docs/architecture/aws-infrastructure.drawio /tmp/aws-infrastructure-preview.png
 ```
 
 Report which levels of validation actually ran.
