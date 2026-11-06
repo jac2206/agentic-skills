@@ -21,29 +21,22 @@ agentic-skills/
 ├── AGENTS.md
 ├── README.md
 ├── examples/                         # Concrete artifacts produced with Skills
+│   ├── docs/
+│   ├── presentations/
+│   └── requirements/
 └── skills/
-    ├── backend-documentation/
-    │   ├── SKILL.md
-    │   └── templates/
-    │       └── use-case-document.md
-    ├── architecture-documentation/
-    │   ├── SKILL.md
-    │   ├── references/
-    │   ├── templates/
-    │   └── examples/
-    ├── presentations/
-    │   └── SKILL.md
+    ├── architecture-documentation/   # SKILL.md, references, templates, examples, scripts
+    ├── backend-documentation/        # SKILL.md and optional templates
+    ├── presentations/                # Skill name: html-presentations
     ├── project-documentation-blueprint/
-    │   └── SKILL.md
+    ├── requirements-engineering/     # SKILL.md and backlog templates
     ├── skill-factory/
-    │   └── SKILL.md
-    └── templates/
-        └── skill-template.md
+    └── templates/                    # Shared Skill authoring template
 ```
 
-Every Skill must have a `SKILL.md`. Add references, templates, examples, or scripts only when they provide real value. Keep Skill-specific resources inside that Skill's directory. The shared Skill authoring template lives under `skills/templates/`.
+The repository contains six Skills. Every Skill must have a `SKILL.md`; add references, templates, examples, or scripts only when they provide real value. Keep Skill-specific resources inside that Skill's directory. The shared Skill authoring template lives under `skills/templates/`.
 
-Use the root `examples/` directory for concrete artifacts generated with Skills. Keep instructional examples and resources that belong to one Skill inside that Skill's directory.
+Use the root `examples/` directory for representative artifacts generated with Skills. Keep instructional examples and reference fixtures that a Skill needs after installation inside that Skill's directory. A separate README inside each Skill is not required; `SKILL.md` is its operational entry point and this root README is the library catalog.
 
 ## Install a Skill
 
@@ -73,7 +66,13 @@ Install every Skill globally:
 npx skills add jac2206/agentic-skills --skill '*' --agent codex --agent claude-code --global
 ```
 
-Replace `backend-documentation` with another Skill name, such as `architecture-documentation`, `project-documentation-blueprint`, or `skill-factory`.
+To install the version from your current checkout (including local changes), run this from the repository root:
+
+```sh
+npx skills add . --skill architecture-documentation --agent codex --global --copy
+```
+
+Replace `architecture-documentation` with a Skill name: `backend-documentation`, `html-presentations`, `project-documentation-blueprint`, `requirements-engineering`, or `skill-factory`. The `presentations/` directory declares the Skill name `html-presentations` in its frontmatter.
 
 ### Update installed Skills
 
@@ -109,7 +108,7 @@ Documents an existing backend from implementation evidence. It traces implemente
 
 ### Architecture Documentation
 
-Creates evidence-based application architecture documentation with Mermaid component diagrams, editable cloud infrastructure diagrams in Draw.io XML, and optional Archify diagrams when that Skill is installed.
+Creates evidence-based application architecture documentation with Mermaid and editable Draw.io component diagrams, a separate provider-specific Draw.io infrastructure diagram, and native Archify output when that Skill is installed.
 
 ### HTML Presentations
 
@@ -122,6 +121,10 @@ Analyzes project evidence and produces a structured visual blueprint for project
 ### Skill Factory
 
 Designs, creates, reviews, and improves reusable Skills, and helps choose whether a problem needs a prompt, Skill, workflow, agent, or application.
+
+### Requirements Engineering
+
+Turns business needs and source requirements into a traceable backlog of epics, features, and user stories with testable acceptance criteria, business rules, and readiness statuses.
 
 ## Skill design
 
