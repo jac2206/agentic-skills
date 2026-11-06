@@ -21,6 +21,7 @@ import xml.etree.ElementTree as ET
 import zlib
 
 TOL = 4.0  # px of overlap tolerated (anti aliasing, shared borders)
+PICTORIAL_SHAPE = re.compile(r"(?:umlactor|person|user|smartphone|mobile|tablet|laptop|computer|browser|device)", re.I)
 
 
 def load_models(path):
@@ -131,6 +132,7 @@ def check_model(name, model, errors, warnings):
             continue
         shape = str(st.get("shape", ""))
         style_text = c["el"].get("style", "").lower()
+        is_actor_or_device = bool(PICTORIAL_SHAPE.search(shape))
         is_aws_native = "resIcon" in st or shape.startswith("mxgraph.aws4")
         is_provider_icon = (
             is_aws_native
@@ -138,7 +140,7 @@ def check_model(name, model, errors, warnings):
             or "image" in st
             or "image;" in style_text
         )
-        if is_provider_icon:
+        if is_provider_icon or is_actor_or_device:
             icons.append(c)
             x, y, w, h = c["geo"]
             if (round(w), round(h)) not in ((78, 78), (46, 46)) and "resIcon" in st:
