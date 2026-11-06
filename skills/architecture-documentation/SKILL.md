@@ -6,7 +6,7 @@ description: >
   infrastructure view, and a native Archify architecture diagram when the
   Archify Skill is installed.
 metadata:
-  version: "1.7.0"
+  version: "1.8.0"
 ---
 
 # Architecture Documentation
@@ -60,7 +60,7 @@ The component diagrams and cloud infrastructure diagram are cumulative deliverab
 2. **Build an evidence map.** Trace components and relationships through source, imports, API routes, calls, schemas, deployment configuration, and supplied material. Mark material claims as verified, configured, documented, user-reported, inferred, proposed, unknown, or conflicting. Keep evidence paths for product claims as well as technical claims. A dependency, resource name, README statement, or icon alone does not prove active behavior or deployment.
 3. **Select the views.** Honor a named target cloud. Otherwise use proposed AWS, even when the user did not explicitly ask for a cloud diagram. Keep a reported/current host topology distinct from the target-cloud proposal. Use a logical component diagram for software responsibilities and relationships; use the infrastructure diagram for runtime placement, provider services, and evidence-backed or explicitly proposed boundaries.
 4. **Write the document.** Use `templates/architecture-document.md` if the project has no suitable template. Open with the application's actual purpose and capabilities when evidence exists. Describe only supported behavior, cite evidence, distinguish reported facts from proposals, and record unresolved questions. Do not overwrite the general project README.
-5. **Create the diagrams.** Keep Mermaid and component Draw.io consistent and cloud-agnostic. Create a separate editable infrastructure Draw.io using current native provider icons and readable service names. For AWS, prefer the current diagrams.net AWS4 service stencils and the user's visual reference, if supplied. For Google Cloud and Azure, prefer current official provider SVGs when built-in stencils are stale. Do not use generic component boxes as a cloud diagram or imply that proposed services are deployed.
+5. **Create and lint the diagrams.** Keep Mermaid and component Draw.io consistent and cloud-agnostic. Create a separate editable infrastructure Draw.io using current provider icons and readable service names. For AWS, consult [AWS4 icon guidance](references/aws4-icons.md) and prefer current diagrams.net AWS4 service stencils; for Azure, consult [Azure icon guidance](references/azure-icons.md) and prefer the current official SVG pack when built-in stencils are stale; for Google Cloud, consult [Google Cloud icon guidance](references/google-cloud-icons.md) and prefer the current official product SVGs. Follow a supplied visual reference when it does not conflict with accurate service naming. Do not use generic component boxes as a cloud diagram or imply that proposed services are deployed. Run `scripts/check_drawio.py` on every Draw.io file created or modified; resolve structural errors and review or correct layout warnings before delivery.
 6. **Invoke Archify when available.** Check the active Skill catalog and installed Skill locations for `archify/SKILL.md`. If found, read and invoke it for native architecture authoring. Prefer its candidate schema, repository guidance, matching example, CLI `finalize architecture` workflow, validation, and delivery paths; preserve and link the actual candidate, HTML, and receipt. If a tool process cannot start, first follow any shell-unavailable fallback explicitly documented by that Archify version for native diagrams. Use its own template and authoring constraints; label the result as a fallback and do not claim CLI finalization, receipts, or validations that did not occur. Do not invent an alternate renderer. If Archify is absent, create no Archify artifacts. If both the native workflow and its documented fallback fail, report the blocker and link only outputs actually produced.
 7. **Cross-check and report.** Compare the document and all diagrams against the evidence map. Validate XML, cell IDs, edge references, Mermaid structure, links, and required output inventory. Report the selected provider, current/proposed status, Archify detection and output status, evidence gaps, and any blocked checks.
 
@@ -92,19 +92,20 @@ The component diagrams and cloud infrastructure diagram are cumulative deliverab
 - The document describes the actual product and capabilities when evidence exists and states scope and evidence status.
 - Every material component and relationship has evidence or an explicit status label.
 - Mermaid and component Draw.io describe the same logical topology; the provider-specific infrastructure diagram is a distinct deployment view.
-- The infrastructure diagram uses current provider icons, readable service names, and clear current/reported/proposed status.
+- The infrastructure diagram uses current provider icons, readable service names, and clear current/reported/proposed status. Structural checks pass, layout warnings are resolved or explained, and rendered icons/layout are visually reviewed when a renderer is available.
 - XML is parseable, cell IDs are unique, edge endpoints resolve, and artifact links work.
 - When Archify is installed, the native workflow produces a linked candidate, finalized HTML, and receipt; if its documented shell-unavailable fallback is needed, the HTML is labeled as a fallback and no missing receipt or validation is claimed. When absent, no Archify files are created.
 
 ## Validation
 
 1. Reconcile the document and diagrams against the evidence map; check that reported and proposed claims are labeled.
-2. Parse component and infrastructure Draw.io XML; check unique IDs and valid edge endpoints.
+2. Run `scripts/check_drawio.py` with every generated or modified `.drawio` path. Resolve XML/ID/edge errors. Inspect page-boundary, likely-overlap, and small-font warnings; correct actual layout defects and explain any intentional false positives. The script is bundled inside this Skill directory, requires Python 3.10+, and uses only the standard library. Use `python3` on macOS/Linux or `py -3` on Windows. If Python is unavailable, report that check as blocked and continue with manual structural validation.
 3. Check Mermaid syntax and compare its components and relationships with the component Draw.io and document.
 4. Confirm the infrastructure diagram is a provider-specific deployment view, not a repeated component map; confirm AWS is used and marked proposed when no provider was named.
 5. Check artifact links and locations. For a complete package, confirm the document, both component diagrams, and separate infrastructure diagram exist.
-6. Check Archify in the active catalog and installed locations. If available, use its native workflow and verify the receipt and actual outputs. If a tool process cannot start, check the installed Archify Skill's documented shell-unavailable fallback; if used, report it as a fallback without claiming finalize receipts or gates. Distinguish structural validation, browser checks, and visual review. If Archify is absent, confirm no Archify artifacts were created.
-7. Report generated/missing status for each required artifact, the Archify result, and any evidence or tool blocker. Do not claim blocked checks passed.
+6. When available, open each provider diagram in diagrams.net or another compatible renderer. Check that expected branded icons render and labels, spacing, overlaps, and connector routes remain readable. Do not claim visual review from XML parsing alone.
+7. Check Archify in the active catalog and installed locations. If available, use its native workflow and verify the receipt and actual outputs. If a tool process cannot start, check the installed Archify Skill's documented shell-unavailable fallback; if used, report it as a fallback without claiming finalize receipts or gates. Distinguish structural validation, browser checks, and visual review. If Archify is absent, confirm no Archify artifacts were created.
+8. Report generated/missing status for each required artifact, the Archify result, and any evidence or tool blocker. Do not claim blocked checks passed.
 
 ## Composition
 
@@ -115,10 +116,14 @@ The component diagrams and cloud infrastructure diagram are cumulative deliverab
 
 - [Architecture document template](templates/architecture-document.md) — use when the project has no suitable template.
 - [Draw.io XML authoring and validation](references/drawio-xml.md) — consult when creating or repairing Draw.io files.
+- [AWS4 icon guidance](references/aws4-icons.md) — consult for AWS4 stencil syntax, naming, and verification.
+- [Azure icon guidance](references/azure-icons.md) — consult when selecting and embedding official Azure SVG icons.
+- [Google Cloud icon guidance](references/google-cloud-icons.md) — consult when selecting and embedding current Google Cloud product/category SVG icons.
+- [Draw.io checker](scripts/check_drawio.py) — run on each generated or modified Draw.io file; requires Python 3.10+ and no third-party packages.
 - `backend-documentation` — optional source of verified backend details; do not duplicate its use-case analysis.
 - `archify` — invoke its installed Skill for native architecture output; omit Archify artifacts when absent.
 
 ## Examples
 
 - [Reference application architecture package](examples/reference-application/architecture.md) demonstrates a diagram-derived proposal with evidence gaps and distinct component, infrastructure, and Archify artifacts.
-- [Google Cloud infrastructure example](examples/reference-application/google-cloud-infrastructure.drawio) and [Azure infrastructure example](examples/reference-application/azure-infrastructure.drawio) demonstrate provider-specific alternatives. They do not mean all provider diagrams should be generated for one request.
+- [AWS GenAI reference diagram](examples/reference-application/aws-genai-agent-reference.drawio), [Google Cloud infrastructure example](examples/reference-application/google-cloud-infrastructure.drawio), and [Azure infrastructure example](examples/reference-application/azure-infrastructure.drawio) demonstrate provider-specific or illustrative examples. They do not mean all alternatives should be generated for one request.
