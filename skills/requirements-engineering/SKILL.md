@@ -5,7 +5,7 @@ description: >
   of epics, features, and professional user stories with acceptance criteria,
   Gherkin scenarios, business rules, and functional and non-functional requirements.
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # Requirements Engineering
@@ -30,6 +30,22 @@ Use this Skill when the user asks to:
   gaps, conflicts, assumptions, or dependencies.
 - Save a traceable backlog as Markdown files.
 
+Choose one operating mode from the request:
+
+- **Draft:** Turn a brief or discovery notes into a first-pass backlog. Make
+  source facts, proposals, assumptions, and unanswered questions visible. Draft
+  criteria may identify expected behavior, but must be labeled as provisional
+  when decisions are missing.
+- **Refine:** Improve an existing backlog using the source material and any new
+  stakeholder decisions. Tighten story scope, roles, value, rules, dependencies,
+  and acceptance criteria; preserve IDs and history where practical. If a
+  decision needed for testable behavior is still missing, record the blocker and
+  leave the item short of development-ready rather than guessing.
+
+If the user does not name a mode, infer it from whether they supplied an
+existing backlog for improvement. Ask only if the intended change cannot be
+inferred.
+
 ## When not to use
 
 Do not use this Skill to:
@@ -53,6 +69,8 @@ Do not use this Skill to:
 - Product context, user roles, workflows, constraints, policies, terminology,
   existing identifiers, priorities, dependencies, and domain glossary.
 - Required language, Markdown conventions, or an existing backlog location.
+- Operating mode: `Draft` or `Refine`. Default to `Draft` for source material
+  without an existing backlog and `Refine` when the user asks to improve one.
 
 If context is incomplete, continue with the supported parts, record open
 questions and assumptions, and do not present assumptions as confirmed policy.
@@ -84,6 +102,10 @@ backlog/
 - Each user-story file must include a story description, acceptance criteria in
   Given/When/Then form, and relevant business rules. Include functional and
   non-functional requirements when they are evidenced or explicitly requested.
+- Each story must show a readiness status: `Draft`, `Needs stakeholder
+  decisions`, `Ready for estimation`, or `Ready for development`. Use the
+  highest status supported by evidence; never upgrade status only because a
+  document has been formatted.
 - Include a validation summary of unresolved questions, inconsistencies,
   assumptions, dependencies, and traceability to source requirements. Do not
   silently omit unresolved items.
@@ -93,7 +115,9 @@ sections that do not apply; never fill a section with invented content.
 
 ## Workflow
 
-1. **Inspect sources.** Read the provided requirements and relevant project
+1. **Select mode and inspect sources.** Determine Draft or Refine. In Refine
+   mode, inspect the existing backlog and preserve established IDs and useful
+   decisions. Read the provided requirements and relevant project
    context. Identify goals, actors, workflows, constraints, terminology, and
    source references. Do not infer unstated behavior as fact.
 2. **Analyze and validate.** Extract functional requirements, quality
@@ -122,12 +146,29 @@ sections that do not apply; never fill a section with invented content.
    alignment with the source. Mark unresolved decisions visibly and summarize
    the files created and open items.
 
+## Readiness statuses
+
+- **Draft:** Structured from source material; stakeholder review has not
+  confirmed scope and wording.
+- **Needs stakeholder decisions:** One or more unresolved questions could
+  change the story's role, behavior, rules, or expected result.
+- **Ready for estimation:** Scope and acceptance criteria are specific enough
+  for the team to estimate; dependencies and material edge cases are known.
+- **Ready for development:** Required product decisions are approved, criteria
+  are objectively verifiable, and implementation-blocking dependencies and
+  applicable quality constraints are resolved.
+
+Draft and Needs stakeholder decisions items can be useful discovery outputs,
+but must not be presented as implementation-ready user stories.
+
 ## Rules
 
 The Skill must:
 
 - Preserve the user's intent and distinguish source facts, assumptions,
   recommendations, and open questions.
+- In Refine mode, use stakeholder answers as new evidence, update impacted
+  stories and linked items, and retain unresolved blockers visibly.
 - Make every story clear, specific, valuable, estimable, small enough for
   incremental delivery, and verifiable. If a story cannot yet meet these
   qualities, flag why and suggest the needed split or clarification.
@@ -170,6 +211,8 @@ The Skill must not:
 The backlog is ready for stakeholder review when:
 
 - [ ] Every generated item is supported by input or clearly marked as a proposal.
+- [ ] The operating mode is clear and each story's readiness status matches its
+  evidence and unresolved decisions.
 - [ ] Each feature is stored under its epic and each story under its feature;
   parent IDs and relative links are consistent.
 - [ ] Each story identifies a specific role, capability, and value.
@@ -198,8 +241,9 @@ Before returning the result:
    categorized correctly and are not contradictory.
 5. Check IDs, nested locations, parent references, relative links, source
    traceability, filenames, Markdown structure, and the output directory tree.
-6. Report files created or updated, key unresolved questions, and any validation
-   limitation. Do not claim checks that were not performed.
+6. Report files created or updated, each readiness boundary, key unresolved
+   questions, and any validation limitation. Do not claim checks that were not
+   performed.
 
 ## References
 
@@ -217,3 +261,14 @@ may apply.”
 **Expected behavior:** Record the cancellation outcome as a supported need, but
 flag fee applicability, amount, and calculation as unresolved. Do not invent a
 fee policy or encode one in acceptance criteria.
+
+### Example: refine with new decisions
+
+**Input:** An existing story says users may cancel before shipment. The product
+owner clarifies that cancellation is allowed until fulfillment begins, without a
+fee, and a confirmation is shown.
+
+**Expected behavior:** Update the existing story without changing its ID, add
+testable scenarios for cancellation before and after fulfillment begins, state
+the approved no-fee rule, and update its status only if its remaining
+dependencies and acceptance criteria meet the readiness definition.

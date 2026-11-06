@@ -2,6 +2,8 @@
 
 **Parent feature:** [<Feature ID> — <Feature name>](../feature.md)
 
+**Status:** <Draft / Needs stakeholder decisions / Ready for estimation / Ready for development>
+
 ## User story
 
 As a **<role>**, I want **<capability>**, so that **<benefit>**.
@@ -42,5 +44,7 @@ Then <observable result>
 
 ## Refinement notes
 
+- **Mode:** <Draft / Refine>
 - **INVEST review:** <Pass / Needs refinement, with reason>
 - **Assumptions:** <Explicitly labeled assumptions or “None”>
+- **Blocking decisions:** <Question IDs or “None”>
