@@ -4,15 +4,15 @@ Use this reference when creating or reviewing an AWS infrastructure diagram in D
 
 ## Preferred style
 
-Use the current AWS4 service icon library in diagrams.net. A common service icon style is:
+Search the installed diagrams.net AWS libraries for the current AWS4 service icon and check its exact identifier. A common service icon style is:
 
 ```text
 shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.lambda;fillColor=#ED7100;
 ```
 
-The `resIcon` suffix is the stencil identifier. Use the exact identifier exposed by the installed diagrams.net AWS4 library; names are not guaranteed to remain identical across library versions. Do not substitute a guessed name or an older AWS stencil generation because the result may be a blank tile or dated icon.
+The `resIcon` suffix is the stencil identifier. Use the exact identifier exposed by the installed diagrams.net AWS4 library; names are not guaranteed to remain identical across library versions. Do not substitute a guessed name or an older AWS stencil generation because the result may be a blank tile or dated icon. If the current stencil is absent or stale, search the current official AWS icon package for its SVG.
 
-Use the provider's service color and preserve the native icon proportions. Keep the full service name as editable text next to the icon. A service-specific icon is preferable to a category mark; when only a category icon is available, label the actual service explicitly.
+Use the provider's service color and preserve the native icon proportions. Keep the full service name as editable text next to the icon. A service-specific icon is preferable to a category mark; when only a category icon is available, label the actual service explicitly. If neither an exact service icon nor a truthful category icon is available or verifiable, use the labeled service-card fallback in [Draw.io XML guidance](drawio-xml.md) and record why it was needed. Do not guess a stencil or borrow an icon from Azure or Google Cloud.
 
 ## Names used by this Skill's examples
 
@@ -51,6 +51,7 @@ Other example XML uses standalone shapes for `mxgraph.aws4.dynamodb_stream`, `mx
 1. Confirm the service name against the AWS architecture icon package and choose a matching AWS4 stencil in the current diagrams.net library.
 2. Open the `.drawio` in diagrams.net. Confirm each service glyph appears, has the expected color and proportions, and is not a blank tile. Check labels, connector routes, spacing, and overlaps at normal zoom.
 3. If the native stencil is unavailable or stale, use the current official AWS SVG icon and embed it in the Draw.io file as an image object. Keep its label editable and preserve the original proportions and color.
-4. Record which checks were run. XML parsing and identifier checks alone do not validate rendering or visual quality.
+4. If the official AWS catalog has no suitable icon, use a truthful official category icon with the exact service label. If that is not available, use and disclose the labeled service-card fallback defined in [Draw.io XML guidance](drawio-xml.md).
+5. Record which sources and checks were used. XML parsing and identifier checks alone do not validate rendering or visual quality.
 
 AWS publishes its official [architecture icon package](https://aws.amazon.com/architecture/icons/) and notes that third-party libraries may contain legacy icon sets. The [Draw.io style reference](https://www.drawio.com/docs/reference/diagram-generation/style-reference/) documents `mxgraph.aws4.*` shape styles. Check those sources when a service identifier is missing or a newer service icon is required; do not treat this short example list as a complete AWS catalog.

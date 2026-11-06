@@ -153,6 +153,10 @@ def check_model(name, model, errors, warnings):
             texts.append(c)
 
     boxes = {c["id"]: (c["geo"][0], c["geo"][1], c["geo"][0] + c["geo"][2], c["geo"][1] + c["geo"][3]) for c in icons}
+    vertex_boxes = {
+        c["id"]: (c["geo"][0], c["geo"][1], c["geo"][0] + c["geo"][2], c["geo"][1] + c["geo"][3])
+        for c in cells.values() if c["geo"] is not None and not c["edge"]
+    }
     lboxes = {c["id"]: label_box(c) for c in texts}
 
     for i, a in enumerate(icons):
@@ -187,11 +191,11 @@ def check_model(name, model, errors, warnings):
         # explicit route: exit anchor -> waypoints -> entry anchor
         pts = [(float(p.get("x", 0)), float(p.get("y", 0)))
                for p in el.findall("./mxGeometry/Array[@as='points']/mxPoint")]
-        if src in boxes and tgt in boxes:
+        if src in vertex_boxes and tgt in vertex_boxes:
             def anchor(box, kx, ky):
                 return (box[0] + (box[2] - box[0]) * kx, box[1] + (box[3] - box[1]) * ky)
-            a = anchor(boxes[src], float(st.get("exitX", 0.5)), float(st.get("exitY", 0.5)))
-            b = anchor(boxes[tgt], float(st.get("entryX", 0.5)), float(st.get("entryY", 0.5)))
+            a = anchor(vertex_boxes[src], float(st.get("exitX", 0.5)), float(st.get("exitY", 0.5)))
+            b = anchor(vertex_boxes[tgt], float(st.get("entryX", 0.5)), float(st.get("entryY", 0.5)))
             path = [a] + pts + [b]
             for p, q in zip(path, path[1:]):
                 for ic in icons:
@@ -200,6 +204,12 @@ def check_model(name, model, errors, warnings):
                     if seg_hits_box(p, q, boxes[ic["id"]]):
                         warnings.append(f"[{name}] edge {c['id']} ({label(cells[src])} -> {label(cells[tgt])}) "
                                         f"crosses icon {label(ic)}")
+                for txt in texts:
+                    if txt["id"] in (src, tgt):
+                        continue
+                    if seg_hits_box(p, q, lboxes[txt["id"]], pad=0.0):
+                        warnings.append(f"[{name}] edge {c['id']} ({label(cells[src])} -> {label(cells[tgt])}) "
+                                        f"crosses label {label(txt)}")
     return len(icons), len(texts), sum(1 for c in cells.values() if c["edge"])
 
 

@@ -4,7 +4,7 @@ Use this reference when creating or reviewing an Azure infrastructure diagram. P
 
 ## Source and selection
 
-Use Microsoft's current [Azure Architecture Center icon collection](https://learn.microsoft.com/en-us/azure/architecture/icons/) as the authoritative source. The collection is updated over time, so check it when selecting icons instead of relying on an old local copy or legacy Draw.io stencil. Prefer a service-specific icon; if the official pack has only a category icon, keep the exact Azure service name in an editable label.
+Search the installed diagrams.net Azure library first, then check Microsoft's current [Azure Architecture Center icon collection](https://learn.microsoft.com/en-us/azure/architecture/icons/) as the authoritative source. The collection is updated over time, so check it when selecting icons instead of relying on an old local copy or legacy Draw.io stencil. Prefer a service-specific icon; if the official pack has only a category icon, keep the exact Azure service name in an editable label. If neither an exact service icon nor a truthful category icon can be verified, use the labeled service-card fallback in [Draw.io XML guidance](drawio-xml.md) and record why it was needed. Do not borrow AWS or Google Cloud icons.
 
 Do not invent one-to-one Azure equivalents from AWS or Google Cloud. Choose services based on the documented requirements and behavior, and mark unconfirmed choices as proposed. Keep each icon's native color and proportions. Microsoft's guidance says not to crop, flip, rotate, or distort the icons.
 
@@ -21,4 +21,4 @@ Do not paste an external image URL that requires network access to render. Prese
 3. Review the diagram at normal zoom for readable labels, consistent spacing, connector routing, and overlaps.
 4. Record whether validation was structural, rendered, or visually reviewed. XML parsing cannot verify an embedded SVG or layout quality.
 
-The Draw.io Azure stencil library may lag behind Microsoft's official package. When it does, use the official SVG rather than a generic cloud symbol or an obsolete service mark.
+The Draw.io Azure stencil library may lag behind Microsoft's official package. When it does, use the official SVG rather than an obsolete service mark. Use a generic labeled service card only after checking both the current stencil library and official package and finding no suitable service or category icon.
