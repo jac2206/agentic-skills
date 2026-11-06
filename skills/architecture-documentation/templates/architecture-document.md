@@ -36,6 +36,8 @@ Describe data ownership, stores, important relationships, and flow. Mark unspeci
 
 Name the selected target provider and explain whether the topology is configured, deployed, inferred, or proposed. Always link the additional, separate provider-named infrastructure Draw.io (`aws-infrastructure.drawio` by default, `google-cloud-infrastructure.drawio` for Google Cloud, or `azure-infrastructure.drawio` for Azure); it supplements and does not replace the component diagrams. Generate only the selected provider unless the user explicitly requests multi-cloud alternatives. If the user did not name a target provider, this is a proposed AWS design and must use native AWS service icons. A current stack hosted on other providers does not replace this target diagram. If current providers differ from the target, describe them as current or user-reported and link a separate `current-deployment.drawio` when useful. Include only evidenced or explicitly proposed network, runtime, ingress, and storage boundaries. Never describe a proposal as deployed.
 
+In the deployment diagram, distinguish the provider scope, any known or proposed account/project/subscription and region, network boundaries such as VPC/VNet, and external clients or systems. Put external clients and integrations outside the provider boundary unless they are hosted there. Mark unknown placement `TBD`; do not invent a region, subnet, or availability zone. Mark proposed boundaries visibly.
+
 ## Security
 
 Document evidenced identity, authorization, trust boundaries, secrets, encryption, audit, and network controls. Separate missing controls from implemented controls.

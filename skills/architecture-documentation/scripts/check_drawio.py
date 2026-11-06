@@ -10,9 +10,13 @@ route crosses an unrelated icon.
 Label sizes are estimated from the text (draw.io only stores the size of the last save), so a label that
 was edited by hand is still measured correctly.
 
-Usage: python3 check_drawio.py diagram.drawio [more.drawio ...]
+Usage: python3 check_drawio.py [--require-provider-icons aws|azure|google] diagram.drawio [more.drawio ...]
+
+The provider-icon option is a markup-presence heuristic. It cannot verify the SVG source,
+service-to-glyph mapping, or that diagrams.net rendered a stencil correctly; inspect a preview.
 """
 import base64
+import argparse
 import html
 import re
 import sys
@@ -93,6 +97,24 @@ def seg_hits_box(p, q, box, pad=2.0):
     return False
 
 
+def validate_embedded_svg(uri):
+    """Return an error message when an embedded SVG data URI is malformed."""
+    header, sep, payload = uri.partition(",")
+    if not sep or not header.lower().startswith("data:image/svg+xml"):
+        return "not an SVG data URI"
+    try:
+        if ";base64" in header.lower():
+            raw = base64.b64decode(payload, validate=True)
+        else:
+            raw = urllib.parse.unquote_to_bytes(payload)
+        svg = ET.fromstring(raw)
+    except (ValueError, ET.ParseError) as exc:
+        return f"invalid embedded SVG ({exc})"
+    if svg.tag.split("}")[-1].lower() != "svg":
+        return "embedded image root element is not <svg>"
+    return None
+
+
 def check_model(name, model, errors, warnings):
     root = model.find("root")
     cells, seen = {}, set()
@@ -126,6 +148,7 @@ def check_model(name, model, errors, warnings):
         return f"{c['id']} ({t})" if t else c["id"]
 
     icons, texts = [], []
+    provider_counts = {"aws": 0, "azure_native": 0, "google_native": 0, "embedded_svg": 0}
     for c in cells.values():
         st = c["style"]
         if c["geo"] is None or c["edge"]:
@@ -140,6 +163,26 @@ def check_model(name, model, errors, warnings):
             or "image" in st
             or "image;" in style_text
         )
+        image_data = str(st.get("image", ""))
+        if "resIcon" in st and str(st.get("resIcon", "")).startswith("mxgraph.aws4."):
+            provider_counts["aws"] += 1
+        elif shape.startswith("mxgraph.aws4."):
+            provider_counts["aws"] += 1
+        elif shape.startswith("mxgraph.azure."):
+            provider_counts["azure_native"] += 1
+        elif shape.startswith(("mxgraph.gcp.", "mxgraph.gcp2.")):
+            provider_counts["google_native"] += 1
+        elif shape == "image" and image_data.startswith("data:image/svg+xml,"):
+            # SVG source/provider provenance and service-to-icon correctness are reviewed separately.
+            provider_counts["embedded_svg"] += 1
+            svg_error = validate_embedded_svg(image_data)
+            if svg_error:
+                errors.append(f"[{name}] icon {label(c)}: {svg_error}")
+        elif shape == "image" and image_data.startswith("data:image/svg+xml;base64,"):
+            provider_counts["embedded_svg"] += 1
+            svg_error = validate_embedded_svg(image_data)
+            if svg_error:
+                errors.append(f"[{name}] icon {label(c)}: {svg_error}")
         if is_provider_icon or is_actor_or_device:
             icons.append(c)
             x, y, w, h = c["geo"]
@@ -210,15 +253,20 @@ def check_model(name, model, errors, warnings):
                     if seg_hits_box(p, q, lboxes[txt["id"]], pad=0.0):
                         warnings.append(f"[{name}] edge {c['id']} ({label(cells[src])} -> {label(cells[tgt])}) "
                                         f"crosses label {label(txt)}")
-    return len(icons), len(texts), sum(1 for c in cells.values() if c["edge"])
+    return len(icons), len(texts), sum(1 for c in cells.values() if c["edge"]), provider_counts
 
 
-def main(paths):
-    if not paths:
+def main(argv):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--require-provider-icons", choices=("aws", "azure", "google"),
+                        help="fail if the diagram contains no recognized provider icon markup")
+    parser.add_argument("paths", nargs="+", help="one or more .drawio files")
+    args = parser.parse_args(argv)
+    if not args.paths:
         print(__doc__)
         return 2
     failed = False
-    for path in paths:
+    for path in args.paths:
         errors, warnings = [], []
         try:
             models = load_models(path)
@@ -228,7 +276,19 @@ def main(paths):
             continue
         totals = [check_model(n, m, errors, warnings) for n, m in models]
         n_icons, n_texts, n_edges = (sum(t[i] for t in totals) for i in range(3))
+        provider_counts = {p: sum(t[3][p] for t in totals)
+                           for p in ("aws", "azure_native", "google_native", "embedded_svg")}
         print(f"{path}: {len(models)} page(s), {n_icons} icons, {n_texts} labels, {n_edges} edges")
+        print("  icon markup (heuristic): " + ", ".join(f"{p}={n}" for p, n in provider_counts.items()))
+        recognized = {
+            "aws": provider_counts["aws"],
+            "azure": provider_counts["azure_native"] + provider_counts["embedded_svg"],
+            "google": provider_counts["google_native"] + provider_counts["embedded_svg"],
+        }
+        if args.require_provider_icons and recognized[args.require_provider_icons] == 0:
+            errors.append(f"[diagram] no recognized {args.require_provider_icons} provider icon markup found")
+        if args.require_provider_icons in ("azure", "google") and provider_counts["embedded_svg"]:
+            warnings.append("[diagram] embedded SVGs are provider-neutral markup; verify their source/provider and service mapping in the icon inventory")
         for w in warnings:
             print(f"  [WARN]  {w}")
         for e in errors:

@@ -10,6 +10,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+EXPORT_TIMEOUT_SECONDS = 90
+
 
 def find_drawio() -> str | None:
     configured = os.environ.get("DRAWIO")
@@ -61,7 +63,20 @@ def main() -> int:
     output.parent.mkdir(parents=True, exist_ok=True)
     command = [executable, *options, "-o", str(output), str(args.input)]
     try:
-        result = subprocess.run(command, check=False, capture_output=True, text=True)
+        result = subprocess.run(
+            command,
+            check=False,
+            capture_output=True,
+            text=True,
+            timeout=EXPORT_TIMEOUT_SECONDS,
+        )
+    except subprocess.TimeoutExpired:
+        print(
+            f"BLOCKED: Draw.io export exceeded {EXPORT_TIMEOUT_SECONDS}s. "
+            "Close any hung Draw.io export and retry one diagram at a time.",
+            file=sys.stderr,
+        )
+        return 3
     except OSError as exc:
         print(f"ERROR: could not start diagrams.net Desktop: {exc}", file=sys.stderr)
         return 1

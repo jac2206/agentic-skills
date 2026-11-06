@@ -13,7 +13,7 @@ Use `.drawio` as an editable diagrams.net document. The file is XML with an `mxf
 
 ## Architecture layout
 
-Place clients to the left, ingress and identity next, compute in the center, and data/messaging or external dependencies to the right or below. Use containers only for real or clearly marked proposed boundaries. Label protocols, asynchronous paths, ownership, and unconfirmed mappings. Avoid making the visual imply a deployment fact that the evidence does not support.
+Place clients to the left, ingress and identity next, compute in the center, and data/messaging to the right or below. In infrastructure views, include an outer boundary labeled with the target provider and a visually distinct external zone for clients and third-party systems. Use nested containers for account/project/subscription, region, and network scopes (VPC, VNet, or VPC network) when they are evidenced or explicitly proposed. Label unknown location or scope `TBD`; do not invent a region, subnet, or availability zone. Keep each service inside or outside the VPC/VNet according to its actual provider topology. Draw boundary-crossing connectors clearly and label public, private, and external paths when needed. Mark proposed boundaries as proposed. These deployment boundaries do not belong in the cloud-agnostic component diagram.
 
 ### People and device pictograms
 
@@ -21,7 +21,7 @@ Place clients to the left, ingress and identity next, compute in the center, and
 - Prefer native Draw.io vector shapes or embedded SVG image cells that remain movable. Check that the selected shape/library exists in the target Draw.io environment; if an SVG is embedded, keep its label as a separate editable text cell.
 - Keep actor/device pictograms visually distinct from cloud-provider service icons. A user, browser, or phone is not an AWS/Azure/Google Cloud service.
 - Use standard boxes or UML/component symbols for application modules when pictograms would imply an inaccurate product or make the view harder to read. The goal is semantic visual cues, not an icon on every node.
-- Use a generic box for a person/device only when no suitable pictogram can be found or rendered. Mark this as a visual fallback and keep it visually distinct from service or software-component boxes. Do not turn application modules into pictograms when that would misrepresent their role. The linter can detect common actor/device shape names for collision checks, but cannot decide whether a pictogram semantically matches its label. Confirm this during rendered visual review.
+- Use a generic box for a person/device only when no suitable pictogram can be found. Mark this as a visual fallback and keep it visually distinct from service or software-component boxes. Do not turn application modules into pictograms when that would misrepresent their role. The linter can detect common actor/device shape names for collision checks, but cannot decide whether a pictogram semantically matches its label. If a rendered preview is requested and available, confirm this visually there.
 
 ## Matching a visual reference
 
@@ -33,7 +33,7 @@ When the user supplies an image or points to an existing diagram as a style refe
 - Color palette, typography hierarchy, label length, and whitespace.
 - Connector color, line weight, routing, arrowheads, and placement of explanatory notes.
 
-Carry over the visual language, not unverified nodes or relationships. Keep labels concise; put long explanations in a note or legend away from connectors. After authoring, render the diagram and compare it with the reference. Fix visible differences that are not required by the architecture. `scripts/check_drawio.py` checks XML structure and limited geometry heuristics; it does not compare styles, detect stale or blank provider glyphs, assess all dynamic connector-label collisions, or decide whether two diagrams look alike. If rendering is unavailable, report that visual matching could not be verified.
+Carry over the visual language, not unverified nodes or relationships. Keep labels concise; put long explanations in a note or legend away from connectors. If the user requests visual comparison and the renderer is stable, render the diagram and compare it with the reference. Fix visible differences that are not required by the architecture. `scripts/check_drawio.py` checks XML structure and limited geometry heuristics; it does not compare styles, detect stale or blank provider glyphs, assess all dynamic connector-label collisions, or decide whether two diagrams look alike. If no render was requested or rendering is unavailable, do not claim visual matching was verified.
 
 For the supplied house-style linter, use sharp orthogonal connectors (`edgeStyle=orthogonalEdgeStyle;rounded=0`), leave edge labels empty, and place any explanatory caption in a separate text cell away from connector routes. Route edges around labels and unrelated icons; avoid crossings where a small reroute can remove them. Keep service names in separate editable text cells rather than embedding them in provider icon/image cells. AWS4 resource icons use 78×78 px primary icons or 46×46 px secondary icons with a white stroke; do not apply those fixed dimensions or stroke rules to official Google Cloud or Azure SVGs.
 
@@ -41,16 +41,29 @@ For the supplied house-style linter, use sharp orthogonal connectors (`edgeStyle
 
 This file answers where the application runs. It is not a second component diagram.
 
+### Provider, region, network, and external boundaries
+
+- Draw one outer provider scope (`AWS Cloud`, `Azure`, or `Google Cloud`) for the proposed or current deployment. Do not use that frame to imply a specific account or tenant unless the account/tenant is identified or explicitly proposed.
+- Nest an account/project/subscription and region boundary only when they are known or useful to explain the target. For proposals, use a neutral placeholder such as `Region TBD` or `Account / project TBD` where the placement matters; never invent a region name.
+- Draw the network boundary (`VPC`, `VNet`, or Google Cloud `VPC network`) around only the resources that belong to that network. A provider-managed service may be in the provider/region boundary but outside the customer VPC/VNet. Follow that provider's topology instead of nesting every icon in one network box.
+- Put browsers, mobile devices, users, and systems hosted outside the target provider in a separate `External` zone. Keep them outside the provider frame. If a client is hosted by the provider, show that hosting placement explicitly.
+- Place Kubernetes cluster/workloads inside the appropriate network scope when the proposed design requires it. Show public and private subnets/AZs only when evidence or a clearly labeled proposal supports them; otherwise note `subnets/AZs TBD` without drawing fabricated detail.
+- Route connectors across boundary edges cleanly. A line crossing a boundary should make the ingress/egress relationship readable; label it `HTTPS/API`, `private link`, or another protocol/path only when supported or clearly proposed.
+- Use a dashed/soft boundary or a `PROPOSED` header for hypothetical scopes. The frame represents an architecture boundary, not a provider service icon.
+
 ### Provider icon discovery and fallback
 
 Use this resolution order for every cloud service in the selected provider's infrastructure diagram:
 
-1. Search the installed diagrams.net provider library and its service names/stencil identifiers.
-2. Check the selected provider's current official icon catalog and the corresponding provider reference in this Skill. Prefer an exact service icon; use its official SVG if the Draw.io stencil is missing or stale.
-3. If the current official catalog has no suitable service icon, use an official category icon only when it accurately represents the service category, and keep the exact service name in a separate editable label.
-4. If neither an exact nor a truthful category icon can be verified, use a simple editable service card instead of an invented logo. Give it a restrained accent from the selected provider/category, show the exact provider and service name, and mark the icon as unavailable/unverified in the card or a nearby legend. Report the fallback in the architecture document.
+1. Search the installed diagrams.net provider library and verify the exact service name/stencil identifier.
+2. Search the diagrams.net extra-icon catalog when available. Do not leave the delivered diagram dependent on a remote custom-library URL.
+3. Check the selected provider's current official icon catalog and the corresponding provider reference in this Skill. Prefer an exact service icon; use its official SVG if the Draw.io stencil is missing or stale.
+4. If the current official catalog has no suitable service icon, use an official category icon only when it accurately represents the service category, and keep the exact service name in a separate editable label.
+5. If neither an exact nor a truthful category icon can be verified, use a simple editable service card instead of an invented logo. Give it a restrained accent from the selected provider/category, show the exact provider and service name, and mark the icon as unavailable/unverified in the card or a nearby legend. Report the fallback in the architecture document.
 
 Do not stop at AWS4: perform this search for AWS, Azure, or Google Cloud according to the selected target. Do not substitute another cloud's logo, guess a stencil name, or say an icon does not exist if the catalog/library could not be inspected. If access to the sources is blocked, call the icon unverified and use the service-card fallback with that limitation recorded. A service-card fallback is a deliberate notation for a cloud resource, not a claim that the card is an official provider icon.
+
+For portable output, prefer a native stencil or embed the selected official SVG in the `.drawio` as a data URI. Do not reference an icon by local path or remote URL: those can disappear when the file is opened on another machine or offline. Record the source/stencil for each cloud service in the architecture document's icon inventory.
 
 - Use the selected provider's verified current service icons where available, and keep the full service name as editable text. Apply the fallback order above when none can be verified. Use human/device pictograms for user and client endpoints, separate from provider boundaries and cloud service icons. For AWS4 identifiers, consult [AWS4 icon guidance](aws4-icons.md); for official Azure SVGs, consult [Azure icon guidance](azure-icons.md).
 - AWS diagrams.net libraries include multiple generations of AWS shapes. Prefer the current AWS4 service icon set and follow an attached user reference's library and visual treatment when provided. AWS icons may use direct service stencils or `shape=mxgraph.aws4.resourceIcon` plus a service-specific `resIcon`. Verify each stencil against the installed diagrams.net AWS library or official catalog; do not guess a stencil name. If the exact icon is not available, continue through the category-icon and service-card fallback order. Avoid old library generations and dated gradients when the user supplies a newer flat service-icon treatment. AWS notes that third-party libraries can contain legacy icon sets and the official icon package is updated periodically: [AWS architecture icons](https://aws.amazon.com/architecture/icons/). See the [diagrams.net style reference](https://www.drawio.com/docs/reference/diagram-generation/style-reference/) and [AWS4 icon guidance](aws4-icons.md).
@@ -80,15 +93,21 @@ Parse the document with a standard XML parser. Then check:
 4. Every component in scope is present and relationships agree with the evidence map.
 5. Open the `.drawio` in diagrams.net when available. Confirm provider icons and person/device pictograms render, text remains readable at normal zoom, connector routes avoid labels and unrelated icons, and spacing remains clear.
 
-A successful XML parse verifies syntax and references, not that diagrams.net rendered the diagram correctly. Run [`scripts/check_drawio.py`](../scripts/check_drawio.py) for structure, label/icon overlap, explicit connector/label intersections, inline-label, connector-style, and route-crossing checks. Run [`scripts/render_drawio.py`](../scripts/render_drawio.py) for a preview when diagrams.net Desktop is available; only rendered visual review can assess dynamic line routing, icon rendering, text legibility, or visual similarity. The scripts need Python 3.10+ and no third-party packages:
+A successful XML parse verifies syntax and references, not that diagrams.net rendered the diagram correctly. Run [`scripts/check_drawio.py`](../scripts/check_drawio.py) for structure, label/icon overlap, explicit connector/label intersections, inline-label, connector-style, route-crossing, and embedded SVG syntax checks. Add `--require-provider-icons aws|azure|google` for infrastructure diagrams; it fails if no recognized provider stencil is present, or if no embedded SVG markup is present for Azure/Google diagrams. Embedded SVG markup is provider-neutral to the checker: it cannot prove the SVG source belongs to the claimed provider or represents the labeled service. Verify those facts in the icon inventory. Do not launch the Draw.io exporter by default. Use [`scripts/render_drawio.py`](../scripts/render_drawio.py) for a preview only when the user requests rendered review or confirms the installed Desktop exporter works; inspect the preview for blank/stale icons, label fit, connector routing, and readability. The scripts need Python 3.10+ and no third-party packages:
 
 ```powershell
-py -3 <skill-directory>/scripts/check_drawio.py docs/architecture/component-diagram.drawio docs/architecture/aws-infrastructure.drawio
+py -3 <skill-directory>/scripts/check_drawio.py docs/architecture/component-diagram.drawio
+py -3 <skill-directory>/scripts/check_drawio.py --require-provider-icons aws docs/architecture/aws-infrastructure.drawio
+py -3 <skill-directory>/scripts/check_drawio.py --require-provider-icons azure docs/architecture/azure-infrastructure.drawio
+py -3 <skill-directory>/scripts/check_drawio.py --require-provider-icons google docs/architecture/google-cloud-infrastructure.drawio
 py -3 <skill-directory>/scripts/render_drawio.py preview docs/architecture/aws-infrastructure.drawio %TEMP%\aws-infrastructure-preview.png
 ```
 
 ```sh
-python3 <skill-directory>/scripts/check_drawio.py docs/architecture/component-diagram.drawio docs/architecture/aws-infrastructure.drawio
+python3 <skill-directory>/scripts/check_drawio.py docs/architecture/component-diagram.drawio
+python3 <skill-directory>/scripts/check_drawio.py --require-provider-icons aws docs/architecture/aws-infrastructure.drawio
+python3 <skill-directory>/scripts/check_drawio.py --require-provider-icons azure docs/architecture/azure-infrastructure.drawio
+python3 <skill-directory>/scripts/check_drawio.py --require-provider-icons google docs/architecture/google-cloud-infrastructure.drawio
 python3 <skill-directory>/scripts/render_drawio.py preview docs/architecture/aws-infrastructure.drawio /tmp/aws-infrastructure-preview.png
 ```
 
