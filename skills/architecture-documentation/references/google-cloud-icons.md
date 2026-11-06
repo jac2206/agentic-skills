@@ -4,7 +4,7 @@ Use this reference when creating or reviewing a Google Cloud infrastructure diag
 
 ## Source and selection
 
-Search the installed diagrams.net Google Cloud library first, then check Google's [official Google Cloud product icon library](https://cloud.google.com/icons) as the authoritative source. The library distinguishes core product icons from product category icons and also offers legacy console icons. Google's product iconography was updated in early 2025, so prefer the current core or category pack over legacy console marks and older `mxgraph.gcp2.*` stencils.
+Search the installed diagrams.net Google Cloud library first, then check Google's [official Google Cloud product icon library](https://cloud.google.com/icons) as the authoritative source. The library distinguishes core product icons from product category icons and also offers legacy console icons. Google's product iconography was updated in early 2025, so prefer verified current product/category assets, including a current `mxgraph.gcp3.*` stencil when it is available and matches the service, over legacy console marks and older `mxgraph.gcp2.*` stencils.
 
 Choose a core product icon when available. Use a category icon only when the specific product has no suitable current icon, and keep the actual service name in an editable label so the category mark is not mistaken for a product logo. If neither an exact service icon nor a truthful category icon can be verified, use the labeled service-card fallback in [Draw.io XML guidance](drawio-xml.md) and record why it was needed. Do not infer service choices by translating an AWS or Azure design one-for-one, and do not borrow their icons.
 

@@ -46,7 +46,22 @@ def load_models(path):
 
 def style_map(s):
     out = {}
-    for part in (s or "").split(";"):
+    # Draw.io styles use semicolons between properties, but SVG data URIs can
+    # also contain semicolons in their metadata (for example ;base64,). Keep
+    # those header separators until the data URI's first comma.
+    source = s or ""
+    parts = []
+    start = 0
+    for index, char in enumerate(source):
+        if char != ";":
+            continue
+        part = source[start:index]
+        if part.lower().startswith("image=data:image/svg+xml") and "," not in part:
+            continue
+        parts.append(part)
+        start = index + 1
+    parts.append(source[start:])
+    for part in parts:
         if not part:
             continue
         k, _, v = part.partition("=")
@@ -170,15 +185,10 @@ def check_model(name, model, errors, warnings):
             provider_counts["aws"] += 1
         elif shape.startswith("mxgraph.azure."):
             provider_counts["azure_native"] += 1
-        elif shape.startswith(("mxgraph.gcp.", "mxgraph.gcp2.")):
+        elif shape.startswith(("mxgraph.gcp.", "mxgraph.gcp2.", "mxgraph.gcp3.")):
             provider_counts["google_native"] += 1
-        elif shape == "image" and image_data.startswith("data:image/svg+xml,"):
+        elif shape == "image" and image_data.lower().startswith("data:image/svg+xml"):
             # SVG source/provider provenance and service-to-icon correctness are reviewed separately.
-            provider_counts["embedded_svg"] += 1
-            svg_error = validate_embedded_svg(image_data)
-            if svg_error:
-                errors.append(f"[{name}] icon {label(c)}: {svg_error}")
-        elif shape == "image" and image_data.startswith("data:image/svg+xml;base64,"):
             provider_counts["embedded_svg"] += 1
             svg_error = validate_embedded_svg(image_data)
             if svg_error:
