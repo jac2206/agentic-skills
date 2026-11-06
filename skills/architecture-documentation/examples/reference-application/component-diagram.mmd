@@ -28,5 +28,5 @@ flowchart LR
   api -->|Routes: mapping unspecified| transactions
   users -->|Proposed persistence mapping| aurora
   transactions -->|Proposed persistence mapping| docdb
-  transactions -.->|Proposed publish path| eventbus
+  notifications -.->|Proposed publish path; producer mapping TBD| eventbus
   eventbus -.->|Rules unspecified| queues

@@ -34,13 +34,17 @@ These identifiers appear in the example XML. This table records the XML styles a
 | `ecs` | Amazon ECS | `#ED7100` |
 | `eks` | Amazon EKS | `#ED7100` |
 | `elasticsearch_service` | Amazon OpenSearch Service | `#8C4FFF` |
+| `eventbridge` | Amazon EventBridge | `#E7157B` |
 | `identity_and_access_management` | AWS IAM | `#DD344C` |
 | `key_management_service` | AWS KMS | `#DD344C` |
 | `lambda` | AWS Lambda | `#ED7100` |
+| `network_load_balancer` | Network Load Balancer | `#8C4FFF` |
+| `rds` | Amazon RDS for PostgreSQL | `#C925D1` |
 | `rekognition_2` | Amazon Rekognition | `#01A88D` |
 | `route_53` | Amazon Route 53 | `#8C4FFF` |
 | `s3` | Amazon S3 | `#7AA116` |
 | `secrets_manager` | AWS Secrets Manager | `#DD344C` |
+| `sqs` | Amazon SQS | `#E7157B` |
 | `step_functions` | AWS Step Functions | `#E7157B` |
 | `waf` | AWS WAF | `#DD344C` |
 

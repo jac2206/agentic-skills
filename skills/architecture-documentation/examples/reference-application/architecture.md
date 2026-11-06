@@ -47,13 +47,15 @@ The logical component view is available in two editable, equivalent formats: [Me
 
 ## 5. Infrastructure and deployment view
 
-The editable AWS diagram is [aws-infrastructure.drawio](aws-infrastructure.drawio). It uses native AWS4 stencils, including service variants such as `endpoint` and `lambda_function`, and the flat color treatment from the supplied XML reference. Full service names remain editable labels. The view is marked as proposed because no deployment configuration was supplied. Application modules sit inside the proposed compute boundaries; this diagram does not replace the logical component view.
+The editable AWS diagram is [aws-infrastructure.drawio](aws-infrastructure.drawio). It is a proposed provider mapping of the shared illustrative topology, not a faithful reproduction of every AWS service in the supplied source. It uses API Gateway, Lambda, VPC Link, a Network Load Balancer, EKS, RDS for PostgreSQL, DynamoDB, EventBridge, and SQS. These choices differ from the source drawing's Cognito, Application Load Balancer, Aurora, and DocumentDB; the identity provider, load-balancing pattern, and data-store substitutions need review. The diagram uses AWS4 service icons with separate editable labels. VPC Link is shown as an editable labeled card; its icon has not been verified in this environment. The diagram does not establish that any AWS resource is deployed.
 
-The Skill also includes [a proposed Google Cloud variant](google-cloud-infrastructure.drawio) and [an Azure variant](azure-infrastructure.drawio). Google Cloud uses official product/category SVGs updated in 2025; the networking, database, and integration marks are category icons for Cloud Load Balancing, Firestore, and Pub/Sub. Azure uses official SVGs from Microsoft's Architecture Center package. The SVGs are embedded so each `.drawio` file is portable, while text, connections, and boundaries remain editable. These are alternatives for a request naming one of those providers. They are not part of this AWS package, do not represent current deployments, and are not automatic service-by-service equivalents. A normal generation produces only the selected cloud; AWS is the default when no provider is specified.
+The Skill also includes [a proposed Google Cloud variant](google-cloud-infrastructure.drawio) and [a proposed Azure variant](azure-infrastructure.drawio). Google Cloud uses official product/category SVGs; category marks are labeled for Cloud Load Balancing, Firestore, and Pub/Sub. Azure uses embedded SVGs from Microsoft's Architecture Center icon package. Text, connections, and boundaries remain editable. All three cloud files are alternatives for requests naming a provider. They are not current deployment claims or automatic service-by-service equivalents. A normal generation produces only the selected cloud; AWS is the default when no provider is specified.
+
+The request, data, and event paths below describe the supplied source drawing. The provider-specific diagrams are illustrative deployment proposals and may use different services or routing patterns.
 
 ### Request path
 
-1. A web or mobile client calls the API over HTTPS.
+1. A web or mobile client calls the API over HTTPS in the supplied source design.
 2. API Gateway is the represented API entry point.
 3. Cognito is the represented identity capability; the OAuth/OIDC flow and policy enforcement point are undefined.
 4. API Gateway routes requests to Lambda or to ALB/EKS. The diagram does not say which APIs use each path.
@@ -85,9 +87,9 @@ The source contains no deployment configuration or service objectives. Multi-AZ 
 ## 8. Decisions required before implementation
 
 1. Define the application's purpose, actors, API domains, and endpoint ownership.
-2. Assign each API route to Lambda or an EKS backend; explain why both compute paths are needed.
-3. Confirm Cognito integration and where authorization is enforced: API Gateway, services, or both.
-4. Confirm database ownership, the Aurora engine, DocumentDB usage, schemas, and data isolation.
+2. Choose the target API path and compute split; the source shows Lambda and ALB/EKS, while the AWS proposal shows Lambda and VPC Link/NLB/EKS.
+3. Confirm the identity provider and where authorization is enforced; Cognito appears in the source drawing, while the AWS proposal leaves identity unspecified.
+4. Confirm database ownership and whether to retain the source's Aurora/DocumentDB choices or use the proposed RDS for PostgreSQL/DynamoDB mapping.
 5. Define event producers, schemas and versions, rules, SQS consumers, retries, DLQs, and idempotency.
 6. Specify the AWS account and Region, VPC, subnets, ingress/egress, private connectivity, and environments.
 7. Establish availability, latency, RPO/RTO, backup, scaling, and deployment objectives.
@@ -97,9 +99,9 @@ The source contains no deployment configuration or service objectives. Multi-AZ 
 
 - [Mermaid component diagram](component-diagram.mmd)
 - [Editable component diagram (Draw.io)](component-diagram.drawio)
-- [AWS infrastructure diagram (Draw.io)](aws-infrastructure.drawio)
-- [Google Cloud infrastructure alternative](google-cloud-infrastructure.drawio)
-- [Azure infrastructure alternative](azure-infrastructure.drawio)
+- [AWS infrastructure proposal (Draw.io)](aws-infrastructure.drawio)
+- [Google Cloud infrastructure proposal](google-cloud-infrastructure.drawio)
+- [Azure infrastructure proposal](azure-infrastructure.drawio)
 - [Archify architecture diagram](reference-application.archify.html)
 - [Archify source candidate](reference-application.archify.json)
 - [Archify finalization summary](reference-application.archify.finalize-summary.json)

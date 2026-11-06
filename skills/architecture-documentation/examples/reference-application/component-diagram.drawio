@@ -1,36 +1,97 @@
+<?xml version='1.0' encoding='utf-8'?>
 <mxfile host="app.diagrams.net" modified="2026-11-02T12:00:00.000Z" agent="Codex" version="24.7.17" type="device">
   <diagram id="reference-components" name="Logical components">
     <mxGraphModel dx="1450" dy="820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1450" pageHeight="820" math="0" shadow="0">
       <root>
-        <mxCell id="0"/><mxCell id="1" parent="0"/>
-        <mxCell id="title" value="Logical components — reference proposal" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=22;fontStyle=1;fontColor=#243447;strokeColor=none;fillColor=none;" vertex="1" parent="1"><mxGeometry x="30" y="20" width="800" height="40" as="geometry"/></mxCell>
-        <mxCell id="actor" value="User" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;strokeColor=#34495E;" vertex="1" parent="1"><mxGeometry x="70" y="310" width="50" height="90" as="geometry"/></mxCell>
-        <mxCell id="web" value="Web client" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=14;" vertex="1" parent="1"><mxGeometry x="180" y="200" width="150" height="60" as="geometry"/></mxCell>
-        <mxCell id="mobile" value="Mobile client" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=14;" vertex="1" parent="1"><mxGeometry x="180" y="420" width="150" height="60" as="geometry"/></mxCell>
-        <mxCell id="api" value="API entry&#xa;HTTP/REST" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=14;" vertex="1" parent="1"><mxGeometry x="400" y="300" width="160" height="70" as="geometry"/></mxCell>
-        <mxCell id="identity" value="Identity capability&#xa;Authentication flow unspecified" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4D6;strokeColor=#D79B00;fontSize=13;" vertex="1" parent="1"><mxGeometry x="400" y="110" width="190" height="70" as="geometry"/></mxCell>
-        <mxCell id="service_boundary" value="Backend capabilities — grouping proposed" style="swimlane;html=1;rounded=1;startSize=28;fillColor=#F8F9FA;strokeColor=#7F8C8D;fontSize=14;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="650" y="100" width="360" height="470" as="geometry"/></mxCell>
-        <mxCell id="users" value="Users" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E2F0D9;strokeColor=#82B366;fontSize=14;" vertex="1" parent="service_boundary"><mxGeometry x="20" y="60" width="145" height="60" as="geometry"/></mxCell>
-        <mxCell id="transactions" value="Transactions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E2F0D9;strokeColor=#82B366;fontSize=14;" vertex="1" parent="service_boundary"><mxGeometry x="195" y="60" width="145" height="60" as="geometry"/></mxCell>
-        <mxCell id="partners" value="Partners" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E2F0D9;strokeColor=#82B366;fontSize=14;" vertex="1" parent="service_boundary"><mxGeometry x="20" y="190" width="145" height="60" as="geometry"/></mxCell>
-        <mxCell id="notifications" value="Notifications" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E2F0D9;strokeColor=#82B366;fontSize=14;" vertex="1" parent="service_boundary"><mxGeometry x="195" y="190" width="145" height="60" as="geometry"/></mxCell>
-        <mxCell id="db_boundary" value="Persistence — ownership unspecified" style="swimlane;html=1;rounded=1;startSize=28;fillColor=#F4ECF7;strokeColor=#9673A6;fontSize=14;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="1100" y="100" width="300" height="280" as="geometry"/></mxCell>
-        <mxCell id="aurora" value="Relational store&#xa;Aurora shown in source" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=15;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=13;" vertex="1" parent="db_boundary"><mxGeometry x="20" y="60" width="120" height="80" as="geometry"/></mxCell>
-        <mxCell id="docdb" value="Document store&#xa;DocumentDB shown in source" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=15;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=13;" vertex="1" parent="db_boundary"><mxGeometry x="160" y="60" width="120" height="80" as="geometry"/></mxCell>
-        <mxCell id="eventbus" value="Event bus" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#E7157B;fontSize=14;" vertex="1" parent="1"><mxGeometry x="700" y="650" width="150" height="65" as="geometry"/></mxCell>
-        <mxCell id="queues" value="Message queues&#xa;consumers unspecified" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#E7157B;fontSize=13;" vertex="1" parent="1"><mxGeometry x="980" y="650" width="190" height="65" as="geometry"/></mxCell>
-        <mxCell id="e1" value="Uses" style="endArrow=block;html=1;rounded=0;strokeColor=#59636E;" edge="1" parent="1" source="actor" target="web"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e2" value="Uses" style="endArrow=block;html=1;rounded=0;strokeColor=#59636E;" edge="1" parent="1" source="actor" target="mobile"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e3" value="Requests" style="endArrow=block;html=1;rounded=0;strokeColor=#59636E;" edge="1" parent="1" source="web" target="api"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e4" value="Requests" style="endArrow=block;html=1;rounded=0;strokeColor=#59636E;" edge="1" parent="1" source="mobile" target="api"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e5" value="Identity checks — details unspecified" style="dashed=1;endArrow=open;html=1;rounded=0;strokeColor=#C74634;" edge="1" parent="1" source="api" target="identity"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e6" value="Routes — mapping unspecified" style="endArrow=block;html=1;rounded=0;strokeColor=#59636E;" edge="1" parent="1" source="api" target="users"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e7" value="Routes — mapping unspecified" style="endArrow=block;html=1;rounded=0;strokeColor=#59636E;" edge="1" parent="1" source="api" target="transactions"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e8" value="Persists — proposed mapping" style="endArrow=block;html=1;rounded=0;strokeColor=#9673A6;" edge="1" parent="1" source="users" target="aurora"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e9" value="Persists — proposed mapping" style="endArrow=block;html=1;rounded=0;strokeColor=#9673A6;" edge="1" parent="1" source="transactions" target="docdb"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e10" value="Publishes — proposed" style="dashed=1;endArrow=block;html=1;rounded=0;strokeColor=#E7157B;" edge="1" parent="1" source="transactions" target="eventbus"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="e11" value="Routes — rules unspecified" style="dashed=1;endArrow=block;html=1;rounded=0;strokeColor=#E7157B;" edge="1" parent="1" source="eventbus" target="queues"><mxGeometry relative="1" as="geometry"/></mxCell>
-        <mxCell id="note" value="Logical components only. See aws-infrastructure.drawio for provider services and deployment boundaries. All semantics inherited from the user-provided reference diagram remain proposed until verified." style="shape=note;whiteSpace=wrap;html=1;size=18;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=13;" vertex="1" parent="1"><mxGeometry x="50" y="760" width="1300" height="45" as="geometry"/></mxCell>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Logical components — reference proposal" style="text;html=1;align=left;verticalAlign=middle;whiteSpace=wrap;fontSize=22;fontStyle=1;fontColor=#243447;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="30" y="20" width="800" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="actor" value="" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;strokeColor=#34495E;" vertex="1" parent="1">
+          <mxGeometry x="70" y="310" width="50" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="web" value="Web client" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="180" y="200" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="mobile" value="Mobile client" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;strokeColor=#6C8EBF;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="180" y="420" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="API entry&#10;HTTP/REST" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="400" y="300" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="identity" value="Identity capability&#10;Authentication flow unspecified" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4D6;strokeColor=#D79B00;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="400" y="110" width="190" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="service_boundary" value="Backend capabilities — grouping proposed" style="swimlane;html=1;rounded=1;startSize=28;fillColor=#F8F9FA;strokeColor=#7F8C8D;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="100" width="360" height="470" as="geometry" />
+        </mxCell>
+        <mxCell id="users" value="Users" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E2F0D9;strokeColor=#82B366;fontSize=14;" vertex="1" parent="service_boundary">
+          <mxGeometry x="20" y="60" width="145" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="transactions" value="Transactions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E2F0D9;strokeColor=#82B366;fontSize=14;" vertex="1" parent="service_boundary">
+          <mxGeometry x="195" y="60" width="145" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="partners" value="Partners" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E2F0D9;strokeColor=#82B366;fontSize=14;" vertex="1" parent="service_boundary">
+          <mxGeometry x="20" y="190" width="145" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="notifications" value="Notifications" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E2F0D9;strokeColor=#82B366;fontSize=14;" vertex="1" parent="service_boundary">
+          <mxGeometry x="195" y="190" width="145" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="db_boundary" value="Persistence — ownership unspecified" style="swimlane;html=1;rounded=1;startSize=28;fillColor=#F4ECF7;strokeColor=#9673A6;fontSize=14;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1100" y="100" width="300" height="280" as="geometry" />
+        </mxCell>
+        <mxCell id="aurora" value="Relational store&#10;Aurora shown in source" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=15;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=13;" vertex="1" parent="db_boundary">
+          <mxGeometry x="20" y="60" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="docdb" value="Document store&#10;DocumentDB shown in source" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;size=15;fillColor=#E1D5E7;strokeColor=#9673A6;fontSize=13;" vertex="1" parent="db_boundary">
+          <mxGeometry x="160" y="60" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="eventbus" value="Event bus" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#E7157B;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="700" y="650" width="150" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="queues" value="Message queues&#10;consumers unspecified" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FCE4EC;strokeColor=#E7157B;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="980" y="650" width="190" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;strokeColor=#59636E;" edge="1" parent="1" source="actor" target="web">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;strokeColor=#59636E;" edge="1" parent="1" source="actor" target="mobile">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;strokeColor=#59636E;" edge="1" parent="1" source="web" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;strokeColor=#59636E;" edge="1" parent="1" source="mobile" target="api">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;endArrow=open;html=1;strokeColor=#C74634;" edge="1" parent="1" source="api" target="identity">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;strokeColor=#59636E;" edge="1" parent="1" source="api" target="users">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;strokeColor=#59636E;" edge="1" parent="1" source="api" target="transactions">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;strokeColor=#9673A6;" edge="1" parent="1" source="users" target="aurora">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;endArrow=block;html=1;strokeColor=#9673A6;" edge="1" parent="1" source="transactions" target="docdb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;endArrow=block;html=1;strokeColor=#E7157B;" edge="1" parent="1" source="notifications" target="eventbus">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;dashed=1;endArrow=block;html=1;strokeColor=#E7157B;" edge="1" parent="1" source="eventbus" target="queues">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="note" value="Logical components only. See aws-infrastructure.drawio for the provider deployment view. Solid arrows show requests, routing, or persistence; dashed red marks unspecified identity checks; purple persistence and event paths are proposed or unmapped." style="shape=note;whiteSpace=wrap;html=1;size=18;fillColor=#FFF2CC;strokeColor=#D6B656;fontSize=13;" vertex="1" parent="1">
+          <mxGeometry x="50" y="760" width="1300" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="actor-label" value="User" style="text;html=1;align=center;verticalAlign=top;whiteSpace=wrap;fontSize=13;fontColor=#202124;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="50" y="404" width="90" height="24" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>

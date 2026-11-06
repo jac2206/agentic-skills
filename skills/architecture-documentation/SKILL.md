@@ -6,7 +6,7 @@ description: >
   infrastructure view, and a native Archify architecture diagram when the
   Archify Skill is installed.
 metadata:
-  version: "1.8.5"
+  version: "1.8.7"
 ---
 
 # Architecture Documentation
@@ -130,4 +130,5 @@ The component diagrams and cloud infrastructure diagram are cumulative deliverab
 ## Examples
 
 - [Reference application architecture package](examples/reference-application/architecture.md) demonstrates a diagram-derived proposal with evidence gaps and distinct component, infrastructure, and Archify artifacts.
-- [AWS GenAI reference diagram](examples/reference-application/aws-genai-agent-reference.drawio), [Google Cloud infrastructure example](examples/reference-application/google-cloud-infrastructure.drawio), and [Azure infrastructure example](examples/reference-application/azure-infrastructure.drawio) demonstrate provider-specific or illustrative examples. They do not mean all alternatives should be generated for one request.
+- [AWS infrastructure proposal](examples/reference-application/aws-infrastructure.drawio), [Google Cloud infrastructure proposal](examples/reference-application/google-cloud-infrastructure.drawio), and [Azure infrastructure proposal](examples/reference-application/azure-infrastructure.drawio) show the same illustrative backend topology expressed with provider-specific services. They are alternatives, not evidence of deployment or a requirement to generate all three for one request.
+- [Serverless GenAI Agent reference](examples/reference-application/serverless-genai-agent.drawio) demonstrates a more detailed AWS GenAI/RAG architecture. Treat its region, compute choices, integrations, and controls as illustrative unless separately verified.
