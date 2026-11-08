@@ -1,0 +1,46 @@
+{
+  "review": {
+    "id": "SEC-REVIEW-YYYY-001",
+    "date": "YYYY-MM-DD",
+    "mode": "Audit",
+    "completion": "Complete",
+    "title": "Application security review",
+    "target": "Project or change name",
+    "scope": ["Describe included components, repositories, and environments"],
+    "exclusions": [],
+    "methodology": ["Describe evidence sources and checks actually performed"],
+    "standards": [],
+    "summary": "Summarize scope, outcome, and material limitations without claiming certification.",
+    "controls_reviewed": [
+      {"name": "Authentication", "status": "Not Assessed", "evidence": "", "notes": ""}
+    ],
+    "limitations": [],
+    "related_artifacts": [],
+    "history": []
+  },
+  "findings": [
+    {
+      "id": "SEC-001",
+      "title": "Replace this sample with a real, evidenced finding",
+      "severity": "Informational",
+      "category": "Example",
+      "status": "Open",
+      "location": "path/to/file:line or relevant component",
+      "evidence": "Redacted evidence only; never paste secret values or unnecessary personal data.",
+      "evidence_type": "Observed",
+      "description": "Describe the verified behavior or explicitly state why this remains a potential risk.",
+      "scenario": "Describe realistic prerequisites and the security boundary affected.",
+      "impact": "State supported consequences.",
+      "likelihood": "Explain exposure and prerequisites; do not invent a numeric probability.",
+      "recommendation": "State a concrete corrective action.",
+      "mitigation": "Describe the control that would reduce or remove the risk.",
+      "references": [],
+      "detected_date": "YYYY-MM-DD",
+      "review_id": "SEC-REVIEW-YYYY-001",
+      "resolution_date": "",
+      "validation_evidence": "",
+      "accepted_risk": {"rationale": "", "owner": "", "review_date": ""},
+      "history": []
+    }
+  ]
+}

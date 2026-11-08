@@ -21,11 +21,14 @@ agentic-skills/
 ├── AGENTS.md
 ├── README.md
 ├── examples/                         # Concrete artifacts produced with Skills
+│   ├── architecture/
 │   ├── docs/
 │   ├── presentations/
+│   ├── projects/
 │   └── requirements/
 └── skills/
     ├── agentic-project-setup/         # SKILL.md and an end-to-end setup example
+    ├── application-security-review/   # Evidence-based application security assessment and remediation validation
     ├── architecture-documentation/   # SKILL.md, references, templates, examples, scripts
     ├── backend-documentation/        # SKILL.md and optional templates
     ├── presentations/                # Skill name: html-presentations
@@ -35,9 +38,11 @@ agentic-skills/
     └── templates/                    # Shared Skill authoring template
 ```
 
-The repository contains seven Skills. Every Skill must have a `SKILL.md`; add references, templates, examples, or scripts only when they provide real value. Keep Skill-specific resources inside that Skill's directory. The shared Skill authoring template lives under `skills/templates/`.
+The repository contains eight Skills. Every Skill must have a `SKILL.md`; add references, templates, examples, or scripts only when they provide real value. Keep Skill-specific resources inside that Skill's directory. The shared Skill authoring template lives under `skills/templates/`.
 
 Use the root `examples/` directory for representative artifacts generated with Skills. Keep instructional examples and reference fixtures that a Skill needs after installation inside that Skill's directory. A separate README inside each Skill is not required; `SKILL.md` is its operational entry point and this root README is the library catalog.
+
+The [`projects/loyalty-rewards` foundation](examples/projects/loyalty-rewards/README.md) demonstrates an agent-ready project context for a loyalty system. It contains instructions and documented decisions, not runnable application code or deployment configuration.
 
 ## Install a Skill
 
@@ -73,7 +78,7 @@ To install the version from your current checkout (including local changes), run
 npx skills add . --skill architecture-documentation --agent codex --global --copy
 ```
 
-Replace `architecture-documentation` with a Skill name: `agentic-project-setup`, `backend-documentation`, `html-presentations`, `project-documentation-blueprint`, `requirements-engineering`, or `skill-factory`. The `presentations/` directory declares the Skill name `html-presentations` in its frontmatter.
+Replace `architecture-documentation` with a Skill name such as `agentic-project-setup`, `application-security-review`, `architecture-documentation`, `backend-documentation`, `html-presentations`, `project-documentation-blueprint`, `requirements-engineering`, or `skill-factory`. The `presentations/` directory declares the Skill name `html-presentations` in its frontmatter.
 
 ### Update installed Skills
 
@@ -101,11 +106,21 @@ npx skills add https://github.com/jac2206/agentic-skills/tree/master/skills/arch
 
 Replace `master` with the branch containing your changes if they have not been merged there yet. The remove command deletes the global installation; the add command installs a copy from the selected branch.
 
+For example, install the application security review Skill from this checkout:
+
+```sh
+npx skills add . --skill application-security-review --agent codex --global --copy
+```
+
 ## Skills
 
 ### Agentic Project Setup
 
 Analyzes, audits, and incrementally prepares any software repository for safe, effective AI-agent collaboration while preserving its established structure and handing specialized work to the appropriate Skill.
+
+### Application Security Review
+
+Assesses application and software-delivery security risks, reviews changes, documents evidence-based findings, and helps validate authorized remediations across technology stacks.
 
 ### Backend Documentation
 
