@@ -1,3 +1,5 @@
 examples/presentations/
 examples/docs/
 examples/requirements/
+examples/architecture/
+.archify/
