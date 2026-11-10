@@ -63,13 +63,13 @@ npx skills add jac2206/agentic-skills --skill backend-documentation --agent code
 Install every Skill in the collection for both agents:
 
 ```sh
-npx skills add jac2206/agentic-skills --skill '*' --agent codex --agent claude-code
+npx skills add jac2206/agentic-skills --skill "*" --agent codex --agent claude-code
 ```
 
 Install every Skill globally:
 
 ```sh
-npx skills add jac2206/agentic-skills --skill '*' --agent codex --agent claude-code --global
+npx skills add jac2206/agentic-skills --skill "*" --agent codex --agent claude-code --global
 ```
 
 To install the version from your current checkout (including local changes), run this from the repository root:
@@ -82,19 +82,58 @@ Replace `architecture-documentation` with a Skill name such as `agentic-project-
 
 ### Update installed Skills
 
-Update one globally installed Skill:
+These commands work in terminals on Windows, macOS, and Linux with Node.js and
+`npx` available.
 
-```sh
-npx skills update backend-documentation --global
-```
+#### Update from a recorded remote source
 
-Update all globally installed Skills:
+If the Skills were installed globally from GitHub and the changes have been
+pushed to their recorded source and branch, update all globally installed
+Skills with:
 
 ```sh
 npx skills update --global
 ```
 
-Run `npx skills list` to view installed Skills. Use `npx skills update` without `--global` for project-installed Skills.
+This checks all eligible global Skills, including those from other repositories.
+To update one by name:
+
+```sh
+npx skills update backend-documentation --global
+```
+
+To update the six Skills listed below:
+
+```sh
+npx skills update skill-factory agentic-project-setup application-security-review architecture-documentation backend-documentation requirements-engineering --global
+```
+
+Run `npx skills list --global` to view globally installed Skills. For
+project-installed Skills, use `npx skills update --project`. The CLI may skip
+Skills installed from local paths or sources it cannot check automatically;
+read its output to see what was updated or skipped.
+
+#### Update from this local checkout
+
+From the repository root, reinstall all Skills from the current checkout for
+Codex globally, including local changes that have not been pushed:
+
+```sh
+npx skills add . --skill "*" --agent codex --global --copy
+```
+
+To update just one Skill, replace `"*"` with its name. Add
+`--agent claude-code` to also install for Claude Code. To update only the six
+Skills listed above from the checkout:
+
+```sh
+npx skills add . --skill skill-factory --skill agentic-project-setup --skill application-security-review --skill architecture-documentation --skill backend-documentation --skill requirements-engineering --agent codex --global --copy
+```
+
+`--copy` installs the Skill directory and its supporting resources as a copy.
+Reinstalling replaces the selected installed copies, so preserve any edits you
+made directly in those copies first. Restart the agent or open a new session if
+it does not immediately discover the updated instructions.
 
 Reinstall a globally installed Skill from a specific branch of this repository:
 
