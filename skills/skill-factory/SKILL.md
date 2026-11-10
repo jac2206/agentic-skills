@@ -6,7 +6,7 @@ description: >
   responsibilities, or choose between a prompt, Skill, workflow, agent, or
   application.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Skill Factory
@@ -170,7 +170,8 @@ demonstration artifacts belong in the appropriate `examples/<category>/`.
   unless the user requests a scope change. Resolve contradictions, remove
   duplication, improve clarity, and update any affected supporting resources.
 - **Evaluate:** report evidence-based findings and practical fixes. Do not
-  silently change the Skill.
+  silently change the Skill. Use the evaluation rubric below when a quality
+  assessment is requested; give a numeric score only when the user asks for it.
 - **Compose:** recommend boundaries and handoffs; consolidate only when that
   produces a more focused, reusable capability.
 - **Recommend an abstraction:** explain the choice briefly and provide the
@@ -178,6 +179,24 @@ demonstration artifacts belong in the appropriate `examples/<category>/`.
 
 Do not implement the capability described by a new Skill unless the user also
 requests its implementation.
+
+### Evaluation rubric
+
+Assess (1) responsibility and activation, (2) inputs, outputs and workflow,
+(3) constraints and composition, (4) observable validation and supporting
+resources, and (5) observed behavior on representative tasks. Cite concrete
+paths or results for material findings. Separate instructions inspected,
+outputs observed, checks executed, and unavailable evidence; generated outputs
+alone do not establish which Skill or version produced them. State confidence
+and limitations, prioritize actionable improvements, and do not assume missing
+runtime evidence is a failure of the instructions.
+
+If the user asks for a 1–5 rating, explain it as a judgment, not a computed
+measurement: 1 = unusable or contradictory; 2 = major gaps; 3 = usable with
+important gaps; 4 = strong with specific improvements; 5 = strong and supported
+by representative execution evidence. Use intermediate scores when helpful.
+Do not award 5 from instruction inspection alone. Keep per-dimension observations
+visible when they differ substantially; never invent executed tests.
 
 ### 7. Validate and present
 
@@ -266,6 +285,23 @@ enough to state and perform reliably without one.
 **Expected behavior:** Inspect its instructions and relevant resources, report
 evidence-based findings and recommendations, and leave files unchanged unless
 the user asks for edits.
+
+### Evaluation with limited runtime evidence
+
+**Input:** Clear instructions and an example exist, but the execution history
+and Skill version are unknown.
+
+**Expected behavior:** Assess the instructions and observed artifact separately,
+label attribution and runtime reliability unknown, state lower confidence, and
+recommend a representative execution before a top score.
+
+### Evaluation with an observed contradiction
+
+**Input:** A documented output conflicts with a current workflow rule, while
+the current generator already contains a guard.
+
+**Expected behavior:** Cite both artifacts and propose a regression scenario;
+do not attribute the old result to the current generator without evidence.
 
 ## Validation
 

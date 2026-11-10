@@ -8,7 +8,7 @@ Explain what the product enables, who uses it, and its core business capabilitie
 
 ## Scope and evidence
 
-List the inspected repositories and sources. Classify important claims as verified, configured, documented, user-reported, inferred, proposed, unknown, or conflicting. Explain limitations and resolve stale/generic README claims against stronger evidence.
+List the inspected repositories and sources, and the inspected revision when available. Check that reused paths and revision references actually match the current workspace; identify historical, unavailable, or conflicting references without inventing a revision. Classify important claims as verified, configured, documented, user-reported, inferred, proposed, unknown, or conflicting. Explain limitations and resolve stale/generic README claims against stronger evidence.
 
 ## System context
 
@@ -57,3 +57,7 @@ List the decisions or missing sources needed to resolve material unknowns. Do no
 - Cloud infrastructure: `<provider>-infrastructure.drawio` (for example, `aws-infrastructure.drawio`)
 - Current deployment (only when separate): `current-deployment.drawio`
 - Archify architecture: link the HTML and candidate JSON at the actual paths produced by the installed Archify Skill (required when installed; omit when unavailable)
+
+Record static diagram checks and visual inspection separately, including the
+tool and result or why visual inspection was not performed. Follow the Skill's
+renderer safety limits; a static pass does not establish visual correctness.

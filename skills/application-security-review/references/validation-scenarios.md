@@ -29,6 +29,8 @@ or a real authorized project.
 | 18 | HTML report receives untrusted text | Generator must escape user-supplied report text, accept only HTTPS links for references, and open without external assets or scripts. |
 | 19 | Duplicate finding ID or unresolved `Resolved` state | Generator validation must fail before writing files when IDs duplicate or resolution date/evidence is missing. |
 | 20 | Partial review | Create a clearly labeled dated review when requested; do not replace latest completed audit reports. |
+| 21 | `latest.md` matches a partial/remediation history entry while a completed audit also exists | Compare both latest formats, review IDs, mode, completion and matching historical/canonical data. Flag the pre-existing inconsistency and preserve it during read-only review; do not claim the current generator caused it or that an unchanged latest is a valid audit. |
+| 22 | Completed audit followed by partial review | In an isolated root, save hashes of both `latest.*` files, render a partial review with a new ID, and compare hashes and the printed status. Both latest files must remain byte-identical and the message must say they were left unchanged; the dated partial report must identify its own mode and ID. |
 
 ## Generator checks
 
@@ -49,7 +51,9 @@ fail with no report files created. For HTML escaping, use a harmless string such
 as `<script>alert(1)</script>` in a temporary title and confirm it appears only
 as escaped text in the output.
 
-The script validates data shape and report generation. It does not test
+The script validates data shape and report generation; it does not inspect the
+pre-existing semantic correctness of `latest.*`. The reviewer must perform the
+preflight comparison above and disclose missing or conflicting metadata. It does not test
 security controls in the target application or merge/reconcile finding history;
 those remain reviewer responsibilities.
 

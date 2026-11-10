@@ -5,7 +5,7 @@ description: >
   of epics, features, and professional user stories with acceptance criteria,
   Gherkin scenarios, business rules, and functional and non-functional requirements.
 metadata:
-  version: "1.1.0"
+  version: "1.1.1"
 ---
 
 # Requirements Engineering
@@ -144,7 +144,11 @@ sections that do not apply; never fill a section with invented content.
 7. **Validate the backlog.** Check completeness, hierarchy, traceability,
    terminology consistency, unique IDs, measurable acceptance criteria, and
    alignment with the source. Mark unresolved decisions visibly and summarize
-   the files created and open items.
+   the files created and open items. When project specifications or tests exist
+   and are in scope, record their real IDs or paths alongside the source and
+   story/criterion they support. Mark absent, planned, stale, or unverified
+   links explicitly; a test name or unexecuted test is not proof of a pass.
+   Hand specification lifecycle and test implementation to their owners.
 
 ## Readiness statuses
 
@@ -168,7 +172,9 @@ The Skill must:
 - Preserve the user's intent and distinguish source facts, assumptions,
   recommendations, and open questions.
 - In Refine mode, use stakeholder answers as new evidence, update impacted
-  stories and linked items, and retain unresolved blockers visibly.
+  stories and linked items, and retain unresolved blockers visibly. Preserve
+  decision source, date or version when available, and prior identifiers;
+  label superseded decisions and do not silently replace conflicting history.
 - Make every story clear, specific, valuable, estimable, small enough for
   incremental delivery, and verifiable. If a story cannot yet meet these
   qualities, flag why and suggest the needed split or clarification.
@@ -241,6 +247,8 @@ Before returning the result:
    categorized correctly and are not contradictory.
 5. Check IDs, nested locations, parent references, relative links, source
    traceability, filenames, Markdown structure, and the output directory tree.
+   Where supplied, check requirement → story/criterion → specification → test
+   links and disclose missing or unverified steps without fabricating artifacts.
 6. Report files created or updated, each readiness boundary, key unresolved
    questions, and any validation limitation. Do not claim checks that were not
    performed.
@@ -272,3 +280,15 @@ fee, and a confirmation is shown.
 testable scenarios for cancellation before and after fulfillment begins, state
 the approved no-fee rule, and update its status only if its remaining
 dependencies and acceptance criteria meet the readiness definition.
+
+### Example: trace a decision through a specification
+
+**Input:** Requirement `REQ-1` supports criterion `ST-1/AC-1`; a project
+specification and test exist, but no test result was supplied. A later
+stakeholder decision changes the rule.
+
+**Expected behavior:** Link the actual source, criterion, specification and
+test paths, label test execution unknown, preserve `ST-1` and its prior
+decision history, and update only material supported by the new decision.
+Flag the specification for its owner if it no longer matches; do not silently
+modify tests or claim they passed.

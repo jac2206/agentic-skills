@@ -7,7 +7,7 @@ description: >
   remediation validation; do not use as a certification or as authorization for
   active testing against systems.
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Application Security Review
@@ -186,6 +186,15 @@ from CVSS scoring and OWASP categories. Do not invent a CVSS score or vector.
    findings, and change history. Use current `agentic-project-setup` outputs if
    present; do not reconstruct project setup. Identify the actual technologies,
    data, actors, trust boundaries, and exposure from evidence.
+   If `latest.md` or `latest.html` already exists, inspect both and the matching
+   dated report/canonical JSON where available. Compare review ID, mode,
+   completion and scope, including the summary's claims about prior state.
+   Only a completed broad Audit is eligible for `latest.*`. Report mismatched,
+   missing, partial, stale or unverifiable artifacts with their paths; do not
+   infer which tool or version caused them. Preserve existing files in read-only
+   modes and propose a reconciliation using verified history rather than
+   silently overwriting it. A partial review that leaves `latest.*` unchanged
+   must not describe its pre-existing contents as correct without evidence.
 3. **Choose applicable coverage.** Select the relevant dimensions from
    [the review playbook](references/security-review-playbook.md). Select only
    standards and versions that fit the project and review question. Verify
@@ -225,7 +234,9 @@ from CVSS scoring and OWASP categories. Do not invent a CVSS score or vector.
     history. Record accepted-risk owner and review date when known. Generate
     Markdown and HTML from the same structured data when requested. Only a
     completed broad Audit may replace `latest.*`; partial reviews remain dated
-    and are identified as partial.
+    and are identified as partial. Report any pre-existing `latest.*` conflict
+    separately from the result of the current generator invocation. Do not
+    restore or replace historical reports automatically to resolve a conflict.
 11. **Summarize.** State scope, method, findings by severity, key limitations,
     remediation state, traceability handoffs, files changed, and validation
     performed. Never describe a review as certification or proof of security.
@@ -351,6 +362,8 @@ The review is useful when:
       evidence.
 - [ ] Generated Markdown and HTML represent the same canonical input; partial
       reviews do not replace a completed audit.
+- [ ] Existing `latest.*` eligibility and consistency were checked when
+      present, and mismatches or unverifiable history are disclosed.
 - [ ] Limitations are explicit and the report makes no certification claim.
 
 ## Validation

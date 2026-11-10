@@ -7,7 +7,7 @@ description: >
   logic, persistence, integrations, infrastructure, and execution flows without
   inventing behavior.
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
 ---
 
 # Backend Documentation
@@ -277,6 +277,15 @@ Create an internal evidence map before writing the documentation.
 ### 4. Reconcile existing documentation
 
 Compare each documented claim with the evidence map and current code.
+
+For a documented API contract, compare the relevant specification, the actual
+route registration including composed prefixes, handlers and schemas, tests,
+and the use-case document. Record the paths and any differing method, route,
+input, output or security contract. Code supports a claim about current behavior;
+an approved specification may describe a different intended contract. Identify
+which source is current or superseded only when evidence establishes it. Report
+conflicts and hand specification or implementation changes to their owners;
+do not silently rewrite an approved specification or change product behavior.
 
 Classify claims as:
 
@@ -650,6 +659,9 @@ The result is valid when:
 - [ ] Unsupported facts are marked unresolved or omitted rather than invented.
 - [ ] Existing valid documentation was preserved and contradictory content was
       corrected.
+- [ ] Relevant specifications, composed routes and use-case documentation were
+      compared; conflicts and unknown authority are disclosed without silently
+      changing a specification or implementation.
 - [ ] The project's discovered documentation organization and local template or
       convention were respected.
 - [ ] The general document links to the actual use-case documentation and its index
@@ -669,76 +681,8 @@ The result is valid when:
 
 ## Examples
 
-### Example 1 — Documenting a REST use case
-
-**Input**
-
-A backend exposes `POST /orders`, whose route applies an authentication
-middleware, validates a `CreateOrderDto`, calls `CreateOrder`, persists through
-`OrderRepository`, and publishes `OrderCreated`.
-
-**Expected behavior**
-
-Trace that route through the actual controller, application service, domain
-objects, repository, and event publisher.
-
-Document only the fields and status or error contracts confirmed by validators,
-implementation, schemas, or tests.
-
-Generate the use-case flow diagram showing the actual execution path, including
-authentication, validation, order creation, persistence, event publication, and
-the final response when those behaviors are confirmed by the implementation.
-
-Link the use case from `docs/main.md` and omit sections for components not present.
-
-### Example 2 — Missing evidence
-
-**Input**
-
-A controller calls `PaymentGateway`, but the repository contains no provider
-configuration, implementation, tests, or response contract.
-
-**Expected behavior**
-
-Document the observed call as an external dependency.
-
-Identify the available evidence and mark provider details, authentication,
-timeout behavior, and failure mapping as unresolved.
-
-Do not invent a provider, payment flow, or error code.
-
-If the flow diagram includes the external dependency, represent only the confirmed
-call to `PaymentGateway` and do not infer the underlying provider.
-
-### Example 3 — Existing diagram requires synchronization
-
-**Input**
-
-An existing use-case document contains a Mermaid diagram showing:
-
-```text
-Controller
-  ↓
-UseCase
-  ↓
-Repository
-  ↓
-Database
-```
-
-The current implementation now performs an authorization check and publishes an
-event after persistence.
-
-**Expected behavior**
-
-Update the documentation and diagram to reflect the current implementation.
-
-The resulting flow should include the confirmed authorization step and event
-publication.
-
-Remove or update any obsolete flow elements.
-
-Do not modify unrelated documentation.
+See [Usage examples](references/usage-examples.md) for REST tracing, missing
+evidence, diagram synchronization, and contract conflict scenarios.
 
 ## Validation
 

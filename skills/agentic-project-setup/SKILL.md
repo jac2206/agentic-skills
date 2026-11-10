@@ -5,7 +5,7 @@ description: >
   safe, effective AI-agent collaboration while preserving its proven structure
   and handing specialized work to the appropriate Skill.
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Agentic Project Setup
@@ -212,6 +212,11 @@ source and obtaining approval when content must be moved or merged.
    disposition. Look for strengths as well as gaps; do not recreate correct
    documentation or structures. Check that instructions point to authoritative
    sources, distinguish commands by evidence, and do not contradict each other.
+   Where architecture rules or API specs are relevant, compare a representative
+   sample of actual imports, route registrations and prefixes with the stated
+   layer rules and current contracts. Record both paths and the observed
+   difference; distinguish an intended exception, an older spec and an unknown
+   authority. Search results alone do not establish full architectural compliance.
 5. **Evaluate collaboration design.** Determine whether one agent can safely
    complete normal tasks. Consider specialized or parallel work only when
    independent domains, complexity, available tools, and conflict-free file
@@ -381,6 +386,8 @@ selected recommendation in a follow-up request.
 | Multi-language monorepo | Identify package/domain boundaries and propose scoped guidance only where root instructions would be ambiguous. |
 | OpenSpec | Preserve its approach, point agents to it, and hand lifecycle work to the appropriate SDD capability. |
 | Custom specifications | Preserve the existing specification approach without automatically migrating it to OpenSpec or another methodology. |
+| Layer rule conflicts with imports | Cite the written dependency rule and an actual cross-layer import; report the observed conflict and propose review without assuming the intended fix. |
+| Old spec conflicts with an active route | Trace the full route including prefixes; cite both documents and code, and flag the spec's status as unknown until its authority is confirmed. |
 | Local Skills | Validate discoverability, scope, and non-duplication with instructions; do not copy global Skills. |
 | Documented CI/CD and infrastructure | Keep authoritative material, reference it as needed, and avoid duplicate deployment documentation. |
 | Project with a design system | Assess design and accessibility only because an interface exists; preserve authoritative sources. |

@@ -42,9 +42,16 @@ Then <observable result>
 
 - <Source ID, document, or stakeholder note>
 
+## Related specifications and tests (when available)
+
+- <Criterion ID → existing specification/test ID or path; mark absent,
+  planned, stale, or execution not verified when applicable>
+
 ## Refinement notes
 
 - **Mode:** <Draft / Refine>
 - **INVEST review:** <Pass / Needs refinement, with reason>
 - **Assumptions:** <Explicitly labeled assumptions or “None”>
 - **Blocking decisions:** <Question IDs or “None”>
+- **Decision history:** <Source and date/version when known; retain superseded
+  decisions and identify unresolved conflicts>

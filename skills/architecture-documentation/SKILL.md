@@ -6,7 +6,7 @@ description: >
   infrastructure view, and a native Archify architecture diagram when the
   Archify Skill is installed.
 metadata:
-  version: "1.8.11"
+  version: "1.8.12"
 ---
 
 # Architecture Documentation
@@ -60,6 +60,11 @@ The component diagrams and cloud infrastructure diagram are cumulative deliverab
 
 1. **Establish scope.** Read applicable `AGENTS.md` instructions, product context, specifications, READMEs, existing architecture documentation, source/configuration/deployment evidence, and supplied diagrams in the active workspace. Record the product purpose, actors, business capabilities, system boundaries, and whether each view is current, reported, proposed, or mixed. Do not let a generic README substitute for product evidence.
 2. **Build an evidence map.** Trace components and relationships through source, imports, API routes, calls, schemas, deployment configuration, and supplied material. Mark material claims as verified, configured, documented, user-reported, inferred, proposed, unknown, or conflicting. Keep evidence paths for product claims as well as technical claims. A dependency, resource name, README statement, or icon alone does not prove active behavior or deployment.
+   When reusing an existing architecture package, check cited repository paths,
+   revision identifiers, and their availability against the workspace being
+   analyzed. Label missing, external, historical, or conflicting references;
+   record the inspected revision when available without inventing one. An old
+   reference is not proof of the current code or of a deployed system.
 3. **Select the views.** Honor a named target cloud. Otherwise use proposed AWS, even when the user did not explicitly ask for a cloud diagram. Keep a reported/current host topology distinct from the target-cloud proposal. Use a logical component diagram for software responsibilities and relationships; use the infrastructure diagram for runtime placement, provider services, and evidence-backed or explicitly proposed boundaries.
 4. **Write the document.** Use `templates/architecture-document.md` if the project has no suitable template. Open with the application's actual purpose and capabilities when evidence exists. Describe only supported behavior, cite evidence, distinguish reported facts from proposals, and record unresolved questions. Do not overwrite the general project README.
 5. **Find, embed, validate icons, and show deployment boundaries.** Keep Mermaid and component Draw.io consistent and cloud-agnostic. Create a separate editable infrastructure Draw.io for every requested provider, using a recognizable provider icon for every service that has a verifiable icon. For each service, search in this order: (a) the current built-in Draw.io provider library; (b) the Draw.io extra-icon catalog when available; (c) the provider's current official icon catalog. Follow [Draw.io XML guidance](references/drawio-xml.md) and the provider reference. Prefer an exact service icon. When only a truthful category icon exists, use it and retain the exact service name as a separate editable label. Prefer official SVGs embedded as data URIs when the native stencil cannot be verified or might be missing in the recipient's Draw.io installation. Never guess a stencil name, use a different provider's icon, link to a remote image, or choose a generic rectangle before completing this search. If no suitable icon can be verified, use the documented labeled service-card fallback and record the service, sources checked, and reason in the architecture document. Before finalizing, produce a compact icon inventory for each provider diagram (service label, icon/stencil or SVG source, and fallback reason if any).
@@ -98,6 +103,12 @@ The component diagrams and cloud infrastructure diagram are cumulative deliverab
 ## Quality criteria
 
 - The document describes the actual product and capabilities when evidence exists and states scope and evidence status.
+- Existing source references are checked against the current workspace, with
+  stale or unavailable references and revision limits disclosed.
+- Record static diagram checks and visual inspection separately; when a safe
+  renderer and visual inspection are available, inspect a preview if requested
+  or the installed renderer is confirmed working. Otherwise report the visual
+  validation as unavailable or not performed, without claiming a visual pass.
 - Every material component and relationship has evidence or an explicit status label.
 - Mermaid and component Draw.io describe the same logical topology; the provider-specific infrastructure diagram is a distinct deployment view.
 - People and client devices are visually distinguishable through recognizable pictograms, with readable labels kept separate.
