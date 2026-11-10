@@ -171,6 +171,8 @@ Do not confuse these two purposes.
 
 The repository-level `README.md` is the library catalog and contains shared installation and contribution guidance. `SKILL.md` is the canonical instruction file for each Skill.
 
+When adding, renaming, or removing a Skill, review the repository README and update its catalog, structure, and installation examples where affected. Discover Skills from their `SKILL.md` frontmatter rather than assuming that a directory name is the installable Skill name. Keep this file focused on repository-wide instructions instead of duplicating the catalog.
+
 Do not add a separate `README.md` inside every Skill by default. Add one only when that Skill has a distinct human-facing packaging, setup, or contribution guide that cannot be covered clearly in its `SKILL.md` or the repository README. Avoid duplicating Skill instructions across README files.
 
 ---
@@ -306,6 +308,8 @@ Whenever possible, validation should verify:
 - Absence of avoidable errors.
 
 Validation should be proportional to the complexity and risk of the Skill.
+
+Report checks actually performed separately from documented scenarios or planned tests. Do not treat the presence of instructions or examples as evidence that a Skill was executed successfully.
 
 ---
 

@@ -34,11 +34,14 @@ agentic-skills/
     ├── presentations/                # Skill name: html-presentations
     ├── project-documentation-blueprint/
     ├── requirements-engineering/     # SKILL.md and backlog templates
+    ├── software-architecture-design/ # Proportionate architecture design and evaluation
+    ├── spec-driven-development/ # Adaptive, traceable software change lifecycle
     ├── skill-factory/
+    ├── ui-ux-design-system/         # Adaptive interface and design-system design
     └── templates/                    # Shared Skill authoring template
 ```
 
-The repository contains eight Skills. Every Skill must have a `SKILL.md`; add references, templates, examples, or scripts only when they provide real value. Keep Skill-specific resources inside that Skill's directory. The shared Skill authoring template lives under `skills/templates/`.
+The repository contains eleven Skills. Every Skill must have a `SKILL.md`; add references, templates, examples, or scripts only when they provide real value. Keep Skill-specific resources inside that Skill's directory. The shared Skill authoring template lives under `skills/templates/`.
 
 Use the root `examples/` directory for representative artifacts generated with Skills. Keep instructional examples and reference fixtures that a Skill needs after installation inside that Skill's directory. A separate README inside each Skill is not required; `SKILL.md` is its operational entry point and this root README is the library catalog.
 
@@ -78,7 +81,13 @@ To install the version from your current checkout (including local changes), run
 npx skills add . --skill architecture-documentation --agent codex --global --copy
 ```
 
-Replace `architecture-documentation` with a Skill name such as `agentic-project-setup`, `application-security-review`, `architecture-documentation`, `backend-documentation`, `html-presentations`, `project-documentation-blueprint`, `requirements-engineering`, or `skill-factory`. The `presentations/` directory declares the Skill name `html-presentations` in its frontmatter.
+For example, install the UI/UX Skill globally from this checkout:
+
+```sh
+npx skills add . --skill ui-ux-design-system --agent codex --global --copy
+```
+
+Replace `architecture-documentation` with a Skill name such as `agentic-project-setup`, `application-security-review`, `architecture-documentation`, `backend-documentation`, `html-presentations`, `project-documentation-blueprint`, `requirements-engineering`, `spec-driven-development`, `software-architecture-design`, `ui-ux-design-system`, or `skill-factory`. The `presentations/` directory declares the Skill name `html-presentations` in its frontmatter.
 
 ### Update installed Skills
 
@@ -135,6 +144,13 @@ Reinstalling replaces the selected installed copies, so preserve any edits you
 made directly in those copies first. Restart the agent or open a new session if
 it does not immediately discover the updated instructions.
 
+To update the architecture design, specification, and UI/UX Skills together
+from the current checkout:
+
+```sh
+npx skills add . --skill software-architecture-design --skill spec-driven-development --skill ui-ux-design-system --agent codex --global --copy
+```
+
 Reinstall a globally installed Skill from a specific branch of this repository:
 
 ```sh
@@ -177,6 +193,14 @@ Creates presentation-grade HTML slide decks, with guidance for narrative, visual
 
 Analyzes project evidence and produces a structured visual blueprint for project documentation, including narrative and diagram guidance.
 
+### Software Architecture Design
+
+Analyzes, designs, evolves, compares, reviews, and validates software architectures against actual needs and constraints without prescribing patterns or technologies.
+
+### Spec-Driven Development
+
+Manages software changes through proportionate specifications, implementation, verification, and closure, preserving existing conventions and optionally integrating with OpenSpec.
+
 ### Skill Factory
 
 Designs, creates, reviews, and improves reusable Skills, and helps choose whether a problem needs a prompt, Skill, workflow, agent, or application.
@@ -184,6 +208,10 @@ Designs, creates, reviews, and improves reusable Skills, and helps choose whethe
 ### Requirements Engineering
 
 Turns business needs and source requirements into a traceable backlog of epics, features, and user stories with testable acceptance criteria, business rules, and readiness statuses.
+
+### UI/UX Design System
+
+Designs, implements, audits, and evolves accessible user interfaces and design systems across web and mobile, adapting to existing product identity and technology.
 
 ## Skill design
 
