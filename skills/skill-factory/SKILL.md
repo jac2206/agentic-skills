@@ -6,7 +6,7 @@ description: >
   responsibilities, or choose between a prompt, Skill, workflow, agent, or
   application.
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
 ---
 
 # Skill Factory
@@ -165,10 +165,13 @@ demonstration artifacts belong in the appropriate `examples/<category>/`.
 
 - **Create:** use `skills/templates/skill-template.md` as the repository
   starting point. Preserve its frontmatter fields and include only sections
-  relevant to the capability.
+  relevant to the capability. In this repository, use separate `Quality criteria`
+  and `Validation` sections: express applicable outcomes as a checklist and
+  explain how to check them. Keep checks proportional to the Skill's scope.
 - **Revise:** preserve the name, primary responsibility, and valid behavior
   unless the user requests a scope change. Resolve contradictions, remove
   duplication, improve clarity, and update any affected supporting resources.
+  Check the repository's separate quality checklist and validation sections.
 - **Evaluate:** report evidence-based findings and practical fixes. Do not
   silently change the Skill. Use the evaluation rubric below when a quality
   assessment is requested; give a numeric score only when the user asks for it.
@@ -217,6 +220,8 @@ The Skill Factory must:
 - Distinguish requirements from recommendations and repository conventions.
 - Make recommendations specific and actionable.
 
+## Constraints
+
 The Skill Factory must not:
 
 - Generate or rewrite files for an evaluation-only request.
@@ -252,6 +257,8 @@ A created or revised Skill is ready when:
 - [ ] Any scripts document how to run them and have meaningful validation.
 - [ ] Examples clarify behavior without acting as hidden instructions.
 - [ ] Quality criteria and validation match the capability's complexity.
+- [ ] Repository Skills have separate quality and validation sections; quality
+      criteria are a checklist and validation explains proportionate checks.
 - [ ] The official repository template and naming conventions are followed.
 - [ ] Existing behavior and related resources remain consistent after revision.
 

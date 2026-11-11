@@ -6,7 +6,7 @@ description: >
   infrastructure view, and a native Archify architecture diagram when the
   Archify Skill is installed.
 metadata:
-  version: "1.8.12"
+  version: "1.8.13"
 ---
 
 # Architecture Documentation
@@ -102,23 +102,23 @@ The component diagrams and cloud infrastructure diagram are cumulative deliverab
 
 ## Quality criteria
 
-- The document describes the actual product and capabilities when evidence exists and states scope and evidence status.
-- Existing source references are checked against the current workspace, with
+- [ ] The document describes the actual product and capabilities when evidence exists and states scope and evidence status.
+- [ ] Existing source references are checked against the current workspace, with
   stale or unavailable references and revision limits disclosed.
-- Record static diagram checks and visual inspection separately; when a safe
+- [ ] Record static diagram checks and visual inspection separately; when a safe
   renderer and visual inspection are available, inspect a preview if requested
   or the installed renderer is confirmed working. Otherwise report the visual
   validation as unavailable or not performed, without claiming a visual pass.
-- Every material component and relationship has evidence or an explicit status label.
-- Mermaid and component Draw.io describe the same logical topology; the provider-specific infrastructure diagram is a distinct deployment view.
-- People and client devices are visually distinguishable through recognizable pictograms, with readable labels kept separate.
-- Lines follow clear routes without obscuring labels or crossing unrelated icons; text remains readable at normal zoom.
-- Cloud services use verified icons from the selected provider when available. Any service-card fallback is clearly labeled and reported with the sources checked and why no icon was used.
-- The infrastructure diagram uses current provider icons, readable service names, and clear current/reported/proposed status. Structural checks pass, layout warnings are resolved or explained, and supplied visual references are compared with a rendered output when a renderer is available.
-- Each requested provider has a separate infrastructure diagram and icon inventory; the checker recognizes provider-icon markup and validates embedded SVG syntax. Stencils and SVGs still need visual inspection to prove their appearance; run a preview only when requested or when the renderer is known to work.
-- Infrastructure diagrams distinguish the provider boundary, relevant account/project, region and network scopes from client devices and external systems. Unknown placement is labeled `TBD`, and proposed boundaries are visibly marked.
-- XML is parseable, cell IDs are unique, edge endpoints resolve, and artifact links work.
-- When Archify is installed, the native workflow produces a linked candidate, finalized HTML, and receipt; if its documented shell-unavailable fallback is needed, the HTML is labeled as a fallback and no missing receipt or validation is claimed. When absent, no Archify files are created.
+- [ ] Every material component and relationship has evidence or an explicit status label.
+- [ ] Mermaid and component Draw.io describe the same logical topology; the provider-specific infrastructure diagram is a distinct deployment view.
+- [ ] People and client devices are visually distinguishable through recognizable pictograms, with readable labels kept separate.
+- [ ] Lines follow clear routes without obscuring labels or crossing unrelated icons; text remains readable at normal zoom.
+- [ ] Cloud services use verified icons from the selected provider when available. Any service-card fallback is clearly labeled and reported with the sources checked and why no icon was used.
+- [ ] The infrastructure diagram uses current provider icons, readable service names, and clear current/reported/proposed status. Structural checks pass, layout warnings are resolved or explained, and supplied visual references are compared with a rendered output when a renderer is available.
+- [ ] Each requested provider has a separate infrastructure diagram and icon inventory; the checker recognizes provider-icon markup and validates embedded SVG syntax. Stencils and SVGs still need visual inspection to prove their appearance; run a preview only when requested or when the renderer is known to work.
+- [ ] Infrastructure diagrams distinguish the provider boundary, relevant account/project, region and network scopes from client devices and external systems. Unknown placement is labeled `TBD`, and proposed boundaries are visibly marked.
+- [ ] XML is parseable, cell IDs are unique, edge endpoints resolve, and artifact links work.
+- [ ] When Archify is installed, the native workflow produces a linked candidate, finalized HTML, and receipt; if its documented shell-unavailable fallback is needed, the HTML is labeled as a fallback and no missing receipt or validation is claimed. When absent, no Archify files are created.
 
 ## Validation
 

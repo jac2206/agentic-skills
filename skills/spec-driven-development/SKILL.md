@@ -5,7 +5,7 @@ description: >
   implementation, verification, and closure while preserving existing project
   conventions and optionally integrating with OpenSpec.
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Spec-Driven Development
@@ -34,7 +34,7 @@ security audit, or documentation alone: use the relevant specialist when
 available. Do not impose a specification lifecycle on an ordinary task whose
 user did not request or need it.
 
-## Inputs and outputs
+## Inputs
 
 Required: a change request or existing change, and accessible project context.
 Optional: requested mode, scope, source requirements, acceptance criteria,
@@ -42,6 +42,8 @@ existing change artifacts, constraints, risks, and authorization boundaries.
 Inspect available evidence; ask only when an unresolved business decision or
 material ambiguity prevents safe progress. Label confirmed requirements,
 assumptions, open questions, and pending decisions separately.
+
+## Outputs
 
 Produce only the artifacts needed by the selected mode in the existing system:
 Analyze: diagnosis and recommended stages; Propose: proposal; Specify:
@@ -136,7 +138,7 @@ When absent, assess whether it adds value but do not install it or create an
 migration. Existing Markdown and other systems remain valid and are never
 migrated automatically.
 
-## Traceability, security, and decisions
+## Rules
 
 Connect applicable source request or story → specification → tasks →
 implementation → tests, and link proposals, design, security review, findings,
@@ -155,6 +157,8 @@ tests and evidence. If specialist review is unavailable, record pending controls
 or bounded checks without presenting them as an audit. Functional tests alone
 cannot establish security. Do not alter the specialist's findings or reports
 without authorization.
+
+## Constraints
 
 Request approval for consequential business decisions, material scope changes,
 destructive operations, significant risks, installation or tool migration;
@@ -188,7 +192,7 @@ and archived according to the existing system and authorized scope.
   technical documentation Skills when available and appropriate. They are
   optional and own their specialized work.
 
-## Quality criteria and validation
+## Quality criteria
 
 - [ ] Scope, authority, existing active change and source of truth are clear.
 - [ ] Selected stages and artifacts are justified by risk and complexity.
@@ -197,6 +201,8 @@ and archived according to the existing system and authorized scope.
 - [ ] Existing conventions, local changes and history are preserved.
 - [ ] Results distinguish executed checks, failures, limitations and unknowns.
 - [ ] Closure only occurs after all applicable mandatory gates pass.
+
+## Validation
 
 Before reporting, check these criteria against actual evidence, inspect changed
 artifacts and links, and report missing or blocked evidence. See the illustrative

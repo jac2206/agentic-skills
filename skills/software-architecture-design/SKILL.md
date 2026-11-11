@@ -4,7 +4,7 @@ description: >
   Analyze, design, evolve, compare, review, and validate software architectures
   against real requirements and constraints without prescribing a stack or pattern.
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Software Architecture Design
@@ -115,7 +115,7 @@ Apply only necessary steps, at a depth proportional to the decision:
    questions and handoffs. Respect existing locations; do not impose directories,
    HTML or slides.
 
-## Rules and constraints
+## Rules
 
 - Select patterns and technologies for demonstrated needs and trade-offs, never
   by default. Monoliths, modular monoliths, microservices, layered, Clean,
@@ -127,6 +127,9 @@ Apply only necessary steps, at a depth proportional to the decision:
   passed test. Label assumptions about proposed elements and relationships.
 - Consider cost and operations alongside quality, security, reliability and
   delivery constraints. Avoid generic recommendations or universal winners.
+
+## Constraints
+
 - Respect existing conventions and authoritative documents; avoid duplication and
   overwriting user work. Do not modify user stories without authorization.
 - Security design is not a security audit, and architecture review is not a
@@ -147,18 +150,23 @@ Optional handoffs, only when applicable and available:
 
 ## Quality criteria
 
-Important decisions are traceable to needs and constraints, proportionate,
-internally consistent, maintainable and operable; security and relevant quality
-attributes are addressed; material trade-offs, uncertainty and risks are visible;
-and proposals are separated from implementation. Modularity is justified by real
-boundaries. Verifiable designs specify checks for material claims and their limits.
+The result is ready when applicable criteria are supported by evidence:
+
+- [ ] Important decisions trace to needs and constraints and are proportionate.
+- [ ] Boundaries and modularity are justified, internally consistent, maintainable and operable.
+- [ ] Security and relevant quality attributes are addressed within scope.
+- [ ] Material trade-offs, uncertainty and risks are visible.
+- [ ] Proposed elements are distinguished from implemented behavior.
+- [ ] Verifiable designs specify checks for material claims and their limits.
 
 ## Validation
 
-Check mode and authorization; evidence and status labels; requirement-to-decision
-coverage; quality and constraints; alternatives and trade-offs for consequential
-decisions; consistency of prose, contracts and diagrams; migration and operations
-when relevant; and unknowns. Identify unverified items and distinguish checks
-actually run from planned validation. Consult [examples](examples/design-scenarios.md)
+1. Check the mode, authorization, evidence and status labels.
+2. Trace relevant requirements and constraints to decisions and identify gaps.
+3. Review quality attributes, alternatives and trade-offs for consequential decisions.
+4. Check consistency of prose, contracts and diagrams, and migration and operations when relevant.
+5. Identify unknowns and unverified items; distinguish checks actually run from planned validation.
+
+Consult [examples](examples/design-scenarios.md)
 for illustrative new design, evolution and comparison; they are not mandatory patterns.
 See [scenario walkthroughs](examples/scenario-walkthroughs.md) for bounded review cases.
