@@ -2,10 +2,10 @@
 name: ui-ux-design-system
 description: >
   Designs, implements, audits, and evolves user interfaces and design systems
-  across web and mobile, adapting to the product, existing stack, brand, and
-  accessibility needs without prescribing a visual style or technology.
+  across web and mobile, respecting existing identities and technology while
+  using the JAC Design System when no other identity is established.
 metadata:
-  version: "1.1.1"
+  version: "1.3.0"
 ---
 
 # UI/UX Design System
@@ -32,7 +32,7 @@ Produce only deliverables appropriate to the request: analysis or evidence-based
 
 ### Visual design deliverables
 
-- For a request to design screens or flows, create a reviewable HTML prototype by default when no output format is specified. Use the existing project's conventions or its designated artifact location; otherwise use an appropriate non-root output location. Keep it proportionate to the requested scope, usable locally when practical, and clearly identify simulated interactions or placeholder data. Demonstrate relevant screens, navigation, states and responsive behavior without inventing business functionality. A prototype is not production implementation.
+- For a request to design screens or flows, create a reviewable HTML prototype by default when no output format is specified. Use one proportionate, navigable prototype for related screens rather than automatically creating an HTML file per screen. Use the existing project's conventions or its designated artifact location; otherwise use an appropriate non-root output location. Keep it usable locally when practical, and clearly identify simulated interactions or placeholder data. Demonstrate relevant screens, navigation, states and responsive behavior without inventing business functionality. A prototype is not production implementation.
 - If the user explicitly requests Figma, deliver both an editable Figma design and the HTML prototype. Discover available Figma tools and their actual write capabilities and access; use a specified destination or an authorized available workspace. If native creation is unavailable, deliver the HTML and a concise Figma handoff with relevant layout, components, tokens and interactions, and clearly state that no Figma file was created. Do not label an image, HTML file, link or description as an editable Figma file.
 - Honor an explicit alternative format or request not to create HTML. Analyze and Audit remain read-only; a code-only change, small improvement, implementation or design-system maintenance does not automatically require a separate prototype. An existing runnable interface may serve as the reviewable deliverable when it fulfills the request.
 - Use existing assets and image-generation tools when imagery is requested or materially improves the design and a suitable tool is available. Treat generated images as optional visual assets, not editable design files or substitutes for accessible interactive elements. If unavailable, identify the limitation and use suitable placeholders when helpful.
@@ -53,9 +53,9 @@ Select the requested mode or combination; infer the smallest appropriate mode fr
 ## Workflow
 
 1. **Establish context.** Read applicable `AGENTS.md`, local guidance, architecture, requirements and project conventions. Identify product, users, platform, tasks, flows, devices, brand, visual references, existing components, tokens, themes, libraries, framework, constraints and accessibility goals. Inspect actual code and rendered UI when available. Record unknowns; don't rebuild agent configuration or impose a directory layout.
-2. **Determine scope and identity.** Prioritize explicit user colors, themes and preferences; existing design system; brand; supplied references; then a context-specific proposal. Resolve conflicts explicitly: honor a direct request while identifying affected consistency or accessibility tradeoffs. Do not silently replace supplied colors. If no identity exists, propose a suitable distinctive direction and explain principal choices; do not default to a fixed palette or trend.
+2. **Determine scope and identity.** Apply this order: explicit user brand, colors, typography, design system and preferences; existing project design system; established product identity or supplied visual references; otherwise JAC by default. An explicit partial palette or typography choice is an identity constraint: build a coherent direction around it without adding JAC branding by default. If another identity exists, preserve it; do not blend JAC assets, palette or components into it. Do not silently change existing colors or components. Identify conflicts and accessibility tradeoffs, and honor explicit choices. When JAC applies, use the conditional references below and report missing or conflicting assets.
 3. **Design proportionately.** Map relevant requirements to screens and flows. Define navigation, hierarchy, responsive adaptations, components, states, feedback, error prevention and recovery as needed. Reuse existing patterns; create only missing foundations or components. Produce the visual deliverables above when applicable. Consider usability, accessibility, visual quality, performance and maintainability together. Use optional presets as inspiration, never as mandatory templates.
-4. **Implement when requested.** Inspect and follow the existing stack and architecture. Reuse components and semantic tokens, preserve business behavior and state, and avoid duplicating styles, dependencies or components. Apply changes incrementally; consider compatibility and downstream consumers before changing tokens or public components. Do not rename existing tokens without authorization. Include appropriate tests when valuable.
+4. **Implement when requested.** Inspect and follow the existing stack and architecture. Reuse components and semantic tokens, preserve business behavior and state, and avoid duplicating styles, dependencies or components. Select libraries according to the rules below and installed versions. Apply changes incrementally; consider compatibility and downstream consumers before changing tokens or public components. Do not rename existing tokens without authorization. Include appropriate tests when valuable.
 5. **Validate and report.** Match checks to scope and risk. Inspect actual combinations and states across relevant sizes and themes, and run available project checks. Where tools permit, open and inspect the HTML prototype or app, including navigation, forms, errors and overflow. For a Figma deliverable, verify that the actual editable file and intended frames exist when access permits. Check relevant accessibility criteria using automated and manual methods where available. Report artifact paths or links, exact evidence, checks and untested areas; never claim visual inspection, conformance, a Figma file, or test execution without evidence.
 
 ## Rules
@@ -69,9 +69,21 @@ Select the requested mode or combination; infer the smallest appropriate mode fr
 - Apply relevant WCAG and platform accessibility guidance, with an explicit target where relevant. Check actual foreground/background pairs, component contrast, focus, semantics, labels, keyboard and screen readers, touch targets, motion preferences, text scaling and non-color feedback as applicable. Record criterion, method and evidence; do not claim compliance from automated checks alone.
 - Consider sensitive data exposure, authorization states, safe errors and session interactions. A hidden or disabled control is not an authorization mechanism; refer security assessment to the specialist capability.
 
+### JAC identity and sources
+
+When JAC is selected or is the default, read the [JAC reference index](references/jac/REFERENCE-INDEX.md) first, then the specialized brand, palette and UI documents and the v4 HTML visual catalog as relevant. For conflicts in identity/logo, colors/tokens or component/technology guidance, use the respective specialized document as authority and report the discrepancy. The catalog is the primary visual and interactive reference, not mandatory production code. Do not copy its styles or dependencies indiscriminately. For a requested JAC component catalog, adapt the existing catalog as an authorized starting point, covering relevant light/dark examples; do not modify the bundled reference merely to fulfill a project request.
+
+Use official provided artwork appropriate to context; respect aspect ratio, clear space and identity. Check provenance in the index: approximate vectorizations are not original master vectors; unconfirmed variants must not be represented as approved. Never recreate a supplied official logo, substitute a generic skull, or treat a banner as a logo or a default enterprise background. If the required master or variant is missing, state the gap instead of inventing it.
+
+Use the palette's semantic light/dark colors, typography, spacing and radius guidance when JAC applies. Separate brand colors from functional roles; add only needed semantic roles such as focus, disabled, info or warning if missing, document them as derived, and validate their actual foreground/background pairs. Do not rename existing tokens without authorization. Support system and custom themes when requested; dark presentation is not mandatory. Target WCAG 2.2 AA for applicable JAC UI, without claiming conformance without evidence.
+
+### Technology selection
+
+Inspect existing project dependencies, framework, architecture and conventions first; preserve them unless a migration is requested. For a new React or Next.js project with no established UI stack or explicit preference, default to Tailwind CSS with shadcn/ui when a component stack is needed and compatible. Use PrimeReact when explicitly requested, or another explicitly selected stack; do not introduce either for a task that does not need it. For Angular, consider PrimeNG when appropriate and compatible. For React Native and Expo use native-compatible components; never import PrimeReact, PrimeNG or shadcn/ui web components into React Native. Adapt other ecosystems without forcing a framework or introducing unnecessary dependencies. Confirm installed versions and APIs, and share semantic tokens across platforms only where appropriate.
+
 ## Constraints
 
-- Do not impose a framework, library, palette, aesthetic, universal token hierarchy, full design system, project structure, documentation package or dependency. Respect established choices and avoid unrelated business logic changes or wholesale rewrites.
+- Do not impose a framework, library, universal token hierarchy, full design system, project structure, documentation package or dependency. JAC is the fallback only when no other identity is established; never impose it on an existing or explicitly branded product. Respect established choices and avoid unrelated business logic changes or wholesale rewrites.
 
 For practical token, component and platform checks, read [Design guidance](references/design-guidance.md) when relevant. For the supplied palette, read the [optional theme example](examples/optional-theme.md) only when selected or useful as an illustration.
 
@@ -91,6 +103,7 @@ The result is ready when applicable criteria are supported by evidence:
 
 - [ ] The requested task, relevant flows, interactions and states are addressed.
 - [ ] Existing identity, architecture and appropriate assets are respected.
+- [ ] JAC is applied only when selected or no other identity exists; source conflicts and missing artwork are disclosed.
 - [ ] The interface adapts to relevant platforms, sizes and themes.
 - [ ] Accessibility considerations are addressed with appropriate evidence.
 - [ ] Colors and themes are coherent, and token and component changes preserve intended compatibility.
@@ -100,6 +113,7 @@ The result is ready when applicable criteria are supported by evidence:
 ## Validation
 
 1. Check the deliverable against the requested scope, relevant flows, states and existing design conventions.
+   Check identity precedence, asset provenance and actual source conflicts; for a non-JAC identity check that JAC tokens and marks do not leak into the result.
 2. Inspect actual layouts, navigation, forms, errors, overflow, themes and responsive behavior where tools permit.
 3. Check applicable accessibility criteria with available manual and automated methods; record the target, method and evidence.
 4. Verify affected token and component consumers and compatibility where relevant; review new dependencies and structures.

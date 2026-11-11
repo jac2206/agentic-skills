@@ -211,7 +211,7 @@ Turns business needs and source requirements into a traceable backlog of epics, 
 
 ### UI/UX Design System
 
-Designs, implements, audits, and evolves accessible user interfaces and design systems across web and mobile, adapting to existing product identity and technology. Interface design requests default to a reviewable HTML prototype; an explicitly requested editable Figma design is also produced when suitable tools and access are available.
+Designs, implements, audits, and evolves accessible user interfaces and design systems across web and mobile. It preserves explicit or existing identities and uses the bundled JAC Design System when no identity is established. Interface design requests default to a reviewable HTML prototype; an explicitly requested editable Figma design is also produced when suitable tools and access are available.
 
 ## Skill design
 

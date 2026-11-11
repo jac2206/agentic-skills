@@ -1,0 +1,44 @@
+:root {
+  /* Legacy brand variables: retained for compatibility; not theme roles. */
+  --jac-primary: #00B8F0;
+  --jac-secondary: #1E40AF;
+  --jac-background: #0B1E3C;
+  --jac-foreground: #F8FAFC;
+  --jac-accent: #FFCC15;
+}
+
+/* Opt in by setting data-jac-theme="light" or "dark" on a theme root.
+   Theme selection, including system preference, belongs to the application. */
+[data-jac-theme="light"] {
+  --jac-color-primary: #007EA8;
+  --jac-color-secondary: #1E40AF;
+  --jac-color-background: #F6F9FC;
+  --jac-color-surface: #FFFFFF;
+  --jac-color-surface-muted: #EAF7FD;
+  --jac-color-text-primary: #0B1E3C;
+  --jac-color-text-secondary: #52657B;
+  --jac-color-border: #D8E5EE;
+  --jac-color-white: #FFFFFF;
+  --jac-color-success: #15803D;
+  --jac-color-success-surface: #DCFCE7;
+  --jac-color-error: #B42318;
+  --jac-color-error-surface: #FEE4E2;
+  --jac-color-accent: #B38600;
+}
+
+[data-jac-theme="dark"] {
+  --jac-color-primary: #00B8F0;
+  --jac-color-secondary: #60A5FA;
+  --jac-color-background: #071323;
+  --jac-color-surface: #0B1E3C;
+  --jac-color-surface-muted: #142B49;
+  --jac-color-text-primary: #F8FAFC;
+  --jac-color-text-secondary: #A4B7CA;
+  --jac-color-border: #29435F;
+  --jac-color-white: #FFFFFF;
+  --jac-color-success: #4ADE80;
+  --jac-color-success-surface: #14532D;
+  --jac-color-error: #F87171;
+  --jac-color-error-surface: #450A0A;
+  --jac-color-accent: #FFCC15;
+}
