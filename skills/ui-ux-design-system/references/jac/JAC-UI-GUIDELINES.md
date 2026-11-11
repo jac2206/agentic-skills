@@ -2,6 +2,8 @@
 
 JAC supports two official web UI implementation approaches. Both must follow the same brand identity, design tokens, accessibility standards, typography, spacing, and visual guidelines.
 
+For JAC icon selection, accessibility and platform-specific recommendations, see [JAC Iconography Guidelines](JAC-ICONOGRAPHY.md). Preserve existing project icon libraries and conventions.
+
 ### Option A — Tailwind CSS + shadcn/ui
 
 - Applicable to React and Next.js projects when compatible with their existing setup.

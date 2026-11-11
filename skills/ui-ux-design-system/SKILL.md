@@ -5,7 +5,7 @@ description: >
   across web and mobile, respecting existing identities and technology while
   using the JAC Design System when no other identity is established.
 metadata:
-  version: "1.4.0"
+  version: "1.4.1"
 ---
 
 # UI/UX Design System
@@ -76,6 +76,8 @@ Select the requested mode or combination; infer the smallest appropriate mode fr
 When JAC is selected or is the default, read the [JAC reference index](references/jac/REFERENCE-INDEX.md) first, then the specialized brand, palette and UI documents and the v4 HTML visual catalog as relevant. For conflicts in identity/logo, colors/tokens or component/technology guidance, use the respective specialized document as authority and report the discrepancy. The catalog is the primary visual and interactive reference, not mandatory production code. Do not copy its styles or dependencies indiscriminately. For a requested JAC component catalog, adapt the existing catalog as an authorized starting point, covering relevant light/dark examples; do not modify the bundled reference merely to fulfill a project request.
 
 Use official provided artwork appropriate to context; respect aspect ratio, clear space and identity. Check provenance in the index: approximate vectorizations are not original master vectors; unconfirmed variants must not be represented as approved. Never recreate a supplied official logo, substitute a generic skull, or treat a banner as a logo or a default enterprise background. If the required master or variant is missing, state the gap instead of inventing it.
+
+For JAC iconography, consult the [iconography guidelines](references/jac/JAC-ICONOGRAPHY.md) when selecting or implementing icons. Reserve the JAC emblem for identity; use consistent functional icons from the project's existing, platform-compatible family. Treat suggested packages and semantic mappings as options, not dependencies; verify exports and versions. Use semantic theme colors, hide decorative icons from assistive technology, and give icon-only controls accessible names and appropriate target sizes. Create custom icons only when existing assets or icons do not meet a documented need.
 
 Use the palette's semantic light/dark colors, typography, spacing and radius guidance when JAC applies. Separate brand colors from functional roles; add only needed semantic roles such as focus, disabled, info or warning if missing, document them as derived, and validate their actual foreground/background pairs. Do not rename existing tokens without authorization. Support system and custom themes when requested; dark presentation is not mandatory. Target WCAG 2.2 AA for applicable JAC UI, without claiming conformance without evidence.
 

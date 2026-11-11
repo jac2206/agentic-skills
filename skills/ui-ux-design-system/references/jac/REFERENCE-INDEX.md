@@ -7,6 +7,7 @@ Read this index when JAC is explicitly selected or is the fallback selected by t
 - [Brand guidelines](JAC-BRAND-GUIDELINES-FINAL-v2.md): identity, logo treatment, personality and voice.
 - [Color palette](JAC-COLOR-PALETTE.md): authoritative brand colors, semantic themes, typography, spacing, radii and contrast guidance.
 - [UI guidelines](JAC-UI-GUIDELINES.md): component, platform and technology guidance, adapted to the project's actual stack.
+- [Iconography guidelines](JAC-ICONOGRAPHY.md): consult for JAC brand artwork, functional icons, platform-compatible icon families, accessibility and performance. Existing project icon conventions take precedence over suggested packages.
 - [Design system v4](JAC-DESIGN-SYSTEM-v4.html): primary visual and interaction catalog, illustrative rather than production code.
 - [Original asset notes](README.md): states that the named SVG family are approximate vectorizations, not original master vectors. [Brand CSS](jac-brand-tokens.css) preserves five legacy brand variables and provides opt-in semantic tokens via `data-jac-theme="light"` or `data-jac-theme="dark"`; the palette is the authoritative source. An application must choose and apply its own theme, including system preference when needed. The supplied identity-board image shows different cyan and gold values; follow the palette and disclose the discrepancy where relevant.
 
