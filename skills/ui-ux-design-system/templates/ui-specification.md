@@ -5,6 +5,7 @@ Use and shorten this template only when a written handoff is useful. Distinguish
 - Scope, objective, users and platforms:
 - Source requirements and acceptance criteria:
 - Existing identity, constraints and reusable assets:
+- Visual direction: audience, primary task, platform, expressiveness, density and composition rationale:
 - Screens, navigation and user flows:
 - Content hierarchy, interaction and responsive adaptations:
 - Components, variants and applicable states:
