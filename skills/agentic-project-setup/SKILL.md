@@ -5,7 +5,7 @@ description: >
   safe, effective AI-agent collaboration while preserving its proven structure
   and handing specialized work to the appropriate Skill.
 metadata:
-  version: "1.0.2"
+  version: "1.0.3"
 ---
 
 # Agentic Project Setup
@@ -99,6 +99,15 @@ capabilities. Do not copy a global Skill into a repository, create a local
 Skill when instructions suffice, or assume documents under `.agents/` are
 loaded without an explicit entry-point reference.
 
+A portable agent definition, such as this library's `AGENT.md`, describes a
+specialized responsibility; it is distinct from repository instructions such as
+`AGENTS.md`. During project setup, inspect existing definitions and their
+references when relevant, and ensure the intended host can access them. A
+reference or filename alone does not install, activate, delegate to, or prove
+host support for an agent. Follow the target host's actual discovery rules;
+do not assume every host recognizes `AGENTS.md` or `AGENT.md` automatically.
+Agent authoring remains with `agent-factory` when available.
+
 ### Safe, idempotent setup
 
 Before changing a file, compare current and proposed content. Preserve useful
@@ -144,14 +153,19 @@ Return a diagnosis with:
 ### Setup
 
 Produce the same pre-change diagnosis and an applied-change summary. Save only
-approved, evidence-supported artifacts at established project locations. When
-there is no established equivalent, create a root `AGENTS.md` entry point and
+approved, evidence-supported artifacts at established project locations. For a
+Codex-compatible target, when there is no established equivalent, create a root
+`AGENTS.md` entry point and
 build a tailored `.agents/` knowledge structure when the project has confirmed
 context or instructions that need a separate, discoverable home. Populate only
 the documents agents need for the applicable dimensions, using repository
 evidence and approved decisions. Create no placeholders or empty directories;
 for a small project, one concise context document or root instructions alone
 may be sufficient.
+
+For other hosts, preserve an established entry point or use the host's verified
+instruction convention. If its discovery behavior is unknown, state that
+limitation and do not imply automatic loading or impose a host-specific filename.
 
 The root `AGENTS.md` must be the navigable entry point for Codex-compatible
 agents. It must state repository-wide rules and explicitly link or direct
@@ -313,6 +327,7 @@ not require them to be installed.
 | Need discovered | Handoff when available |
 | --- | --- |
 | Reusable Skill design or local Skill scope | `skill-factory` |
+| Reusable agent definition or agent authoring | `agent-factory` |
 | Backlog and acceptance criteria | `requirements-engineering` |
 | Specification lifecycle or SDD | `spec-driven-development` |
 | Architecture evidence and diagrams | `architecture-documentation`, `system-design`, or `diagram-engineering` |
@@ -336,6 +351,8 @@ The result is valid when:
       recreated from a generic template.
 - [ ] Agent instructions are discoverable, scoped, non-duplicative, and point
       to relevant authoritative material.
+- [ ] Portable agent definitions and project instructions are distinguished;
+      discovery and execution claims match evidence for the intended host.
 - [ ] Local Skills, specialized agents, and subagents are proposed only where
       their value and real execution support are established.
 - [ ] Setup changes are approved where required, incremental, safe, and
@@ -389,6 +406,7 @@ selected recommendation in a follow-up request.
 | Layer rule conflicts with imports | Cite the written dependency rule and an actual cross-layer import; report the observed conflict and propose review without assuming the intended fix. |
 | Old spec conflicts with an active route | Trace the full route including prefixes; cite both documents and code, and flag the spec's status as unknown until its authority is confirmed. |
 | Local Skills | Validate discoverability, scope, and non-duplication with instructions; do not copy global Skills. |
+| Portable agent definition | Identify the definition and project instructions separately; verify how the intended host accesses each and do not claim registration or delegation from a reference alone. |
 | Documented CI/CD and infrastructure | Keep authoritative material, reference it as needed, and avoid duplicate deployment documentation. |
 | Project with a design system | Assess design and accessibility only because an interface exists; preserve authoritative sources. |
 | Project without an interface | Mark Design as Not applicable and create no UI guidance. |

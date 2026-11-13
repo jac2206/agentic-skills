@@ -7,7 +7,7 @@ description: >
   agent responsibilities, authority, handoffs, and execution requirements.
   Does not install or execute agents or implement runtime integrations.
 metadata:
-  version: "1.0.0"
+  version: "1.0.1"
 ---
 
 # Agent Factory
@@ -184,7 +184,11 @@ provides substantial information beyond those sections.
 The repository's portable configuration is the definition's frontmatter and body.
 Concrete tools, models, credentials, editor settings, SDKs, and runtime bindings
 belong to separately scoped integration work. Explain that `AGENT.md` does not
-imply automatic discovery or execution in Codex or another host.
+imply automatic discovery or execution in Codex or another host. Applicable
+repository instructions, including `AGENTS.md` where supported, govern project
+scope; they are not interchangeable with a portable agent definition or a
+host-native agent registration. Check each host's discovery and instruction
+conventions rather than assuming they match Codex.
 
 Keep a new definition `draft` until the common contract's readiness requirements,
 including representative host execution evidence, are met. Record missing runtime

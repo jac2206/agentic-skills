@@ -1,7 +1,19 @@
 # Agent Definition Contract
 
-Applies to future `agents/<name>/AGENT.md` definitions using
-[common contract 1.0](components.md). No functional agent is supplied in this phase.
+Applies to portable `agents/<name>/AGENT.md` definitions using
+[common contract 1.0](components.md). A definition is not a host integration.
+
+## Agent definitions and repository instructions
+
+`AGENT.md` is this repository's canonical name for a portable definition of
+one reusable agent, independent of any host. `AGENTS.md` is a separate format
+for repository or directory instructions; hosts differ in whether and how they
+discover it. Codex can discover it in its applicable scope. Renaming an agent
+definition to `AGENTS.md` does not register a specialized agent and could
+instead make it apply as directory instructions. A caller or separately verified
+host integration must explicitly provide the definition. Where supported, a
+project's instructions may direct the caller to read it; that direction is not
+proof of native agent delegation.
 
 ## Responsibility
 

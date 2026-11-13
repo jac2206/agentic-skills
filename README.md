@@ -282,7 +282,8 @@ criteria, and execution status. They describe the same task and authority bounda
 documentation, not additional operational rules. Skill Factory and the authoring
 templates require this bilingual guide for new Skills. Skill Factory is version
 1.2.1, including bilingual authoring and the packaging fix that bundles its required
-templates. Other Skill versions are unchanged. Generated deliverables may use the
+templates. Agent Factory is version 1.0.1; see each Skill's frontmatter for its
+current version. Generated deliverables may use the
 language requested in the prompt.
 
 ## Skill design

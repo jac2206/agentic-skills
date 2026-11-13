@@ -11,6 +11,10 @@ schema, runtime protocol, or implemented discovery API.
 | `agent` | `agents/<name>/AGENT.md` | Frontmatter `name` | Frontmatter `version` |
 | `workflow` | `workflows/<name>/WORKFLOW.md` | Frontmatter `name` | Frontmatter `version` |
 
+The agent entry point is a repository-defined portable format, not a Codex
+`AGENTS.md` instruction file or a host-native agent registration. Renaming
+it does not install or activate it. See the agent contract for this boundary.
+
 Skills retain their existing profile. Do not add `kind`, `contract_version`,
 `status`, `dependencies`, or a top-level `version` to existing Skills to make
 them conform to the new agent/workflow profile. Existing prose composition links

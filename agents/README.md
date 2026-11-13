@@ -4,6 +4,13 @@ This directory establishes how reusable agents are packaged. The
 [backend-engineer](backend-engineer/AGENT.md) is the first definition. Repository-wide `AGENTS.md` contains contributor
 instructions; it is not a reusable agent definition.
 
+`AGENT.md` is a portable convention of this library, not an automatically
+registered agent in any host. `AGENTS.md` files can provide repository or
+directory instructions where the host supports them; discovery differs by host.
+When using a definition in another project, make it accessible and explicitly
+request that it be read, or reference it from the project's applicable
+instructions. This does not by itself create a subagent.
+
 ## Package convention
 
 Use `agents/<name>/AGENT.md` with a stable kebab-case directory matching frontmatter

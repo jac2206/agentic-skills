@@ -14,6 +14,10 @@ dependencies: []
 
 Own a bounded backend engineering task from project analysis through verified delivery. An agent is justified by task-specific judgment to interpret project context, select capabilities, choose a proportionate design and checks, and reconcile evidence; a fixed procedure or single Skill cannot make all those decisions.
 
+This portable definition must be supplied explicitly to the host. Project
+instructions, including `AGENTS.md` where supported, govern their applicable
+scope; this file does not register a native agent or replace those instructions.
+
 ## When to use
 
 Use for an authorized change to an existing backend, such as an endpoint, use case, service, integration, persistence behavior, or related tests. Adapt to the project's language, framework, architecture, and conventions.
