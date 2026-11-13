@@ -7,7 +7,7 @@ This repository contains Skills that help AI systems perform specialized tasks c
 The eleven original Skills retain their structure and behavior. Agent Factory
 extends the library to twelve Skills and uses the existing contracts and templates
 to author reusable agent definitions. The repository also defines authoring
-standards for future workflows; it includes no agent definitions, executable
+standards for workflows and a backend engineer definition; it includes no executable
 workflows, adapters, or repository-specific CLI.
 
 Start with [the architecture and roadmap](docs/architecture.md)
@@ -29,8 +29,9 @@ A Skill is useful when a capability is reusable, specialized, structured, and va
 agentic-skills/
 ├── AGENTS.md
 ├── README.md
-├── agents/                           # Future agent packaging and authoring guide
-│   └── README.md
+├── agents/                           # Portable agent definitions and authoring guide
+│   ├── README.md
+│   └── backend-engineer/AGENT.md
 ├── contracts/                        # Common, agent and workflow authoring contracts
 ├── docs/                             # Architecture and validation evidence
 ├── examples/                         # Concrete artifacts produced with Skills
@@ -80,7 +81,7 @@ documented decisions, not runnable application code or deployment configuration.
 | Resource | Purpose | Availability |
 | --- | --- | --- |
 | [Skills](#skills) | Reusable procedures and their supporting resources | Twelve Skills |
-| [Agents](agents/README.md) | Bounded delegated judgment using referenced capabilities | Authoring guide; definitions deferred |
+| [Agents](agents/README.md) | Bounded delegated judgment using referenced capabilities | Authoring guide and one definition |
 | [Workflows](workflows/README.md) | Process ordering, input/output mapping and failure rules | Authoring guide; definitions deferred |
 | [Common contract](contracts/components.md) | Identity, metadata profiles, references and discovery boundaries | Written authoring contract |
 | [Agent template](templates/agent-template.md) / [Workflow template](templates/workflow-template.md) | Starting structures for future components | Authoring templates only |
@@ -232,6 +233,15 @@ For example, install the application security review Skill from this checkout:
 npx skills add . --skill application-security-review --agent codex --global --copy
 ```
 
+## Agents
+
+| Agent | Responsibility | Status |
+| --- | --- | --- |
+| [backend-engineer](agents/backend-engineer/AGENT.md) | Scoped backend engineering across project stacks. | Ready; representative Codex pilot recorded |
+
+This portable definition is not automatically discovered or installed by Codex.
+Provide it explicitly to the host; the Skill installation commands install Skills only.
+
 ## Skills
 
 The first column links to each canonical definition and shows the declared name
@@ -296,13 +306,13 @@ Skills can be combined into a larger workflow while retaining separate responsib
 Research → Content Development → Presentation Design → Generation → QA
 ```
 
-Future agents will select Skills by typed references such as
+Agents select Skills by typed references such as
 `skill/html-presentations`, load their canonical instructions, pass scoped inputs,
 and check their results. Workflows will define ordering and handoffs across
 capabilities. Tools perform concrete operations supplied by the consuming host.
 Neither an agent nor a workflow should duplicate a Skill's instructions.
 
-Canonical future packages are `agents/<name>/AGENT.md` and
+Canonical packages are `agents/<name>/AGENT.md` and
 `workflows/<name>/WORKFLOW.md`. These neutral formats do not imply native runtime
 support. Codex, Strands Agents and other integrations require separate verified
 bindings. The existing external Skill installer commands above remain separate

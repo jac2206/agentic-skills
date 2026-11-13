@@ -1,7 +1,7 @@
 # Agent Authoring
 
-This directory establishes how future reusable agents are packaged. It contains
-no agent definitions yet. Repository-wide `AGENTS.md` contains contributor
+This directory establishes how reusable agents are packaged. The
+[backend-engineer](backend-engineer/AGENT.md) is the first definition. Repository-wide `AGENTS.md` contains contributor
 instructions; it is not a reusable agent definition.
 
 ## Package convention
@@ -10,7 +10,7 @@ Use `agents/<name>/AGENT.md` with a stable kebab-case directory matching frontma
 `name`. Add local references or templates only when the agent needs them. Do not
 use provider-native filenames as the canonical portable entry point.
 
-## Adding an agent in a later phase
+## Adding an agent
 
 1. Identify the delegated responsibility and justify it against the abstraction
    ladder in [the architecture](../docs/architecture.md).

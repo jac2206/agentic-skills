@@ -38,7 +38,8 @@ agentic-skills/
 ├── AGENTS.md
 ├── README.md
 ├── agents/
-│   └── README.md                    # Authoring and packaging guide; no agents yet
+│   ├── README.md                    # Authoring and packaging guide
+│   └── backend-engineer/AGENT.md    # Portable definition
 ├── contracts/
 │   ├── components.md               # Identity, discovery, references, compatibility
 │   ├── agents.md                   # Agent definition and handoff requirements
@@ -69,8 +70,8 @@ agentic-skills/
 
 The tree omits `.git/`, `.gitignore`, ignored `.archify/` working files, and
 component-local supporting files for readability. No runtime configuration changes
-are required. `agents/` and `workflows/` contain useful authoring guides rather than
-placeholder components. The workflow guide lives at `workflows/README.md`.
+are required. `agents/` contains a definition and guide; `workflows/` contains
+an authoring guide. The workflow guide lives at `workflows/README.md`.
 
 ## Ownership and source of truth
 
@@ -79,7 +80,7 @@ placeholder components. The workflow guide lives at `workflows/README.md`.
 | `AGENTS.md` | Repository-wide contribution instructions | Does not catalog components or define a reusable agent |
 | `README.md` | Human catalog, navigation and existing Skill installation guidance | Does not define runtime behavior |
 | `skills/<directory>/SKILL.md` | Existing reusable capability | Supporting resources remain inside its package |
-| `agents/<name>/AGENT.md` | Future portable agent definition | No provider configuration in the canonical definition |
+| `agents/<name>/AGENT.md` | Portable agent definition | No provider configuration in the canonical definition |
 | `workflows/<name>/WORKFLOW.md` | Future declarative workflow definition | No executable commands or engine DSL required |
 | `contracts/` | Shared authoring contracts | No runtime protocol or retroactive Skill migration |
 | Root `templates/` | Agent and workflow authoring structures | No deliverable templates owned by a particular component |
@@ -97,7 +98,7 @@ an installed existing Skill must not need this repository's root directories.
 
 ```mermaid
 flowchart TD
-    H["Consuming host: future integration"] --> A["Agent definition: future"]
+    H["Consuming host: future integration"] --> A["Agent definition: portable"]
     H --> W["Workflow definition: future"]
     H --> S["Existing Skills"]
     A -->|selects by reference| S
