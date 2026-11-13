@@ -1,8 +1,17 @@
-# AI Skills
+# Agentic Skills — Reusable AI Components
 
-A reusable library of focused, composable capabilities for AI agents.
+A reusable library of focused, composable capabilities for AI systems.
 
 This repository contains Skills that help AI systems perform specialized tasks consistently across projects. The goal is to build reusable capabilities, not a collection of one-off prompts.
+
+The eleven original Skills retain their structure and behavior. Agent Factory
+extends the library to twelve Skills and uses the existing contracts and templates
+to author reusable agent definitions. The repository also defines authoring
+standards for future workflows; it includes no agent definitions, executable
+workflows, adapters, or repository-specific CLI.
+
+Start with [the architecture and roadmap](docs/architecture.md)
+and [validation evidence](docs/architecture-validation.md).
 
 ## Philosophy
 
@@ -20,32 +29,88 @@ A Skill is useful when a capability is reusable, specialized, structured, and va
 agentic-skills/
 ├── AGENTS.md
 ├── README.md
+├── agents/                           # Future agent packaging and authoring guide
+│   └── README.md
+├── contracts/                        # Common, agent and workflow authoring contracts
+├── docs/                             # Architecture and validation evidence
 ├── examples/                         # Concrete artifacts produced with Skills
 │   ├── architecture/
+│   ├── design/
 │   ├── docs/
 │   ├── presentations/
 │   ├── projects/
 │   └── requirements/
-└── skills/
-    ├── agentic-project-setup/         # SKILL.md and an end-to-end setup example
-    ├── application-security-review/   # Evidence-based application security assessment and remediation validation
-    ├── architecture-documentation/   # SKILL.md, references, templates, examples, scripts
-    ├── backend-documentation/        # SKILL.md and optional templates
-    ├── presentations/                # Skill name: html-presentations
-    ├── project-documentation-blueprint/
-    ├── requirements-engineering/     # SKILL.md and backlog templates
-    ├── software-architecture-design/ # Proportionate architecture design and evaluation
-    ├── spec-driven-development/ # Adaptive, traceable software change lifecycle
-    ├── skill-factory/
-    ├── ui-ux-design-system/         # Adaptive interface and design-system design
-    └── templates/                    # Shared Skill authoring template
+├── skills/
+│   ├── agent-factory/
+│   ├── agentic-project-setup/
+│   ├── application-security-review/
+│   ├── architecture-documentation/
+│   ├── backend-documentation/
+│   ├── presentations/                # Declared Skill name: html-presentations
+│   ├── project-documentation-blueprint/
+│   ├── requirements-engineering/
+│   ├── software-architecture-design/
+│   ├── spec-driven-development/
+│   ├── skill-factory/
+│   ├── ui-ux-design-system/
+│   └── templates/                    # Existing Skill authoring template
+├── templates/                        # Agent and workflow authoring templates
+├── validators/                       # Review rules; shared automation deferred
+└── workflows/
+    └── README.md                     # Future workflow packaging and authoring guide
 ```
 
-The repository contains eleven Skills. Every Skill must have a `SKILL.md`; add references, templates, examples, or scripts only when they provide real value. Keep Skill-specific resources inside that Skill's directory. The shared Skill authoring template lives under `skills/templates/`.
+The repository contains twelve Skills. Every Skill must have a `SKILL.md` and a
+bilingual `examples/usage.md`; add other references, templates, examples, or scripts
+only when they provide real value. Keep Skill-specific resources inside that
+Skill's directory. Shared Skill authoring templates live under `skills/templates/`.
 
 Use the root `examples/` directory for representative artifacts generated with Skills. Keep instructional examples and reference fixtures that a Skill needs after installation inside that Skill's directory. A separate README inside each Skill is not required; `SKILL.md` is its operational entry point and this root README is the library catalog.
 
-The [`projects/loyalty-rewards` foundation](examples/projects/loyalty-rewards/README.md) demonstrates an agent-ready project context for a loyalty system. It contains instructions and documented decisions, not runnable application code or deployment configuration.
+The current `.gitignore` excludes root example outputs and `.archify/` working
+files. They may exist locally without being distributed by Git. This architecture
+phase preserves that policy; explicitly review it before publishing a showcase.
+
+The local `examples/projects/loyalty-rewards/` foundation, when present, demonstrates
+an agent-ready project context for a loyalty system. It contains instructions and
+documented decisions, not runnable application code or deployment configuration.
+
+## Component authoring resources
+
+| Resource | Purpose | Availability |
+| --- | --- | --- |
+| [Skills](#skills) | Reusable procedures and their supporting resources | Twelve Skills |
+| [Agents](agents/README.md) | Bounded delegated judgment using referenced capabilities | Authoring guide; definitions deferred |
+| [Workflows](workflows/README.md) | Process ordering, input/output mapping and failure rules | Authoring guide; definitions deferred |
+| [Common contract](contracts/components.md) | Identity, metadata profiles, references and discovery boundaries | Written authoring contract |
+| [Agent template](templates/agent-template.md) / [Workflow template](templates/workflow-template.md) | Starting structures for future components | Authoring templates only |
+| [Validation](validators/README.md) | Cross-component review checks and future automation conventions | Manual checklist; no shared executable |
+
+The existing [Skill template](skills/templates/skill-template.md) remains canonical
+for Skill authoring. The [usage template](skills/templates/usage-template.md) supplies
+the required English and Spanish guide structure. Root templates are for component
+authors; templates used by a Skill to produce deliverables remain inside that Skill.
+
+## Repository documentation
+
+The documents under `docs/` are intended to be versioned with the repository:
+
+- [Architecture and roadmap](docs/architecture.md): component responsibilities,
+  organization, decisions, and future integration boundaries.
+- [Architecture validation](docs/architecture-validation.md): the dated record of
+  checks performed when preparing the repository architecture.
+- [Agent Factory validation](docs/agent-factory-validation.md): the dated review of
+  that Skill's initial authoring and integration, with execution limits.
+
+Validation records describe their inspected snapshot, not a continuously updated
+inventory or proof of later runtime behavior. Keep durable decisions and useful
+evidence here; a separate report for every change or Skill is not required.
+Skill-specific usage guides belong inside their packages and are linked below.
+Do not ignore `docs/` as a whole. Exclude temporary outputs or private material
+individually when needed; the current `.gitignore` keeps these documents versionable.
+Contributing agents classify outputs by purpose and report what should be versioned
+or excluded. Generating a file does not make it temporary, and preparing files for
+Git does not itself authorize a commit or publication.
 
 ## Install a Skill
 
@@ -87,7 +152,7 @@ For example, install the UI/UX Skill globally from this checkout:
 npx skills add . --skill ui-ux-design-system --agent codex --global --copy
 ```
 
-Replace `architecture-documentation` with a Skill name such as `agentic-project-setup`, `application-security-review`, `architecture-documentation`, `backend-documentation`, `html-presentations`, `project-documentation-blueprint`, `requirements-engineering`, `spec-driven-development`, `software-architecture-design`, `ui-ux-design-system`, or `skill-factory`. The `presentations/` directory declares the Skill name `html-presentations` in its frontmatter.
+Replace `architecture-documentation` with a Skill name such as `agent-factory`, `agentic-project-setup`, `application-security-review`, `architecture-documentation`, `backend-documentation`, `html-presentations`, `project-documentation-blueprint`, `requirements-engineering`, `spec-driven-development`, `software-architecture-design`, `ui-ux-design-system`, or `skill-factory`. The `presentations/` directory declares the Skill name `html-presentations` in its frontmatter.
 
 ### Update installed Skills
 
@@ -169,49 +234,45 @@ npx skills add . --skill application-security-review --agent codex --global --co
 
 ## Skills
 
-### Agentic Project Setup
+The first column links to each canonical definition and shows the declared name
+used by the installer. Each usage guide opens in Spanish and links to its English
+section using ordinary Markdown navigation. Both sections include a brief Skill
+description, representative prompt, required context, expected result, review
+criteria, and execution status. They describe the same task and authority boundaries.
 
-Analyzes, audits, and incrementally prepares any software repository for safe, effective AI-agent collaboration while preserving its established structure and handing specialized work to the appropriate Skill.
+| Skill | Capability | Usage |
+| --- | --- | --- |
+| [agent-factory](skills/agent-factory/SKILL.md) | Designs, creates, improves and validates portable agent definitions; does not install or execute agents. | [Guide and prompt](skills/agent-factory/examples/usage.md) |
+| [agentic-project-setup](skills/agentic-project-setup/SKILL.md) | Assesses and incrementally prepares repositories for AI collaboration. | [Guide and prompt](skills/agentic-project-setup/examples/usage.md) |
+| [application-security-review](skills/application-security-review/SKILL.md) | Assesses application and delivery risks and validates authorized remediations. | [Guide and prompt](skills/application-security-review/examples/usage.md) |
+| [architecture-documentation](skills/architecture-documentation/SKILL.md) | Creates evidence-based architecture documents, Mermaid/Draw.io views and optional native Archify output. | [Guide and prompt](skills/architecture-documentation/examples/usage.md) |
+| [backend-documentation](skills/backend-documentation/SKILL.md) | Documents implemented backend behavior and use-case flows from source evidence. | [Guide and prompt](skills/backend-documentation/examples/usage.md) |
+| [html-presentations](skills/presentations/SKILL.md) | Creates self-contained HTML slide decks with presentation controls and visual guidance. | [Guide and prompt](skills/presentations/examples/usage.md) |
+| [project-documentation-blueprint](skills/project-documentation-blueprint/SKILL.md) | Turns project evidence into a visual, navigable HTML Blueprint. | [Guide and prompt](skills/project-documentation-blueprint/examples/usage.md) |
+| [requirements-engineering](skills/requirements-engineering/SKILL.md) | Produces traceable backlogs with stories, acceptance criteria and explicit readiness. | [Guide and prompt](skills/requirements-engineering/examples/usage.md) |
+| [skill-factory](skills/skill-factory/SKILL.md) | Designs, creates, reviews and improves focused reusable Skills. | [Guide and prompt](skills/skill-factory/examples/usage.md) |
+| [software-architecture-design](skills/software-architecture-design/SKILL.md) | Designs and evaluates architectures against actual requirements and constraints. | [Guide and prompt](skills/software-architecture-design/examples/usage.md) |
+| [spec-driven-development](skills/spec-driven-development/SKILL.md) | Manages proportionate change specifications, implementation, verification and closure. | [Guide and prompt](skills/spec-driven-development/examples/usage.md) |
+| [ui-ux-design-system](skills/ui-ux-design-system/SKILL.md) | Designs and evolves interfaces and design systems, preserving identity and producing requested design deliverables. | [Guide and prompt](skills/ui-ux-design-system/examples/usage.md) |
 
-### Application Security Review
+### Using the guides
 
-Assesses application and software-delivery security risks, reviews changes, documents evidence-based findings, and helps validate authorized remediations across technology stacks.
+1. Open the project where the task should be performed. Ensure the selected Skill
+   is installed or make its canonical entry point and supporting files accessible.
+2. Read the Spanish section or select English at the top of the guide. Replace
+   angle-bracket placeholders with real paths or scope. Output paths in prompts
+   are relative to the target workspace.
+3. Paste the prompt into the agent environment you use. The prompts are natural
+   language requests, not custom CLI commands, and remain subject to that host's
+   capabilities and permissions.
+4. Review the actual result against the listed criteria and record any unavailable
+   checks. The guides are illustrative scenarios, not a record of passed tests.
 
-### Backend Documentation
-
-Documents an existing backend from implementation evidence. It traces implemented use cases and maintains an evidence-based system overview and use-case documentation.
-
-### Architecture Documentation
-
-Creates evidence-based application architecture documentation with Mermaid and editable Draw.io component diagrams, a separate provider-specific Draw.io infrastructure diagram, and native Archify output when that Skill is installed.
-
-### HTML Presentations
-
-Creates presentation-grade HTML slide decks, with guidance for narrative, visual composition, diagrams, layout, and runtime validation.
-
-### Project Documentation Blueprint
-
-Analyzes project evidence and produces a structured visual blueprint for project documentation, including narrative and diagram guidance.
-
-### Software Architecture Design
-
-Analyzes, designs, evolves, compares, reviews, and validates software architectures against actual needs and constraints without prescribing patterns or technologies.
-
-### Spec-Driven Development
-
-Manages software changes through proportionate specifications, implementation, verification, and closure, preserving existing conventions and optionally integrating with OpenSpec.
-
-### Skill Factory
-
-Designs, creates, reviews, and improves reusable Skills, and helps choose whether a problem needs a prompt, Skill, workflow, agent, or application.
-
-### Requirements Engineering
-
-Turns business needs and source requirements into a traceable backlog of epics, features, and user stories with testable acceptance criteria, business rules, and readiness statuses.
-
-### UI/UX Design System
-
-Designs, implements, audits, and evolves accessible user interfaces and design systems across web and mobile. It preserves explicit or existing identities and uses the bundled JAC Design System when no identity is established. Interface design requests default to a reviewable HTML prototype; an explicitly requested editable Figma design is also produced when suitable tools and access are available.
+`SKILL.md` remains the operational source of truth. The guides are illustrative
+documentation, not additional operational rules. Skill Factory and the authoring
+templates require this bilingual guide for new Skills. Skill Factory is now version
+1.2.0 because its authoring workflow gained new requirements; other Skill versions
+are unchanged. Generated deliverables may use the language requested in the prompt.
 
 ## Skill design
 
@@ -234,6 +295,18 @@ Skills can be combined into a larger workflow while retaining separate responsib
 Research → Content Development → Presentation Design → Generation → QA
 ```
 
+Future agents will select Skills by typed references such as
+`skill/html-presentations`, load their canonical instructions, pass scoped inputs,
+and check their results. Workflows will define ordering and handoffs across
+capabilities. Tools perform concrete operations supplied by the consuming host.
+Neither an agent nor a workflow should duplicate a Skill's instructions.
+
+Canonical future packages are `agents/<name>/AGENT.md` and
+`workflows/<name>/WORKFLOW.md`. These neutral formats do not imply native runtime
+support. Codex, Strands Agents and other integrations require separate verified
+bindings. The existing external Skill installer commands above remain separate
+from any future repository CLI.
+
 ## Contributing
 
 When adding or improving a Skill:
@@ -245,7 +318,18 @@ When adding or improving a Skill:
 5. Review related resources for consistency.
 6. Keep the Skill focused, composable, and as simple as possible.
 
-Follow the repository's `AGENTS.md` instructions. Repository documentation and Skill definitions are written in English; generated artifacts should use the language requested by the user or present in the input material.
+Follow the repository's `AGENTS.md` instructions. Operational definitions and
+technical documentation are written in English. User-facing usage guides include
+English and Spanish sections, maintained through Skill Factory and the usage
+template; this is the explicit language exception. Generated artifacts should use
+the language requested by the user or present in the input material.
+
+For a future agent or workflow, follow its authoring guide and contracts, keep
+resources local, declare required dependencies, and record actual validation
+evidence. Do not create functional components merely to fill the directory tree.
+All new operational content, identifiers and filenames must be English; user-facing
+usage sections follow the bilingual exception above. Preserve inherited Skill
+resources rather than renaming or translating them during unrelated changes.
 
 ## Licensing
 

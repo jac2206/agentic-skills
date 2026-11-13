@@ -1,10 +1,22 @@
-# AI Skills Repository — Agent Instructions
+# Reusable AI Components Repository — Agent Instructions
 
 ## Purpose
 
-This repository contains reusable Skills designed to give AI agents structured, reliable, and composable capabilities.
+This repository preserves its reusable Skill library and establishes an architecture for reusable agents and workflows. It owns component definitions and authoring standards, not an application runtime.
 
 The goal is not to collect prompts, but to build reusable capabilities that can be applied consistently across different projects, domains, and agents.
+
+## Architecture and current phase
+
+Read [the architecture](docs/architecture.md) before changing repository structure.
+Use [the common contract](contracts/components.md), [agent contract](contracts/agents.md),
+and [workflow contract](contracts/workflows.md) when authoring those component types.
+Use [the validation checklist](validators/README.md) for cross-component review.
+
+The current phase establishes documentation, contracts and authoring templates only.
+It does not implement agents, executable workflows, a CLI, adapters or new dependencies.
+Implement these only in a later explicitly authorized task; do not treat the
+documented roadmap as permission to implement it.
 
 ## Core Principle
 
@@ -78,7 +90,12 @@ Avoid creating large Skills that unnecessarily combine research, generation, val
 
 # Repository Language
 
-Repository instructions, Skill definitions, references, examples, templates, scripts, and technical documentation should be written in English.
+Repository instructions, component definitions, references, examples, templates, scripts, code, comments, filenames, directory names and technical documentation must be written in English. Preserve inherited filenames and existing Skill behavior unless a migration is explicitly authorized.
+
+User-facing `skills/<directory>/examples/usage.md` guides are an explicit exception:
+each must contain equivalent `## Español` and `## English` sections, with Spanish
+first, brief descriptions and Markdown links for language navigation. Operational
+Skill instructions and filenames remain in English.
 
 Generated artifacts should normally use the language requested by the user or the language used in the input material.
 
@@ -88,19 +105,28 @@ Technical names, APIs, programming identifiers, and product names should remain 
 
 # Repository Structure
 
-The repository separates reusable Skills from concrete artifacts generated using those Skills.
+The repository separates reusable component definitions, shared authoring resources,
+architecture documentation and concrete generated artifacts.
 
 ```text
 agentic-skills/
 ├── AGENTS.md
 ├── README.md
+├── agents/          # Authoring guide; future <name>/AGENT.md packages
+├── contracts/       # Shared authoring contracts
+├── docs/            # Architecture, evidence and decisions
 ├── examples/
-└── skills/
+├── skills/          # Existing library and Skill authoring template
+├── templates/       # Agent and workflow authoring templates
+├── validators/      # Cross-component checks; manual in the current phase
+└── workflows/       # Authoring guide; future <name>/WORKFLOW.md packages
 ```
 
 ## Skills
 
-All reusable AI capabilities must live under `skills/`.
+All reusable Skills must live under `skills/`. Preserve existing Skill packages,
+including their supporting resources and the shared `skills/templates/skill-template.md`.
+Do not migrate or normalize them when adding another component type.
 
 Each Skill is self-contained:
 
@@ -114,9 +140,9 @@ skills/
     └── scripts/
 ```
 
-`SKILL.md` is required.
+`SKILL.md` and a bilingual `examples/usage.md` guide are required for each Skill.
 
-The other directories are optional and should only be created when they provide real value.
+Other supporting resources are optional and should only be created when they provide real value.
 
 - `references/` — supporting knowledge and detailed guidance.
 - `templates/` — reusable templates and starting points.
@@ -125,9 +151,32 @@ The other directories are optional and should only be created when they provide 
 
 Skill-specific resources must remain inside the corresponding Skill directory.
 
-Do not create global `references/`, `templates/`, `scripts/`, or Skill-specific `examples/` directories at the repository root.
+Do not create root `references/`, `scripts/`, or component-specific deliverable-template
+directories. Root `templates/` is reserved for shared agent/workflow authoring;
+Skill authoring remains at `skills/templates/`. Templates used to produce a
+component's deliverables remain inside that component.
 
 Do not create empty directories simply to follow the structure. Add a directory only when it provides real value.
+
+## Agents and workflows
+
+Follow [agent authoring](agents/README.md) or [workflow authoring](workflows/README.md)
+when a later task explicitly requests a new component. Future canonical entry points
+are `agents/<name>/AGENT.md` and `workflows/<name>/WORKFLOW.md`.
+
+Reference reusable components by kind and declared name under the common contract.
+An agent selects Skills and checks results; a workflow owns ordering and handoffs.
+Neither copies the internal procedures of its referenced Skills. Required references
+must resolve, and required dependency graphs must be acyclic.
+
+Describe tools by capabilities, effects and permission boundaries. Concrete tool
+bindings, model selection, credentials and framework configuration belong to a
+future host integration, not portable definitions. Never assume installation,
+execution, delegation support or permissions from a reference alone.
+
+Shared authoring contracts are not new runtime dependencies for existing Skills.
+Keep component-local resources packaged with their owner. Do not create registries,
+groups, adapters, lockfiles or runtime folders without a demonstrated consumer.
 
 ---
 
@@ -169,9 +218,12 @@ Do not confuse these two purposes.
 
 # README Files
 
-The repository-level `README.md` is the library catalog and contains shared installation and contribution guidance. `SKILL.md` is the canonical instruction file for each Skill.
+The repository-level `README.md` is the library catalog and contains shared installation and contribution guidance. `SKILL.md` is the canonical instruction file for each Skill; future agents and workflows use their own canonical entry points under the common contract.
 
 When adding, renaming, or removing a Skill, review the repository README and update its catalog, structure, and installation examples where affected. Discover Skills from their `SKILL.md` frontmatter rather than assuming that a directory name is the installable Skill name. Keep this file focused on repository-wide instructions instead of duplicating the catalog.
+
+Apply the same catalog review when adding, renaming or removing an agent/workflow.
+Do not advertise templates or authoring guides as installed or executable components.
 
 Do not add a separate `README.md` inside every Skill by default. Add one only when that Skill has a distinct human-facing packaging, setup, or contribution guide that cannot be covered clearly in its `SKILL.md` or the repository README. Avoid duplicating Skill instructions across README files.
 
@@ -268,6 +320,11 @@ Do not treat examples as mandatory rules unless explicitly stated in the Skill.
 
 Examples inside a Skill should remain focused on teaching or demonstrating the Skill.
 
+The required bilingual usage guide contains a representative prompt and review
+criteria, not a second copy of the operational instructions. Use
+`skills/templates/usage-template.md` as its authoring scaffold. Keep the root
+README's catalog linked to the canonical definition and guide.
+
 Concrete generated artifacts intended to demonstrate actual Skill output should be stored under the repository-level `examples/` directory.
 
 ---
@@ -287,7 +344,7 @@ Examples:
 
 Prefer deterministic scripts over asking the agent to perform repetitive manual operations.
 
-Scripts should remain inside the Skill that owns them unless they are genuinely shared infrastructure.
+Scripts should remain inside the Skill that owns them unless they are genuinely shared infrastructure. Future cross-component static validators belong in `validators/`; keep existing Skill artifact validators in their packages. Do not implement shared automation during the architecture-only phase.
 
 ---
 
@@ -327,6 +384,11 @@ When improving a Skill:
 8. Keep backward compatibility when practical.
 
 Do not expand a Skill into unrelated responsibilities.
+
+When operational instructions or required outputs change, review and update the
+Skill's `metadata.version`: compatible capability additions use a minor increment,
+corrections a patch, and incompatible behavior changes a major increment. Translation
+or presentation-only usage changes do not automatically require a version increment.
 
 When modifying a Skill, also review its references, templates, examples, and scripts to ensure they remain consistent with the updated Skill definition.
 
@@ -393,6 +455,21 @@ examples/
 ```
 
 is a generated presentation artifact.
+
+---
+
+# Version Control and Generated Material
+
+Classify new files by purpose, not by whether an agent generated them. Keep reusable
+components, usage guides, contracts, templates, architecture and useful validation
+records versionable. Exclude disposable outputs, caches and scratch files with
+narrow `.gitignore` rules only when such files are actually produced.
+
+Inspect current ignore rules before changing them. Do not blanket-ignore `docs/`,
+`skills/` or all generated files, hide meaningful deliverables, or untrack existing
+files merely to make an ignore rule apply. Preserve existing output policies unless
+the task authorizes changing them. Report intended versioned files and exclusions;
+stage, commit or push only when covered by the user's authorization.
 
 ---
 

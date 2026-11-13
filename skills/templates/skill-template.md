@@ -137,22 +137,19 @@ The result is valid when:
 - [ ] The result satisfies the defined rules and constraints.
 - [ ] The Skill can be reused in different contexts.
 - [ ] The Skill does not duplicate responsibilities unnecessarily.
+- [ ] The bilingual usage guide opens in Spanish with language links and provides
+      equivalent descriptions, context, prompts, expected results, review criteria
+      and execution status in both languages.
 
 ## Examples
 
-### Example 1
+See the bilingual usage guide at `examples/usage.md` for context, a copyable prompt,
+expected results, review criteria, and execution status in English and Spanish.
 
-**Input**
-
-...
-
-**Expected behavior**
-
-...
-
-**Output**
-
-...
+<Authoring note: create examples/usage.md using skills/templates/usage-template.md
+in this repository and turn the path above into a relative Markdown link to it.
+Remove this note from the finished Skill. Add other examples
+only when they teach a distinct case; keep operational instructions here in English.>
 
 ## Validation
 
@@ -164,9 +161,13 @@ Before returning the result:
 4. Verify that all rules and constraints are satisfied.
 5. Verify that the quality criteria are satisfied.
 6. Verify that the Skill maintains a clear and focused responsibility.
+7. Verify that examples/usage.md contains equivalent English and Spanish sections,
+   clear placeholders, valid links, and an accurate execution status. A documented
+   prompt is not evidence that it was executed.
 
 ---
 
 > Use only the sections that are relevant to the Skill.
 > Do not add sections merely to satisfy the template.
 > Keep the Skill focused, reusable, composable, and maintainable.
+> Include the required bilingual usage guide; all other resources remain conditional.
