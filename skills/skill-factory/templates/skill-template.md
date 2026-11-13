@@ -146,8 +146,8 @@ The result is valid when:
 See the bilingual usage guide at `examples/usage.md` for context, a copyable prompt,
 expected results, review criteria, and execution status in English and Spanish.
 
-<Authoring note: create examples/usage.md using skills/templates/usage-template.md
-in this repository and turn the path above into a relative Markdown link to it.
+<Authoring note: create examples/usage.md using templates/usage-template.md bundled
+with the installed Skill Factory. Turn the path above into a relative Markdown link to it.
 Remove this note from the finished Skill. Add other examples
 only when they teach a distinct case; keep operational instructions here in English.>
 

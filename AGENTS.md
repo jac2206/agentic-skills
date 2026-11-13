@@ -124,8 +124,9 @@ agentic-skills/
 
 ## Skills
 
-All reusable Skills must live under `skills/`. Preserve existing Skill packages,
-including their supporting resources and the shared `skills/templates/skill-template.md`.
+All reusable Skills must live under `skills/`. Preserve existing Skill packages
+and keep supporting resources inside their owner. Skill Factory owns the canonical
+Skill and usage authoring templates under `skills/skill-factory/templates/`.
 Do not migrate or normalize them when adding another component type.
 
 Each Skill is self-contained:
@@ -153,7 +154,8 @@ Skill-specific resources must remain inside the corresponding Skill directory.
 
 Do not create root `references/`, `scripts/`, or component-specific deliverable-template
 directories. Root `templates/` is reserved for shared agent/workflow authoring;
-Skill authoring remains at `skills/templates/`. Templates used to produce a
+Skill authoring templates are bundled under `skills/skill-factory/templates/`.
+Templates used to produce a
 component's deliverables remain inside that component.
 
 Do not create empty directories simply to follow the structure. Add a directory only when it provides real value.
@@ -322,7 +324,7 @@ Examples inside a Skill should remain focused on teaching or demonstrating the S
 
 The required bilingual usage guide contains a representative prompt and review
 criteria, not a second copy of the operational instructions. Use
-`skills/templates/usage-template.md` as its authoring scaffold. Keep the root
+`skills/skill-factory/templates/usage-template.md` as its authoring scaffold. Keep the root
 README's catalog linked to the canonical definition and guide.
 
 Concrete generated artifacts intended to demonstrate actual Skill output should be stored under the repository-level `examples/` directory.

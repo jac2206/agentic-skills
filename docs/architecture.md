@@ -5,7 +5,8 @@ adapters, a repository CLI, and automated cross-component validation are not
 implemented in this phase.
 
 Current authoring state: twelve Skills, including Agent Factory, with bilingual
-usage guides. Skill Factory is version 1.2.0 and maintains the guide convention.
+usage guides. Skill Factory is version 1.2.1, maintains the guide convention and
+bundles its required authoring templates within its own installation package.
 The validation records describe the earlier architecture and Agent Factory
 creation snapshots; they are not a continuously updated test result for this tree.
 
@@ -48,12 +49,15 @@ agentic-skills/
 │   └── agent-factory-validation.md
 ├── examples/                       # Existing local outputs; currently Git-ignored
 ├── skills/                         # Twelve Skills, including agent-factory
-│   ├── <skill-directory>/
+│   ├── skill-factory/
 │   │   ├── SKILL.md
-│   │   └── examples/usage.md        # Spanish first, English second; language links
-│   └── templates/
-│       ├── skill-template.md        # Canonical Skill authoring template
-│       └── usage-template.md        # Bilingual usage guide scaffold
+│   │   ├── examples/usage.md        # Spanish first, English second; language links
+│   │   └── templates/
+│   │       ├── skill-template.md    # Canonical Skill authoring template
+│   │       └── usage-template.md    # Bilingual usage guide scaffold
+│   └── <other-skill-directory>/
+│       ├── SKILL.md
+│       └── examples/usage.md
 ├── templates/
 │   ├── agent-template.md           # Authoring templates, not discoverable components
 │   └── workflow-template.md
@@ -124,7 +128,8 @@ concerns. Missing required capabilities block the affected operation.
 
 | Decision | Alternatives considered | Rationale and consequence |
 | --- | --- | --- |
-| Preserve Skill packages and retain `skills/templates/` | Move all components into a new common tree; migrate all metadata | The initial architecture change left existing Skill files identical. Later authoring changes and guide additions retain package paths and use the existing Skill metadata profile |
+| Preserve Skill identities and metadata profiles | Move all components into a new common tree; migrate all metadata | The initial architecture change left existing Skill files identical. Later authoring changes and guide additions retain component paths and use the existing Skill metadata profile |
+| Bundle authoring templates in `skills/skill-factory/templates/` | Keep a sibling `skills/templates/` directory | Installing only Skill Factory must include its required resources; sibling folders are not part of its package |
 | Add sibling `agents/` and `workflows/` with authoring guides | Documentation-only path reservations; complete runtime scaffolding | Makes ownership and onboarding visible without introducing functional components |
 | Use portable Markdown entry points with YAML frontmatter for future definitions | Provider-native `.agent.md`; executable workflow YAML | Fits repository authoring conventions and enables discovery without selecting a runtime; workflow execution representation remains deferred |
 | Use written contracts before machine schemas | Implement validators and a universal manifest now | Avoids dependency and migration overhead before real consumers exist; validation is currently review-based |

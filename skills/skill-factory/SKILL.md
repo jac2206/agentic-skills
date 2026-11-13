@@ -6,7 +6,7 @@ description: >
   responsibilities, or choose between a prompt, Skill, workflow, agent, or
   application.
 metadata:
-  version: "1.2.0"
+  version: "1.2.1"
 ---
 
 # Skill Factory
@@ -180,15 +180,18 @@ the Skill entry point and the repository catalog when one exists. On revisions,
 keep an existing guide consistent with the changed capability; evaluation-only
 mode must not create or rewrite it.
 
-In this repository, start from `skills/templates/usage-template.md` when available.
-It is an authoring aid, not a runtime dependency of an installed Skill. In another
-workspace use the same minimal content without assuming this repository's root
-templates are installed. Honor explicit user constraints on deliverables/language.
+Use the bundled [usage template](templates/usage-template.md) as the starting
+structure unless the target supplies an explicitly selected equivalent. Resolve
+this path relative to this Skill's own `SKILL.md`, including after installation,
+not relative to the target workspace. Honor explicit user constraints on
+deliverables/language.
 
 ### 6. Create, revise, or report
 
-- **Create:** use `skills/templates/skill-template.md` as the repository
-  starting point. Preserve its frontmatter fields and include only sections
+- **Create:** use the bundled [Skill template](templates/skill-template.md) as the
+  starting point unless the target explicitly selects a local equivalent. Resolve
+  it relative to this Skill's own `SKILL.md`, not the target workspace. Preserve
+  its frontmatter fields and include only sections
   relevant to the capability. In this repository, use separate `Quality criteria`
   and `Validation` sections: express applicable outcomes as a checklist and
   explain how to check them. Keep checks proportional to the Skill's scope.
@@ -210,6 +213,13 @@ templates are installed. Honor explicit user constraints on deliverables/languag
 
 Do not implement the capability described by a new Skill unless the user also
 requests its implementation.
+
+Template source paths are package-local; output paths such as
+`skills/<name>/SKILL.md` and `skills/<name>/examples/usage.md` belong to the target
+workspace. Repository instructions and any explicitly selected local standards are
+target inputs, not files assumed to exist beside the installed Skill. If a required
+bundled template is missing, report an incomplete package instead of silently
+reconstructing it or searching sibling installations.
 
 For authorized file changes, classify the resulting files before reporting:
 reusable definitions, usage guides and durable documentation are candidates for
@@ -300,6 +310,8 @@ A created or revised Skill is ready when:
 - [ ] Repository Skills have separate quality and validation sections; quality
       criteria are a checklist and validation explains proportionate checks.
 - [ ] The official repository template and naming conventions are followed.
+- [ ] Required templates are included in this Skill's package, resolve from its
+      installed entry point, and are not assumed to live in a sibling directory.
 - [ ] Existing behavior and related resources remain consistent after revision.
 - [ ] Changed operational behavior has an appropriate version decision, and file
       dispositions distinguish durable source/documentation from temporary outputs.
@@ -365,6 +377,9 @@ For each task, apply only the relevant checks:
    explicit contract, coherent workflow, and no conflicting instructions.
 3. Confirm the abstraction and each optional resource are justified by the
    user's need; check resource paths and links.
+   Verify required bundled templates and distinguish their package-local source
+   paths from target-workspace output paths. When packaging changes, inspect an
+   isolated copy of only this Skill rather than relying on checkout-wide resources.
 4. Confirm scripts have documented usage and were exercised when their
    behavior is part of the requested deliverable.
 5. Confirm examples teach rather than silently impose behavior.

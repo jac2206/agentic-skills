@@ -1,6 +1,7 @@
 # Usage Guide Authoring Template
 
-Copy the content below the separator into `skills/<directory>/examples/usage.md`.
+This template is bundled with Skill Factory. Copy the content below the separator
+into `skills/<directory>/examples/usage.md` in the target workspace.
 Replace every placeholder, keep both language sections equivalent, and remove this
 preface. Present Spanish first and use plain Markdown language links that work on
 GitHub without JavaScript. Keep Skill names, modes, paths and identifiers unchanged across languages;

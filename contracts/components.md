@@ -18,7 +18,8 @@ are not automatically required install dependencies.
 
 Discovery is limited to these canonical locations and entry points. Exclude
 authoring templates, READMEs, contracts, documentation, examples, and hidden or
-generated directories. `skills/templates/` is not a Skill. A future discovery
+generated directories. `skills/skill-factory/templates/` is authoring material,
+not a separate Skill. A future discovery
 implementation must preserve these exclusions rather than scan every Markdown
 file for metadata.
 

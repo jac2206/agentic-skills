@@ -51,9 +51,8 @@ agentic-skills/
 │   ├── requirements-engineering/
 │   ├── software-architecture-design/
 │   ├── spec-driven-development/
-│   ├── skill-factory/
-│   ├── ui-ux-design-system/
-│   └── templates/                    # Existing Skill authoring template
+│   ├── skill-factory/                 # Includes Skill and usage authoring templates
+│   └── ui-ux-design-system/
 ├── templates/                        # Agent and workflow authoring templates
 ├── validators/                       # Review rules; shared automation deferred
 └── workflows/
@@ -63,7 +62,8 @@ agentic-skills/
 The repository contains twelve Skills. Every Skill must have a `SKILL.md` and a
 bilingual `examples/usage.md`; add other references, templates, examples, or scripts
 only when they provide real value. Keep Skill-specific resources inside that
-Skill's directory. Shared Skill authoring templates live under `skills/templates/`.
+Skill's directory. Skill authoring templates are bundled under
+`skills/skill-factory/templates/` so installing Skill Factory includes them.
 
 Use the root `examples/` directory for representative artifacts generated with Skills. Keep instructional examples and reference fixtures that a Skill needs after installation inside that Skill's directory. A separate README inside each Skill is not required; `SKILL.md` is its operational entry point and this root README is the library catalog.
 
@@ -86,8 +86,8 @@ documented decisions, not runnable application code or deployment configuration.
 | [Agent template](templates/agent-template.md) / [Workflow template](templates/workflow-template.md) | Starting structures for future components | Authoring templates only |
 | [Validation](validators/README.md) | Cross-component review checks and future automation conventions | Manual checklist; no shared executable |
 
-The existing [Skill template](skills/templates/skill-template.md) remains canonical
-for Skill authoring. The [usage template](skills/templates/usage-template.md) supplies
+The [Skill template](skills/skill-factory/templates/skill-template.md) is canonical
+for Skill authoring. The [usage template](skills/skill-factory/templates/usage-template.md) supplies
 the required English and Spanish guide structure. Root templates are for component
 authors; templates used by a Skill to produce deliverables remain inside that Skill.
 
@@ -270,9 +270,10 @@ criteria, and execution status. They describe the same task and authority bounda
 
 `SKILL.md` remains the operational source of truth. The guides are illustrative
 documentation, not additional operational rules. Skill Factory and the authoring
-templates require this bilingual guide for new Skills. Skill Factory is now version
-1.2.0 because its authoring workflow gained new requirements; other Skill versions
-are unchanged. Generated deliverables may use the language requested in the prompt.
+templates require this bilingual guide for new Skills. Skill Factory is version
+1.2.1, including bilingual authoring and the packaging fix that bundles its required
+templates. Other Skill versions are unchanged. Generated deliverables may use the
+language requested in the prompt.
 
 ## Skill design
 
