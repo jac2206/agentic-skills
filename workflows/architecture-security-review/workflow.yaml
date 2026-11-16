@@ -1,0 +1,91 @@
+contract_version: "2.0"
+kind: workflow
+name: architecture-security-review
+description: >-
+  Coordinate an evidence-based architecture assessment and a scoped security
+  review of the same software change or system. Use when both perspectives are
+  required; this draft reference defines a process without executing it.
+version: "0.1.0"
+status: draft
+dependencies:
+  - skill/software-architecture-design
+  - skill/application-security-review
+when_to_use:
+  - A bounded software assessment explicitly requires architecture and security findings.
+when_not_to_use:
+  - One specialist assessment alone satisfies the request.
+  - The request requires implementation, remediation, deployment or active security testing.
+inputs:
+  scope:
+    description: Goal, assessment boundaries and the user's authorized review scope.
+    format: text
+    required: true
+  context:
+    description: Accessible source material or project paths relevant to the assessment.
+    format: text-or-local-paths
+    required: true
+preconditions:
+  - The caller has explicitly authorized both read-only assessments.
+  - Relevant project context and both declared Skills are available to the consuming host.
+outputs:
+  architecture-assessment:
+    description: Architecture diagnosis with evidence, constraints, risks and open questions.
+    format: markdown
+    source: steps.assess-architecture.outputs.assessment
+  security-review:
+    description: Scoped security findings with evidence, uncertainty and recommended next checks.
+    format: markdown
+    source: steps.review-security.outputs.findings
+steps:
+  - id: assess-architecture
+    uses: skill/software-architecture-design
+    needs: []
+    inputs:
+      scope: inputs.scope
+      context: inputs.context
+    outputs:
+      assessment:
+        description: Evidence-based diagnosis identifying relevant boundaries and unknowns.
+        format: markdown
+    instructions: >-
+      Use Analyze mode within the supplied scope and context. Return the assessment
+      to the caller without modifying project files.
+    completion: The assessment identifies inspected evidence, relevant boundaries and material unknowns.
+    on_failure: block_dependents
+  - id: review-security
+    uses: skill/application-security-review
+    needs:
+      - assess-architecture
+    inputs:
+      scope: inputs.scope
+      context: inputs.context
+      architecture-context: steps.assess-architecture.outputs.assessment
+    outputs:
+      findings:
+        description: Security findings or evidence-qualified absence of findings in the reviewed scope.
+        format: markdown
+    instructions: >-
+      Use Analyze mode for the same authorized scope. Treat the architecture
+      assessment as supporting context and verify security claims against available
+      source evidence. Report findings without remediation or active testing.
+    completion: Findings identify evidence, impact, limitations and recommended next checks.
+    on_failure: block_dependents
+constraints:
+  - Read-only review; do not edit files, run project code or tests, install packages or access the network.
+  - Use only accessible evidence within the authorized scope; report missing context explicitly.
+  - Follow the referenced Skills' canonical instructions without duplicating or overriding their boundaries.
+  - Return both reports in the language requested by the user.
+failure_behavior: >-
+  Missing required input or an unavailable Skill blocks affected work. If the
+  architecture assessment fails or is blocked, do not proceed to security review.
+  Preserve any completed assessment if security review fails. Report completed,
+  partial, blocked or failed status with actual checks and remaining issues; do
+  not retry implicitly, claim full completion or broaden authority.
+quality_criteria:
+  - Both reports concern the same authorized scope and distinguish evidence from assumptions.
+  - Architecture context reaches security review without replacing independent evidence checks.
+  - Final reporting includes both outputs, limitations and any failed or blocked work.
+validation:
+  - Statically check YAML, required metadata, dependency resolution, acyclic steps and declared source mappings.
+  - Review format compatibility and scope against both canonical Skill definitions.
+  - Before ready status, test success, missing input, unavailable Skill and blocked predecessor in a selected host.

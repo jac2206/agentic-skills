@@ -1,0 +1,50 @@
+# Copy to workflows/<name>/workflow.yaml and replace placeholders.
+# Authoring scaffold only; consult contracts/workflows.md before use.
+contract_version: "2.0"
+kind: workflow
+name: replace-workflow-name
+description: "<Bounded process purpose and selection conditions.>"
+version: "0.1.0"
+status: draft
+dependencies:
+  - skill/replace-capability
+when_to_use:
+  - "<Repeated coordination need that one Skill does not already own.>"
+when_not_to_use:
+  - "<Excluded scope or a simpler sufficient abstraction.>"
+inputs:
+  scope:
+    description: "<Goal, boundaries and authorized context.>"
+    format: text
+    required: true
+preconditions:
+  - "<Required accessible context and authority.>"
+outputs:
+  result:
+    description: "<Final deliverable.>"
+    format: markdown
+    source: steps.replace-step.outputs.result
+steps:
+  - id: replace-step
+    uses: skill/replace-capability
+    needs: []
+    inputs:
+      scope: inputs.scope
+    outputs:
+      result:
+        description: "<Named evidence-bearing result.>"
+        format: markdown
+    instructions: "<Capability mode and bounded scope; do not copy its procedure.>"
+    completion: "<Observable condition for dependent steps to proceed.>"
+    on_failure: block_dependents
+constraints:
+  - "<Permitted effects and authority boundaries.>"
+failure_behavior: >-
+  Block affected work when required inputs or capabilities are unavailable.
+  Preserve partial results and report failures and blocked dependents. Do not retry
+  implicitly or expand authority.
+quality_criteria:
+  - "<Observable final completion criterion.>"
+validation:
+  - "Check metadata, references, graph, mappings and semantic compatibility."
+  - "Record static checks separately from future host execution evidence."

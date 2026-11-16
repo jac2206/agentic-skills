@@ -5,10 +5,12 @@ A reusable library of focused, composable capabilities for AI systems.
 This repository contains Skills that help AI systems perform specialized tasks consistently across projects. The goal is to build reusable capabilities, not a collection of one-off prompts.
 
 The eleven original Skills retain their structure and behavior. Agent Factory
-extends the library to twelve Skills and uses the existing contracts and templates
-to author reusable agent definitions. The repository also defines authoring
-standards for workflows and frontend and backend engineer definitions; it includes no executable
-workflows, adapters, or repository-specific CLI.
+uses the existing contracts and templates to author reusable agent definitions;
+Diagram Engineering adds focused Mermaid and Draw.io diagram authoring and validation.
+The library now contains thirteen Skills. The repository also defines authoring
+standards, frontend and backend engineer definitions, and one draft YAML workflow
+for architecture and security review. It includes no workflow executor, adapters,
+or repository-specific CLI.
 
 Start with [the architecture and roadmap](docs/architecture.md)
 and [validation evidence](docs/architecture-validation.md).
@@ -48,6 +50,7 @@ agentic-skills/
 │   ├── application-security-review/
 │   ├── architecture-documentation/
 │   ├── backend-documentation/
+│   ├── diagram-engineering/
 │   ├── presentations/                # Declared Skill name: html-presentations
 │   ├── project-documentation-blueprint/
 │   ├── requirements-engineering/
@@ -56,12 +59,13 @@ agentic-skills/
 │   ├── skill-factory/                 # Includes Skill and usage authoring templates
 │   └── ui-ux-design-system/
 ├── templates/                        # Agent and workflow authoring templates
-├── validators/                       # Review rules; shared automation deferred
+├── validators/                       # Static checker, tests and manual review rules
 └── workflows/
-    └── README.md                     # Future workflow packaging and authoring guide
+    ├── README.md                     # Workflow packaging, catalog and authoring guide
+    └── architecture-security-review/workflow.yaml  # Draft declarative reference
 ```
 
-The repository contains twelve Skills. Every Skill must have a `SKILL.md` and a
+The repository contains thirteen Skills. Every Skill must have a `SKILL.md` and a
 bilingual `examples/usage.md`; add other references, templates, examples, or scripts
 only when they provide real value. Keep Skill-specific resources inside that
 Skill's directory. Skill authoring templates are bundled under
@@ -81,17 +85,26 @@ documented decisions, not runnable application code or deployment configuration.
 
 | Resource | Purpose | Availability |
 | --- | --- | --- |
-| [Skills](#skills) | Reusable procedures and their supporting resources | Twelve Skills |
+| [Skills](#skills) | Reusable procedures and their supporting resources | Thirteen Skills |
 | [Agents](agents/README.md) | Bounded delegated judgment using referenced capabilities | Authoring guide and two definitions |
-| [Workflows](workflows/README.md) | Process ordering, input/output mapping and failure rules | Authoring guide; definitions deferred |
+| [Workflows](workflows/README.md) | Process ordering, input/output mapping and failure rules | One draft YAML reference; no executor |
 | [Common contract](contracts/components.md) | Identity, metadata profiles, references and discovery boundaries | Written authoring contract |
-| [Agent template](templates/agent-template.md) / [Workflow template](templates/workflow-template.md) | Starting structures for future components | Authoring templates only |
-| [Validation](validators/README.md) | Cross-component review checks and future automation conventions | Manual checklist; no shared executable |
+| [Agent template](templates/agent-template.md) / [Workflow template](templates/workflow-template.yaml) | Starting structures for future components | Authoring templates only |
+| [Validation](validators/README.md) | Structural checks and semantic review checklist | Python static validator and regression tests |
 
 The [Skill template](skills/skill-factory/templates/skill-template.md) is canonical
 for Skill authoring. The [usage template](skills/skill-factory/templates/usage-template.md) supplies
 the required English and Spanish guide structure. Root templates are for component
 authors; templates used by a Skill to produce deliverables remain inside that Skill.
+
+Check component structure from the repository root:
+
+```sh
+py -3 -B validators/validate_components.py
+```
+
+See [validator setup, tests and coverage](validators/README.md) for its Python and
+PyYAML tooling requirements. Validation reads definitions without executing them.
 
 ## Repository documentation
 
@@ -103,6 +116,12 @@ The documents under `docs/` are intended to be versioned with the repository:
   checks performed when preparing the repository architecture.
 - [Agent Factory validation](docs/agent-factory-validation.md): the dated review of
   that Skill's initial authoring and integration, with execution limits.
+- [Diagram Engineering validation](docs/diagram-engineering-validation.md): resource
+  reuse analysis, authoring checks and diagram-validation limits.
+- [YAML workflow validation](docs/workflow-yaml-validation.md): contract evolution,
+  reference-process checks and the pending host pilot.
+- [Component validator validation](docs/component-validator-validation.md): automated
+  scope, regression results and remaining manual checks.
 
 Validation records describe their inspected snapshot, not a continuously updated
 inventory or proof of later runtime behavior. Keep durable decisions and useful
@@ -154,7 +173,21 @@ For example, install the UI/UX Skill globally from this checkout:
 npx skills add . --skill ui-ux-design-system --agent codex --global --copy
 ```
 
-Replace `architecture-documentation` with a Skill name such as `agent-factory`, `agentic-project-setup`, `application-security-review`, `architecture-documentation`, `backend-documentation`, `html-presentations`, `project-documentation-blueprint`, `requirements-engineering`, `spec-driven-development`, `software-architecture-design`, `ui-ux-design-system`, or `skill-factory`. The `presentations/` directory declares the Skill name `html-presentations` in its frontmatter.
+Replace `architecture-documentation` with a Skill name such as `agent-factory`, `agentic-project-setup`, `application-security-review`, `architecture-documentation`, `backend-documentation`, `diagram-engineering`, `html-presentations`, `project-documentation-blueprint`, `requirements-engineering`, `spec-driven-development`, `software-architecture-design`, `ui-ux-design-system`, or `skill-factory`. The `presentations/` directory declares the Skill name `html-presentations` in its frontmatter.
+
+Diagram Engineering bundles adapted scripts, icon references and visual examples
+from Architecture Documentation. It can be installed independently, including
+Draw.io collision checks and AWS, Azure, Google Cloud and IBM Cloud guidance:
+
+```sh
+npx skills add . --skill diagram-engineering --agent codex --global --copy
+```
+
+All bundled diagram scripts and tests use Python's standard library;
+editor/renderer tools must already be available. The external Mermaid CLI, when
+used, requires its own Node.js runtime; Draw.io utilities do not. Each file gets one attempt per
+renderer; after a renderer fails, no further attempt uses it during that task.
+Installation and host registration are separate actions.
 
 ### Update installed Skills
 
@@ -270,6 +303,7 @@ criteria, and execution status. They describe the same task and authority bounda
 | [application-security-review](skills/application-security-review/SKILL.md) | Assesses application and delivery risks and validates authorized remediations. | [Guide and prompt](skills/application-security-review/examples/usage.md) |
 | [architecture-documentation](skills/architecture-documentation/SKILL.md) | Creates evidence-based architecture documents, Mermaid/Draw.io views and optional native Archify output. | [Guide and prompt](skills/architecture-documentation/examples/usage.md) |
 | [backend-documentation](skills/backend-documentation/SKILL.md) | Documents implemented backend behavior and use-case flows from source evidence. | [Guide and prompt](skills/backend-documentation/examples/usage.md) |
+| [diagram-engineering](skills/diagram-engineering/SKILL.md) | Selects, creates, improves and validates thirteen technical diagram types in Mermaid and editable Draw.io, with local collision checks and AWS/Azure/Google Cloud/IBM guidance. | [Guide and prompt](skills/diagram-engineering/examples/usage.md) |
 | [html-presentations](skills/presentations/SKILL.md) | Creates self-contained HTML slide decks with presentation controls and visual guidance. | [Guide and prompt](skills/presentations/examples/usage.md) |
 | [project-documentation-blueprint](skills/project-documentation-blueprint/SKILL.md) | Turns project evidence into a visual, navigable HTML Blueprint. | [Guide and prompt](skills/project-documentation-blueprint/examples/usage.md) |
 | [requirements-engineering](skills/requirements-engineering/SKILL.md) | Produces traceable backlogs with stories, acceptance criteria and explicit readiness. | [Guide and prompt](skills/requirements-engineering/examples/usage.md) |
@@ -322,12 +356,18 @@ Research → Content Development → Presentation Design → Generation → QA
 
 Agents select Skills by typed references such as
 `skill/html-presentations`, load their canonical instructions, pass scoped inputs,
-and check their results. Workflows will define ordering and handoffs across
+and check their results. Workflows define ordering and handoffs across
 capabilities. Tools perform concrete operations supplied by the consuming host.
 Neither an agent nor a workflow should duplicate a Skill's instructions.
 
+The draft [architecture and security review](workflows/architecture-security-review/workflow.yaml)
+first selects `software-architecture-design` in Analyze mode, then passes its
+assessment to `application-security-review` in Analyze mode. It declares inputs,
+outputs, prerequisites and blocked-step handling. Its YAML is a reviewable process
+definition, not an installed command; see [workflow usage](workflows/README.md#using-a-definition).
+
 Canonical packages are `agents/<name>/AGENT.md` and
-`workflows/<name>/WORKFLOW.md`. These neutral formats do not imply native runtime
+`workflows/<name>/workflow.yaml`. These neutral formats do not imply native runtime
 support. Codex, Strands Agents and other integrations require separate verified
 bindings. The existing external Skill installer commands above remain separate
 from any future repository CLI.

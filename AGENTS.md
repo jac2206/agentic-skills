@@ -13,10 +13,12 @@ Use [the common contract](contracts/components.md), [agent contract](contracts/a
 and [workflow contract](contracts/workflows.md) when authoring those component types.
 Use [the validation checklist](validators/README.md) for cross-component review.
 
-The current phase establishes documentation, contracts and authoring templates only.
-It does not implement agents, executable workflows, a CLI, adapters or new dependencies.
-Implement these only in a later explicitly authorized task; do not treat the
-documented roadmap as permission to implement it.
+The repository contains the Skill library, two portable agent definitions and a
+draft YAML reference workflow, with contracts, authoring templates and a shared
+static validator. Semantic and functional checks still require separate review.
+There is no workflow executor, repository CLI or host adapter. Runtime integrations
+and additional dependencies require separate authorization; the documented roadmap
+does not grant it.
 
 ## Core Principle
 
@@ -118,8 +120,8 @@ agentic-skills/
 ├── examples/
 ├── skills/          # Existing library and Skill authoring template
 ├── templates/       # Agent and workflow authoring templates
-├── validators/      # Cross-component checks; manual in the current phase
-└── workflows/       # Authoring guide; future <name>/WORKFLOW.md packages
+├── validators/      # Static validator, regression tests and manual checklist
+└── workflows/       # Authoring guide and <name>/workflow.yaml definitions
 ```
 
 ## Skills
@@ -163,8 +165,11 @@ Do not create empty directories simply to follow the structure. Add a directory 
 ## Agents and workflows
 
 Follow [agent authoring](agents/README.md) or [workflow authoring](workflows/README.md)
-when a later task explicitly requests a new component. Future canonical entry points
-are `agents/<name>/AGENT.md` and `workflows/<name>/WORKFLOW.md`.
+when a task explicitly requests a new component. Canonical entry points
+are `agents/<name>/AGENT.md` and `workflows/<name>/workflow.yaml`. Agents use
+contract profile `1.0`; workflows use profile `2.0`. A workflow YAML file is a
+declarative process, not an executable integration. Keep reference workflows
+`draft` until representative host evidence exists.
 
 Reference reusable components by kind and declared name under the common contract.
 An agent selects Skills and checks results; a workflow owns ordering and handoffs.
@@ -346,7 +351,13 @@ Examples:
 
 Prefer deterministic scripts over asking the agent to perform repetitive manual operations.
 
-Scripts should remain inside the Skill that owns them unless they are genuinely shared infrastructure. Future cross-component static validators belong in `validators/`; keep existing Skill artifact validators in their packages. Do not implement shared automation during the architecture-only phase.
+Scripts should remain inside the Skill that owns them unless they are genuinely
+shared infrastructure. Cross-component static checks belong in `validators/`;
+keep Skill artifact validators in their packages. Run the shared validator when
+changing definitions, supporting resources or authoring templates, and its regression
+tests when modifying validation behavior. See `validators/README.md` for commands,
+tooling requirements and the remaining manual checks. Validation does not execute
+components or establish runtime readiness.
 
 ---
 

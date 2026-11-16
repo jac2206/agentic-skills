@@ -61,7 +61,9 @@ Created:
 - [Agent contract](../contracts/agents.md).
 - [Workflow contract](../contracts/workflows.md).
 - [Agent template](../templates/agent-template.md).
-- [Workflow template](../templates/workflow-template.md).
+- Workflow template: originally `templates/workflow-template.md`; its current
+  successor is [the YAML template](../templates/workflow-template.yaml). This
+  navigation update does not change the historical checks above.
 - [Validation conventions](../validators/README.md).
 - [Architecture and roadmap](architecture.md).
 - This validation record.

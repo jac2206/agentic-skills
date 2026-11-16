@@ -1,14 +1,15 @@
 # Repository Architecture
 
-Status: architecture foundation established; agent execution, workflow execution,
-adapters, a repository CLI, and automated cross-component validation are not
-implemented in this phase.
+Status: component library with portable agent definitions, a draft declarative
+YAML workflow and a shared static validator with manual semantic review. There is no workflow
+executor, host adapter or repository CLI.
 
-Current authoring state: twelve Skills, including Agent Factory, with bilingual
+Current authoring state: thirteen Skills, including Agent Factory, with bilingual
 usage guides. Skill Factory is version 1.2.1, maintains the guide convention and
 bundles its required authoring templates within its own installation package.
-The validation records describe the earlier architecture and Agent Factory
-creation snapshots; they are not a continuously updated test result for this tree.
+Two portable engineer definitions have pilot records. The reference workflow
+remains `draft` and has static review only. Validation records describe their
+inspected snapshots, not a continuously updated test result for this tree.
 
 ## Purpose and boundaries
 
@@ -29,7 +30,7 @@ The abstraction ladder is a selection guide, not a required execution stack:
 
 Tools perform concrete operations. They are execution capabilities, not another
 level in this ladder. A Skill may use tools without an agent or workflow package.
-A workflow may compose Skills and tools without specialized agents.
+A workflow may compose Skills that use tools without specialized agents.
 
 ## Established structure
 
@@ -50,7 +51,7 @@ agentic-skills/
 │   ├── architecture-validation.md
 │   └── agent-factory-validation.md
 ├── examples/                       # Existing local outputs; currently Git-ignored
-├── skills/                         # Twelve Skills, including agent-factory
+├── skills/                         # Thirteen Skills, including agent-factory
 │   ├── skill-factory/
 │   │   ├── SKILL.md
 │   │   ├── examples/usage.md        # Spanish first, English second; language links
@@ -62,17 +63,21 @@ agentic-skills/
 │       └── examples/usage.md
 ├── templates/
 │   ├── agent-template.md           # Authoring templates, not discoverable components
-│   └── workflow-template.md
+│   └── workflow-template.yaml
 ├── validators/
-│   └── README.md                    # Review checks and future automation boundary
+│   ├── README.md                    # Commands, coverage and manual review checks
+│   ├── requirements.txt             # Validator-only parser dependency
+│   ├── validate_components.py       # Read-only structural checks
+│   └── tests/test_validate_components.py
 └── workflows/
-    └── README.md                    # Authoring and packaging guide; no workflows yet
+    ├── README.md                    # Authoring guide and workflow catalog
+    └── architecture-security-review/workflow.yaml  # Draft reference
 ```
 
-The tree omits `.git/`, `.gitignore`, ignored `.archify/` working files, and
-component-local supporting files for readability. No runtime configuration changes
+The tree omits `.git/`, `.gitignore`, ignored `.archify/` working files, additional
+validation records and component-local resources for readability. No runtime configuration changes
 are required. `agents/` contains definitions and a guide; `workflows/` contains
-an authoring guide. The workflow guide lives at `workflows/README.md`.
+a guide and one declarative reference. The workflow guide lives at `workflows/README.md`.
 
 ## Ownership and source of truth
 
@@ -82,10 +87,10 @@ an authoring guide. The workflow guide lives at `workflows/README.md`.
 | `README.md` | Human catalog, navigation and existing Skill installation guidance | Does not define runtime behavior |
 | `skills/<directory>/SKILL.md` | Existing reusable capability | Supporting resources remain inside its package |
 | `agents/<name>/AGENT.md` | Portable agent definition | No provider configuration in the canonical definition |
-| `workflows/<name>/WORKFLOW.md` | Future declarative workflow definition | No executable commands or engine DSL required |
+| `workflows/<name>/workflow.yaml` | Canonical declarative process graph | No executable commands or engine DSL |
 | `contracts/` | Shared authoring contracts | No runtime protocol or retroactive Skill migration |
 | Root `templates/` | Agent and workflow authoring structures | No deliverable templates owned by a particular component |
-| `validators/` | Cross-component review rules and future static validators | No agent execution or Skill-specific artifact validation |
+| `validators/` | Cross-component static checks, tests and manual review rules | No component execution or Skill-specific artifact validation |
 | `docs/` | Decisions, analysis and validation evidence | No competing operational definitions |
 | Root `examples/` | Representative generated outputs | Existing ignore policy remains in place |
 
@@ -100,7 +105,7 @@ an installed existing Skill must not need this repository's root directories.
 ```mermaid
 flowchart TD
     H["Consuming host: future integration"] --> A["Agent definition: portable"]
-    H --> W["Workflow definition: future"]
+    H --> W["Workflow definition: declarative YAML"]
     H --> S["Existing Skills"]
     A -->|selects by reference| S
     A -->|may select| W
@@ -108,7 +113,6 @@ flowchart TD
     W -->|may delegate| A
     S -->|may use| T["Tools supplied by host"]
     A -->|may use| T
-    W -->|may include bounded operation| T
 ```
 
 Arrows describe allowed relationships, not installed integrations. Actual required
@@ -132,9 +136,9 @@ concerns. Missing required capabilities block the affected operation.
 | --- | --- | --- |
 | Preserve Skill identities and metadata profiles | Move all components into a new common tree; migrate all metadata | The initial architecture change left existing Skill files identical. Later authoring changes and guide additions retain component paths and use the existing Skill metadata profile |
 | Bundle authoring templates in `skills/skill-factory/templates/` | Keep a sibling `skills/templates/` directory | Installing only Skill Factory must include its required resources; sibling folders are not part of its package |
-| Add sibling `agents/` and `workflows/` with authoring guides | Documentation-only path reservations; complete runtime scaffolding | Makes ownership and onboarding visible without introducing functional components |
-| Use portable Markdown entry points with YAML frontmatter for future definitions | Provider-native `.agent.md`; executable workflow YAML | Fits repository authoring conventions and enables discovery without selecting a runtime; workflow execution representation remains deferred |
-| Use written contracts before machine schemas | Implement validators and a universal manifest now | Avoids dependency and migration overhead before real consumers exist; validation is currently review-based |
+| Keep sibling `agents/` and `workflows/` packages | Documentation-only reservations; complete runtime scaffolding | Makes ownership and onboarding visible while separating definitions from execution |
+| Keep agents in Markdown and workflows in declarative YAML | Provider-native definitions; Markdown process tables; engine-specific workflow YAML | Agent judgment benefits from prose; process graphs benefit from explicit mappings. Workflow profile 2.0 replaces the unused Markdown reservation without migrating agents or Skills |
+| Pair written contracts with a small static validator | Universal schemas, a manifest and an executor | Deterministic structural checks support growth while semantic review and runtime evidence stay separate; PyYAML is isolated to validator tooling |
 | Keep source files authoritative | Hand-maintained registry, groups, lockfiles and duplicate catalogs | Reduces drift; a future catalog can be derived from canonical entry points |
 | Separate shared authoring templates from component deliverable templates | Move the existing Skill template; centralize all templates | Clarifies ownership while preserving the current Skill package convention |
 
@@ -172,10 +176,11 @@ source revision and resolved component versions; this phase creates no lockfile.
 
 | Phase | Deliverable | Acceptance evidence |
 | --- | --- | --- |
-| 1: architecture, current | Contracts, authoring guides, templates and documentation | Existing Skills unchanged; links, inventory and scope checks recorded |
-| 2: static validation | Small cross-component validator and focused valid/invalid fixtures | Detect duplicate identities, missing dependencies, cycles, template leakage and broken local resources; require no component execution |
-| 3: one agent pilot | One justified specialist referencing existing Skills | Test real tasks, missing Skill/tool, authorization limits, handoff evidence and failure reporting in one selected host |
-| 4: one workflow pilot | Small process built from existing capabilities | Verify input/output mapping, ordering, failed/blocked steps and absence of instruction duplication; decide execution representation only if needed |
+| Architecture foundation: established | Contracts, authoring guides, templates and documentation | Initial snapshot recorded in architecture-validation.md; later changes preserve Skill package identities |
+| Agent pilots: initial evidence recorded | Backend and frontend engineer definitions referencing existing capabilities | See backend-engineer-validation.md and frontend-engineer-pilot.md for actual scope and limits; no native host registration is implied |
+| YAML process definition: current | Draft architecture/security review and profile 2.0 template | YAML parsing, dependency and step graphs, source mappings and semantic review; no host execution |
+| Shared static validation: implemented | Small Python validator and isolated valid/invalid package tests | Detect duplicate identities, missing dependencies, cycles, invalid source mappings and broken local resources without component execution; see component-validator-validation.md |
+| Workflow host pilot: future | Exercise the reference process in a selected host | Verify success, missing input, unavailable capabilities and blocked steps before ready status; design an executor only if needed |
 | 5: portability | A second host integration, potentially Strands Agents | Same scoped tasks and constraints verified across both hosts; unsupported behavior documented |
 | 6: distribution and optional CLI | Discovery, installation, then execution only if justified | Deterministic inventory, package closure, reproducible installs, explicit execution and adapter compatibility checks |
 
@@ -183,21 +188,26 @@ New Skills remain independent work: add one only for a demonstrated reusable gap
 using the existing Skill authoring process and proportional execution evidence.
 Neither an agent factory nor a mandatory orchestrator is a prerequisite.
 
-Revisit the architecture when actual consumers require machine-readable process
-graphs, independently distributed shared resources, version constraints, or
+Revisit the architecture when actual consumers require executable process
+semantics, independently distributed shared resources, version constraints, or
 repeated adapter implementations. Do not create those abstractions in advance.
 
 ## Compatibility and reversal
 
-No component is renamed or moved. Existing installation commands are retained;
-their execution is outside this phase. Existing outputs and working files remain
+No existing Skill or agent is renamed or moved. Workflow authoring moves from
+the previously reserved Markdown format to YAML; no existing workflow package
+needed migration. Existing installation commands are retained, and their
+execution is outside this change. Existing outputs and working files remain
 untouched, including inherited non-English asset filenames and generated content.
 Operational instructions remain English. User-facing usage guides have Spanish
 and English sections under the repository's explicit language exception; inherited
 assets and generated content are not renamed or translated by that convention.
 
-Reversing this phase consists of reverting its documentation/template additions
-and the root documentation edits. No runtime state, dependency installation,
-generated code, or Skill migration needs to be reversed.
+Reversing the YAML change consists of removing the draft reference and restoring
+the prior workflow contract, template and documentation. No runtime state,
+dependency installation, generated application code or Skill migration is involved.
 
-See [phase validation](architecture-validation.md) for performed checks and limits.
+See [initial architecture validation](architecture-validation.md) and
+[YAML workflow validation](workflow-yaml-validation.md) for performed checks and limits.
+See [component validator validation](component-validator-validation.md) for shared
+automation evidence and its manual review boundaries.

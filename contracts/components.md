@@ -1,7 +1,8 @@
 # Common Component Contract
 
-Contract version: `1.0`. This is a normative authoring contract, not an executable
-schema, runtime protocol, or implemented discovery API.
+Supported authoring profiles: agents `1.0`, workflows `2.0`. These are written
+contracts, not a runtime protocol or an implemented discovery API. Each kind
+selects its own supported profile through `contract_version`.
 
 ## Profiles and entry points
 
@@ -9,7 +10,7 @@ schema, runtime protocol, or implemented discovery API.
 | --- | --- | --- | --- |
 | `skill` | `skills/<directory>/SKILL.md` | Existing frontmatter `name` | Existing `metadata.version`, when present |
 | `agent` | `agents/<name>/AGENT.md` | Frontmatter `name` | Frontmatter `version` |
-| `workflow` | `workflows/<name>/WORKFLOW.md` | Frontmatter `name` | Frontmatter `version` |
+| `workflow` | `workflows/<name>/workflow.yaml` | Top-level `name` | Top-level `version` |
 
 The agent entry point is a repository-defined portable format, not a Codex
 `AGENTS.md` instruction file or a host-native agent registration. Renaming
@@ -29,11 +30,11 @@ file for metadata.
 
 ## Agent and workflow metadata
 
-Future definitions require these YAML frontmatter fields:
+Agent YAML frontmatter and workflow YAML documents require these fields:
 
 | Field | Type and rule |
 | --- | --- |
-| `contract_version` | String `"1.0"`; selects this authoring contract |
+| `contract_version` | String `"1.0"` for agents; string `"2.0"` for workflows |
 | `kind` | String `agent` or `workflow`, matching its directory and entry point |
 | `name` | Nonempty stable kebab-case string matching its package directory |
 | `description` | Nonempty English summary of purpose and selection conditions |
@@ -59,7 +60,7 @@ component-specific explanation belongs in the body.
 ## References and dependency resolution
 
 A reference is `<kind>/<name>`, using `skill`, `agent`, or `workflow`. Resolve the
-name from frontmatter, not a guessed directory name. For example,
+name from canonical metadata, not a guessed directory name. For example,
 `skill/html-presentations` resolves to `skills/presentations/SKILL.md` in this
 checkout. This example illustrates identity only; it introduces no dependency.
 
@@ -97,6 +98,14 @@ their own component-specific boundaries and refer to declared capabilities; they
 must not require a checkout-relative link to root authoring documents to run.
 
 ## Evolution and compatibility
+
+Workflow profile `2.0` replaces the previously reserved `WORKFLOW.md` profile
+`1.0` with one YAML document and explicit data mappings. No workflow packages
+existed before this change. Agents retain profile `1.0`; Skills retain their
+existing metadata unchanged. For an external draft using the old convention,
+move metadata and process content into `workflow.yaml`, adopt profile `2.0`,
+and review every step against the workflow contract before publishing it.
+Do not maintain competing Markdown and YAML process definitions.
 
 Changing an existing Skill is separate from adding an agent/workflow consumer.
 Do not normalize Skill names, filenames, resources, or metadata during discovery.
