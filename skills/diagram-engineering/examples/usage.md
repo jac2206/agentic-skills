@@ -61,6 +61,8 @@ intentar esa herramienta durante el encargo; continúan los controles estáticos
   conserva participantes, mensajes, respuestas y orden suministrados.
 - Las rutas y etiquetas evitan superposiciones; el texto es legible y las rutas
   automáticas o posiciones no verificadas se informan como limitaciones.
+- La infraestructura agrupa visualmente clientes, entrada, servicios y datos
+  según el modelo, sin inventar redes ni recursos para completar capas.
 - Al reparar un diagrama, se conserva la versión anterior para comparar y no se
   presenta una reducción de advertencias como prueba de mejora visual.
 - Se distinguen sintaxis, estructura, semántica, recursos, equivalencia y revisión
@@ -154,6 +156,8 @@ again during the task; static checks continue.
   supplied participants, messages, returns and order.
 - Routes and labels avoid overlaps; text is legible and unverified automatic
   routes or label positions are disclosed as limitations.
+- Infrastructure visually groups clients, ingress, services and data from the
+  model, without inventing networks or resources to fill tiers.
 - For diagram repair, retain the baseline for comparison; fewer warnings alone
   do not prove visual improvement.
 - Syntax, structure, semantics, resources, equivalence and visual review are

@@ -6,7 +6,7 @@ description: >
   components, software components, layers, cloud infrastructure, deployment,
   integration, messaging, sequence, process, entity-relationship and data flow.
 metadata:
-  version: "2.3.0"
+  version: "2.4.0"
 ---
 
 # Diagram Engineering
@@ -145,6 +145,13 @@ thirteen by default. If only a format is missing, ask for that format alone.
   whitespace and clear boundaries as the visual baseline. Match a supplied
   visual reference where compatible with the selected notation. Preserve
   architecture semantics even when formats need different visual devices.
+- For cloud infrastructure, inspect this package's matching provider example.
+  Organize the supplied model into clearly labeled visual zones for external
+  clients, access/delivery, runtime and data where those roles exist; use
+  separate visual zones for messaging or external integrations when relevant.
+  Distinguish visual tiers from actual provider, region and network boundaries.
+  Size the diagram around its content and preserve clear routes and boundary
+  titles. Never add services, networks or deployment membership just to fill a tier.
 
 ### Semantic and editing rules
 

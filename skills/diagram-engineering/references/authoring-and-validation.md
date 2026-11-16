@@ -134,6 +134,15 @@ Directly reusable mechanisms:
 - Tiered layout, explicit external zones, relevant provider/network scopes,
   whitespace, restrained palette and primarily orthogonal architecture connectors.
 
+For a cloud view, inspect the corresponding bundled provider diagram and map
+the actual model into visual client, access/delivery, runtime and data zones;
+add messaging/integration zones only when the model needs them. Arrange zones
+as a left-to-right or top-to-bottom reading path; reserve lanes for connectors,
+keep titles apart, and fit frames to their contents. These tiers organize the
+page only: they do not add network boundaries or change deployment membership.
+Avoid filling empty space with inferred resources. In Mermaid use subgraphs only
+when they preserve actual containment; visual ordering must not add fake edges.
+
 The incorporated resources are adapted here without editing Architecture Documentation:
 
 | Concern | Diagram Engineering adaptation |

@@ -87,7 +87,9 @@ and [Mermaid C4 status](https://mermaid.js.org/syntax/c4.html).
   choose only those evidenced or explicitly requested.
 - **Visual conventions:** recognizable verified provider icons in Draw.io,
   distinct external-client zone, provider frame, relevant account/region/network
-  nesting, tiered ingress/compute/data/messaging placement. Mermaid uses typed
+    nesting, tiered ingress/compute/data/messaging placement using the bundled
+    provider diagram as a visual reference. Identify tiers as visual groupings,
+    not network boundaries; omit empty or unsupported tiers. Mermaid uses typed
   service labels and subgraphs instead of unverified icon syntax.
 - **Representation rules:** external systems remain outside their provider scope;
   place managed services according to documented topology rather than putting

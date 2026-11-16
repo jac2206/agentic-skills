@@ -1,9 +1,22 @@
 # Diagram Engineering authoring and validation
 
-Current revision: **2.3.0**, self-contained Python utilities and local validation.
+Current revision: **2.4.0**, self-contained Python utilities and local validation.
 The 1.0.0 and 1.1.0 records below are historical; current packaging and executed
 checks are recorded in the final section. The former sibling-resource dependency,
 absence of local scripts and JavaScript helper no longer describe this package.
+
+## 2.4.0 cloud layout follow-up
+
+The cloud-infrastructure workflow now requires authors to consult the package's
+own provider example and arrange model-supported visual tiers without implying
+additional network membership. On 2026-11-16, an employee AWS test added two
+editable visual frames around existing access and service areas. XML comparison
+preserved all previous semantic cells, relationships and containment; its Mermaid
+source is unchanged. The local checker reported zero errors and 18 warnings,
+including existing route crossings/shared segments and neutral SVG provenance.
+The regression suite passed 44 tests. This is a static check of one AWS example,
+not visual proof, a multi-provider execution, or a new Mermaid parser run. No
+renderer was launched; the previous Draw.io launch had failed on Windows ACLs.
 
 ## 2.3.0 endpoint and regression review
 
