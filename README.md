@@ -7,7 +7,7 @@ This repository contains Skills that help AI systems perform specialized tasks c
 The eleven original Skills retain their structure and behavior. Agent Factory
 extends the library to twelve Skills and uses the existing contracts and templates
 to author reusable agent definitions. The repository also defines authoring
-standards for workflows and a backend engineer definition; it includes no executable
+standards for workflows and frontend and backend engineer definitions; it includes no executable
 workflows, adapters, or repository-specific CLI.
 
 Start with [the architecture and roadmap](docs/architecture.md)
@@ -31,7 +31,8 @@ agentic-skills/
 ├── README.md
 ├── agents/                           # Portable agent definitions and authoring guide
 │   ├── README.md
-│   └── backend-engineer/AGENT.md
+│   ├── backend-engineer/AGENT.md
+│   └── frontend-engineer/AGENT.md
 ├── contracts/                        # Common, agent and workflow authoring contracts
 ├── docs/                             # Architecture and validation evidence
 ├── examples/                         # Concrete artifacts produced with Skills
@@ -81,7 +82,7 @@ documented decisions, not runnable application code or deployment configuration.
 | Resource | Purpose | Availability |
 | --- | --- | --- |
 | [Skills](#skills) | Reusable procedures and their supporting resources | Twelve Skills |
-| [Agents](agents/README.md) | Bounded delegated judgment using referenced capabilities | Authoring guide and one definition |
+| [Agents](agents/README.md) | Bounded delegated judgment using referenced capabilities | Authoring guide and two definitions |
 | [Workflows](workflows/README.md) | Process ordering, input/output mapping and failure rules | Authoring guide; definitions deferred |
 | [Common contract](contracts/components.md) | Identity, metadata profiles, references and discovery boundaries | Written authoring contract |
 | [Agent template](templates/agent-template.md) / [Workflow template](templates/workflow-template.md) | Starting structures for future components | Authoring templates only |
@@ -238,9 +239,21 @@ npx skills add . --skill application-security-review --agent codex --global --co
 | Agent | Responsibility | Status |
 | --- | --- | --- |
 | [backend-engineer](agents/backend-engineer/AGENT.md) | Scoped backend engineering across project stacks. | Ready; representative Codex pilot recorded |
+| [frontend-engineer](agents/frontend-engineer/AGENT.md) | Scoped web and mobile frontend engineering across project stacks. | Ready; web and mobile pilots recorded with limitations |
 
-This portable definition is not automatically discovered or installed by Codex.
-Provide it explicitly to the host; the Skill installation commands install Skills only.
+These portable definitions are not automatically discovered or installed by Codex.
+Provide them explicitly to the host; the Skill installation commands install Skills only.
+
+To use `frontend-engineer` in an existing project, make its `AGENT.md` accessible
+to the host and explicitly request that it read the definition alongside the
+project's applicable instructions. Supply the workspace, objective, scope,
+acceptance criteria, relevant design and API context, and permitted effects. For
+example: “Read the frontend-engineer definition and this project's instructions;
+implement <frontend task> in <workspace>, respecting <design and API constraints>,
+and report changes and checks.” Make selected optional Skills and their resources
+available separately. Check the host's own instruction and agent integration
+conventions; referencing the file does not register a native agent or create a
+subagent. No host integration or automatic execution is provided here.
 
 ## Skills
 

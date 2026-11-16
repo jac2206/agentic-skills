@@ -39,7 +39,8 @@ agentic-skills/
 ├── README.md
 ├── agents/
 │   ├── README.md                    # Authoring and packaging guide
-│   └── backend-engineer/AGENT.md    # Portable definition
+│   ├── backend-engineer/AGENT.md    # Portable definition
+│   └── frontend-engineer/AGENT.md   # Portable definition
 ├── contracts/
 │   ├── components.md               # Identity, discovery, references, compatibility
 │   ├── agents.md                   # Agent definition and handoff requirements
@@ -70,7 +71,7 @@ agentic-skills/
 
 The tree omits `.git/`, `.gitignore`, ignored `.archify/` working files, and
 component-local supporting files for readability. No runtime configuration changes
-are required. `agents/` contains a definition and guide; `workflows/` contains
+are required. `agents/` contains definitions and a guide; `workflows/` contains
 an authoring guide. The workflow guide lives at `workflows/README.md`.
 
 ## Ownership and source of truth

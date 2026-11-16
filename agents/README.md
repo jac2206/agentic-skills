@@ -1,7 +1,8 @@
 # Agent Authoring
 
 This directory establishes how reusable agents are packaged. The
-[backend-engineer](backend-engineer/AGENT.md) is the first definition. Repository-wide `AGENTS.md` contains contributor
+[backend-engineer](backend-engineer/AGENT.md) and
+[frontend-engineer](frontend-engineer/AGENT.md) are portable definitions. Repository-wide `AGENTS.md` contains contributor
 instructions; it is not a reusable agent definition.
 
 `AGENT.md` is a portable convention of this library, not an automatically
