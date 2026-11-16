@@ -290,6 +290,19 @@ editor may differ. Zero warnings is not a visual pass. Review every warning,
 adjust ports, waypoints or label offsets and rerun static checks after layout
 changes. Avoid long unbroken Mermaid labels and unnecessarily wide layouts.
 
+The checker also warns when an explicit route travels inside its own source or
+target bounding rectangle. Touching the border is allowed. Center anchors,
+nonrectangular stencils and custom perimeters can produce intentional contacts;
+review rather than suppress them blindly. Routes controlled by a router can
+differ from the estimated path even when ports and waypoints are present.
+
+For layout repairs, keep the baseline and generate a candidate in task scratch
+space. Compare preserved IDs, relationships and boundary membership, then compare
+individual collisions, bends and route clarity. Do not optimize a scalar warning
+count or trade a visible overlap for fewer minor crossings. When a renderer is
+available, compare inspected previews; otherwise label visual improvement
+unverified, preserve the baseline and report the remaining observations.
+
 Use an available safe editor/renderer and inspect generated previews when
 possible. Do not launch Desktop merely because its executable exists. Use the
 guard when visual review was requested or the exporter is confirmed working:

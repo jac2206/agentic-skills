@@ -40,6 +40,8 @@ de Archify y las comprobaciones no disponibles.
 
 - Se revisan títulos de límites, cruces y tramos compartidos de conectores;
   las advertencias estáticas no sustituyen una inspección visual.
+- Al reparar una vista se conserva la versión anterior y se comparan los
+  problemas concretos; menos advertencias no prueban una mejora visual.
 
 - Las vistas de componentes coinciden; la infraestructura describe el despliegue.
 - Las relaciones relevantes tienen evidencia o una etiqueta de propuesta/incógnita.
@@ -87,6 +89,8 @@ are reported explicitly.
 
 - Review boundary titles, connector crossings and shared segments; static
   warnings do not replace visual inspection.
+- When repairing a view, retain the baseline and compare specific findings;
+  fewer warnings do not prove visual improvement.
 
 - Component views agree; the infrastructure view describes deployment separately.
 - Material relationships have evidence or an explicit proposed/unknown status.

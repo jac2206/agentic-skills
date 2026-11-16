@@ -89,6 +89,17 @@ class DrawioTests(WorkspaceTestCase):
         self.assertEqual(errors, [])
         self.assertTrue(any("crosses component obstacle" in w for w in warnings), warnings)
         self.assertTrue(any("estimated edge label edge overlaps obstacle" in w for w in warnings), warnings)
+        path = self.write("obstacle.drawio", ET.tostring(graph, encoding="unicode"))
+        arch = Path(__file__).resolve().parents[3] / "architecture-documentation/scripts/check_drawio.py"
+        result = subprocess.run([sys.executable, "-B", str(arch), str(path)], capture_output=True, text=True)
+        self.assertIn("crosses component obstacle", result.stdout)
+
+    def test_router_path_is_only_an_estimate(self):
+        graph = model()
+        vertex(graph, "a")
+        vertex(graph, "b", x=400)
+        edge(graph, style="edgeStyle=orthogonalEdgeStyle;exitX=1;exitY=0.5;entryX=0;entryY=0.5;")
+        self.assertTrue(any("uses a router; estimated path may differ" in w for w in inspect(graph)[1]))
 
     def test_estimated_edge_labels_overlap(self):
         graph = model()
@@ -152,6 +163,24 @@ class DrawioTests(WorkspaceTestCase):
         graph.find("root/mxCell[@id='c']/mxGeometry").set("x", "500")
         graph.find("root/mxCell[@id='d']/mxGeometry").set("x", "500")
         self.assertFalse(any("edges edge and edge2 cross" in w for w in inspect(graph)[1]))
+
+    def test_endpoint_interior_and_legitimate_border_attachment_in_both_skills(self):
+        graph = model()
+        vertex(graph, "a", x=0, y=0, width=100, height=100, value="API")
+        vertex(graph, "b", x=300, y=0, width=100, height=100, value="Contracts")
+        connection = edge(graph, style="edgeStyle=none;noEdgeStyle=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;")
+        self.assertFalse(any("component interior" in w for w in inspect(graph)[1]))
+        points = ET.SubElement(connection.find("mxGeometry"), "Array", {"as": "points"})
+        for x, y in ((50, 50), (50, 120), (350, 120), (350, 50)):
+            ET.SubElement(points, "mxPoint", x=str(x), y=str(y))
+        warnings = inspect(graph)[1]
+        self.assertTrue(any("crosses source component interior a" in w for w in warnings), warnings)
+        self.assertTrue(any("crosses target component interior b" in w for w in warnings), warnings)
+        path = self.write("endpoint-interior.drawio", ET.tostring(graph, encoding="unicode"))
+        arch = Path(__file__).resolve().parents[3] / "architecture-documentation/scripts/check_drawio.py"
+        result = subprocess.run([sys.executable, "-B", str(arch), str(path)], capture_output=True, text=True)
+        self.assertIn("crosses source component interior a", result.stdout)
+        self.assertIn("crosses target component interior b", result.stdout)
 
     def test_layout_helpers_match_and_ignore_degenerate_segments(self):
         from layout_checks import _relationship

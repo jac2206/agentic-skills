@@ -6,7 +6,7 @@ description: >
   infrastructure view, and a native Archify architecture diagram when the
   Archify Skill is installed.
 metadata:
-  version: "1.9.0"
+  version: "1.10.0"
 ---
 
 # Architecture Documentation
@@ -86,6 +86,11 @@ The component diagrams and cloud infrastructure diagram are cumulative deliverab
 ## Rules
 
 - Never invent services, routes, protocols, regions, network boundaries, security controls, availability, compliance, or production status.
+- For layout repairs, retain the baseline until the candidate is checked. Compare
+  findings by location and kind, not only warning counts. Reject new component
+  interior crossings, obscured text, excessive bends or semantic changes. If no
+  rendered comparison is available, retain the baseline and report that visual
+  improvement remains unverified.
 - Label uncertain, user-reported, inferred, conflicting, and proposed claims accurately.
 - Keep `.drawio` XML in its own file; never paste raw or escaped XML into Markdown.
 - Keep current deployment and target-cloud proposal distinct. Do not treat illustrative services as verified deployment.

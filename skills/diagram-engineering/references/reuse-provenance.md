@@ -25,7 +25,8 @@ Only an external Mermaid CLI retains its own Node.js runtime requirement.
 There is no generic
 diagram generator, repository CLI, agent runtime or automatic icon downloader.
 
-The 2.2.0 boundary-title and connector layout heuristics are also packaged in
+The 2.2.0 boundary-title and connector layout heuristics, extended in 2.3.0 to
+inspect source/target interiors, are also packaged in
 Architecture Documentation's `scripts/layout_checks.py` at the user's request.
 The identical small helper is intentionally bundled in each independent Skill;
 compare both copies and run regression tests when changing it. Their main

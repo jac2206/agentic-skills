@@ -252,6 +252,15 @@ def check_model(name, model, errors, warnings):
         for c in cells.values() if c["geo"] is not None and not c["edge"]
     }
     lboxes = {c["id"]: label_box(c) for c in texts}
+    parents = {c["parent"] for c in cells.values()}
+    def is_frame(c):
+        st = c["style"]
+        return (c["id"] in parents or c["el"].get("data-role") in ("boundary", "anchor", "decoration")
+                or "swimlane" in st or st.get("shape") == "swimlane"
+                or (st.get("fillColor") == "none" and st.get("dashed") == "1"
+                    and st.get("verticalAlign") == "top"))
+    solids = [c for c in cells.values() if c["geo"] is not None and not c["edge"]
+              and not is_frame(c) and c not in icons and c not in texts]
 
     for i, a in enumerate(icons):
         for b in icons[i + 1:]:
@@ -290,6 +299,10 @@ def check_model(name, model, errors, warnings):
                 return (box[0] + (box[2] - box[0]) * kx, box[1] + (box[3] - box[1]) * ky)
             a = anchor(vertex_boxes[src], float(st.get("exitX", 0.5)), float(st.get("exitY", 0.5)))
             b = anchor(vertex_boxes[tgt], float(st.get("entryX", 0.5)), float(st.get("entryY", 0.5)))
+            parent = cells.get(c["parent"])
+            if parent is not None and parent["geo"] is not None:
+                px, py = parent["geo"][:2]
+                pts = [(x + px, y + py) for x, y in pts]
             path = [a] + pts + [b]
             if not all(k in st for k in ("exitX", "exitY", "entryX", "entryY")):
                 warnings.append(f"[{name}] edge {c['id']} uses automatic routing; rendered path and label position are unverified")
@@ -308,6 +321,10 @@ def check_model(name, model, errors, warnings):
                     if seg_hits_box(p, q, lboxes[txt["id"]], pad=0.0):
                         warnings.append(f"[{name}] edge {c['id']} ({label(cells[src])} -> {label(cells[tgt])}) "
                                         f"crosses label {label(txt)}")
+                if all(k in st for k in ("exitX", "exitY", "entryX", "entryY")):
+                    for component in solids:
+                        if component["id"] not in (src, tgt) and seg_hits_box(p, q, vertex_boxes[component["id"]]):
+                            warnings.append(f"[{name}] edge {c['id']} crosses component {label(component)}")
     check_layout(name, cells, warnings, edge_label_box)
     return len(icons), len(texts), sum(1 for c in cells.values() if c["edge"]), provider_counts
 

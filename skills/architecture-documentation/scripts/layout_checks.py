@@ -75,6 +75,8 @@ def check_layout(name, cells, warnings, edge_label_box):
             continue
         if not all(k in s for k in ('exitX', 'exitY', 'entryX', 'entryY')):
             continue
+        if not (s.get('edgeStyle') == 'none' and str(s.get('noEdgeStyle')) == '1'):
+            warnings.append(f"[{name}] edge {c['id']} uses a router; estimated path may differ from rendered path")
         def anchor(node, x, y):
             gx, gy, w, h = node['geo']
             return gx + w * float(s[x]), gy + h * float(s[y])
@@ -85,6 +87,16 @@ def check_layout(name, cells, warnings, edge_label_box):
         path = [anchor(source, 'exitX', 'exitY')] + points + [anchor(target, 'entryX', 'entryY')]
         if any(abs(a[0]-b[0]) > .5 and abs(a[1]-b[1]) > .5 for a, b in zip(path, path[1:])):
             continue
+        # An endpoint is allowed to touch its shape at the attachment point, but
+        # the route must not travel through its interior, including after a turn.
+        # Center anchors, custom perimeters and nonrectangular shapes are only
+        # approximated by their bounding boxes and require manual review.
+        for role, node in (('source', source), ('target', target)):
+            x, y, w, h = node['geo']
+            inset = min(2.0, w / 4, h / 4)
+            box = (x + inset, y + inset, x + w - inset, y + h - inset)
+            if any(_intersects_segment(box, a, b) for a, b in zip(path, path[1:])):
+                warnings.append(f"[{name}] edge {c['id']} crosses {role} component interior {node['id']}; check anchor and label")
         routes.append((c['id'], path))
         geometry = el.find('mxGeometry')
         if _lines(c['value']) and geometry is not None and float(geometry.get('y', 0)) == 0:

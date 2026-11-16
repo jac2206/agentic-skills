@@ -6,7 +6,7 @@ description: >
   components, software components, layers, cloud infrastructure, deployment,
   integration, messaging, sequence, process, entity-relationship and data flow.
 metadata:
-  version: "2.2.0"
+  version: "2.3.0"
 ---
 
 # Diagram Engineering
@@ -169,6 +169,12 @@ thirteen by default. If only a format is missing, ask for that format alone.
   excessively wide view; assess readability at normal and fit-to-page scales.
   Split an overcrowded selected view into linked pages only when needed and
   preserve coverage; do not add unselected diagram types.
+- For layout repair, preserve the existing diagram until a candidate has been
+  checked. Compare the baseline and candidate by finding and location, not just
+  warning counts or an optimization score. Reject new interior crossings,
+  obscured labels, excessive bends or semantic changes even if a count falls.
+  If rendered comparison is unavailable, do not claim visual improvement;
+  report unresolved findings and retain the baseline for review.
 
 ## Constraints
 

@@ -1,9 +1,26 @@
 # Diagram Engineering authoring and validation
 
-Current revision: **2.2.0**, self-contained Python utilities and local validation.
+Current revision: **2.3.0**, self-contained Python utilities and local validation.
 The 1.0.0 and 1.1.0 records below are historical; current packaging and executed
 checks are recorded in the final section. The former sibling-resource dependency,
 absence of local scripts and JavaScript helper no longer describe this package.
+
+## 2.3.0 endpoint and regression review
+
+The user-supplied rendered container diagram showed connectors entering endpoint
+interiors despite passing older checks. Both Skills now warn about explicit paths
+crossing source/target bounding boxes, and Architecture Documentation additionally
+checks unrelated native components. Router-controlled paths remain estimates.
+Both Skills instruct authors to retain the baseline and compare individual
+findings and visual evidence rather than optimize warning counts. These tests and
+instructions cannot establish rendered quality or automatically repair a layout.
+The full Python regression suite passed 44 tests, including endpoint-interior,
+border-contact, unrelated-component and router-estimate cases. Both packaged
+checkers flagged the API and Contracts endpoint interiors in the employee C4
+example. The Architecture Documentation checker processed five bundled reference
+files with zero errors and 11–40 warnings each; these warnings require review.
+No graphical renderer or editor was launched for this change, and the modified
+Skills have not been exercised end-to-end on a newly rendered application diagram.
 
 ## 2.2.0 boundary and route review
 

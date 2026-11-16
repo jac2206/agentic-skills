@@ -118,4 +118,11 @@ automatic routing, font metrics and renderer adjustments can change the result.
 Review intentional crossings and any unverified routing manually. The checker
 uses its package-local `layout_checks.py` and requires no sibling Skill.
 
+The checker also flags routes passing through their source or target bounding
+rectangle and unrelated native components. Border attachment is allowed; center
+anchors, custom perimeters and nonrectangular shapes require manual judgment.
+For a repair, preserve a baseline and compare findings by location, semantics,
+route complexity and, when available, rendered previews. A lower warning count
+is not proof of improvement; if visual comparison is unavailable, say so.
+
 Report which levels of validation actually ran.
