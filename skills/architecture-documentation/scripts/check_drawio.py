@@ -23,6 +23,7 @@ import sys
 import urllib.parse
 import xml.etree.ElementTree as ET
 import zlib
+from layout_checks import check_layout
 
 TOL = 4.0  # px of overlap tolerated (anti aliasing, shared borders)
 PICTORIAL_SHAPE = re.compile(r"(?:umlactor|person|user|smartphone|mobile|tablet|laptop|computer|browser|device)", re.I)
@@ -112,6 +113,36 @@ def seg_hits_box(p, q, box, pad=2.0):
     return False
 
 
+def edge_label_box(path, value, font_size, geometry):
+    """Estimate mxGraph's centered edge label, including its relative x/offset.
+
+    Font metrics and renderer routing vary. The result is a warning heuristic,
+    not evidence of the exact rendered label position.
+    """
+    segments = [(a, b, abs(b[0] - a[0]) + abs(b[1] - a[1]))
+                for a, b in zip(path, path[1:])]
+    total = sum(length for _, _, length in segments)
+    if not total:
+        return None
+    relative_x = max(-1.0, min(1.0, float(geometry.get("x", 0))))
+    distance = total * (relative_x + 1.0) / 2.0
+    midpoint = path[0]
+    for a, b, length in segments:
+        if length and distance <= length:
+            ratio = distance / length
+            midpoint = (a[0] + (b[0] - a[0]) * ratio, a[1] + (b[1] - a[1]) * ratio)
+            break
+        distance -= length
+    offset = geometry.find("mxPoint[@as='offset']")
+    dx = float(offset.get("x", 0)) if offset is not None else 0
+    dy = float(offset.get("y", 0)) if offset is not None else 0
+    lines = text_lines(value)
+    width = max(len(line) for line in lines) * font_size * 0.56 + 6
+    height = len(lines) * font_size * 1.25 + 4
+    x, y = midpoint[0] + dx, midpoint[1] + dy
+    return (x - width / 2, y - height / 2, x + width / 2, y + height / 2)
+
+
 def validate_embedded_svg(uri):
     """Return an error message when an embedded SVG data URI is malformed."""
     header, sep, payload = uri.partition(",")
@@ -145,14 +176,24 @@ def check_model(name, model, errors, warnings):
         cells[cid] = {"id": cid, "el": el, "style": style_map(el.get("style")), "value": el.get("value") or "",
                       "parent": el.get("parent"), "geo": geo, "edge": el.get("edge") == "1"}
 
-    # absolute coordinates for nested cells
+    # Keep original offsets immutable: otherwise deeper nesting double-counts ancestors.
+    local_geometry = {cid: c["geo"] for cid, c in cells.items()}
+    absolute_geometry = {}
     def absolute(c):
-        x, y, w, h = c["geo"]
+        if c["id"] in absolute_geometry:
+            return absolute_geometry[c["id"]]
+        x, y, w, h = local_geometry[c["id"]]
         p = cells.get(c["parent"])
-        while p is not None and p["geo"] is not None:
-            x, y = x + p["geo"][0], y + p["geo"][1]
-            p = cells.get(p["parent"])
-        return (x, y, w, h)
+        if p is not None and local_geometry[p["id"]] is not None:
+            px, py, pw, ph = absolute(p)
+            if c["el"].find("mxGeometry").get("relative") == "1":
+                x, y = x * pw, y * ph
+            x, y = x + px, y + py
+        offset = c["el"].find("./mxGeometry/mxPoint[@as='offset']")
+        if offset is not None:
+            x, y = x + float(offset.get("x", 0)), y + float(offset.get("y", 0))
+        absolute_geometry[c["id"]] = (x, y, w, h)
+        return absolute_geometry[c["id"]]
 
     for c in cells.values():
         if c["geo"] is not None:
@@ -250,6 +291,10 @@ def check_model(name, model, errors, warnings):
             a = anchor(vertex_boxes[src], float(st.get("exitX", 0.5)), float(st.get("exitY", 0.5)))
             b = anchor(vertex_boxes[tgt], float(st.get("entryX", 0.5)), float(st.get("entryY", 0.5)))
             path = [a] + pts + [b]
+            if not all(k in st for k in ("exitX", "exitY", "entryX", "entryY")):
+                warnings.append(f"[{name}] edge {c['id']} uses automatic routing; rendered path and label position are unverified")
+            elif any(abs(p[0] - q[0]) > 0.5 and abs(p[1] - q[1]) > 0.5 for p, q in zip(path, path[1:])):
+                warnings.append(f"[{name}] edge {c['id']} has an implicit route segment; rendered path is unverified")
             for p, q in zip(path, path[1:]):
                 for ic in icons:
                     if ic["id"] in (src, tgt):
@@ -263,6 +308,7 @@ def check_model(name, model, errors, warnings):
                     if seg_hits_box(p, q, lboxes[txt["id"]], pad=0.0):
                         warnings.append(f"[{name}] edge {c['id']} ({label(cells[src])} -> {label(cells[tgt])}) "
                                         f"crosses label {label(txt)}")
+    check_layout(name, cells, warnings, edge_label_box)
     return len(icons), len(texts), sum(1 for c in cells.values() if c["edge"]), provider_counts
 
 

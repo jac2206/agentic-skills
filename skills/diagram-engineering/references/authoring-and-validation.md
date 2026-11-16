@@ -277,6 +277,19 @@ meaning.
 
 ### 6. Editor compatibility and visual quality
 
+The Draw.io checker estimates inline edge-label boxes for explicit orthogonal
+routes and warns about overlaps with components, boundary titles and other estimated labels. It
+also compares separate text-cell bounds with estimated boundary titles. It
+also warns when explicit routes cross titles or other routes, share segments,
+or cross another edge's estimated label. Crossings and shared segments may be
+intentional; inspect them in context rather than treating warnings as errors. It
+also checks explicit connector segments against components and reports automatic
+or implicit routes and unsupported label offsets as unverified. Treat these as
+heuristics: font metrics, routing, label positions and line crossings in the
+editor may differ. Zero warnings is not a visual pass. Review every warning,
+adjust ports, waypoints or label offsets and rerun static checks after layout
+changes. Avoid long unbroken Mermaid labels and unnecessarily wide layouts.
+
 Use an available safe editor/renderer and inspect generated previews when
 possible. Do not launch Desktop merely because its executable exists. Use the
 guard when visual review was requested or the exporter is confirmed working:

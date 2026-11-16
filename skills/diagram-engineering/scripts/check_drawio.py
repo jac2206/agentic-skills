@@ -5,9 +5,9 @@ Adapted from architecture-documentation 1.8.13; see references/reuse-provenance.
 
 Errors (exit code 1): invalid XML/hierarchy/geometry, duplicated IDs, invalid
 endpoints, native component/icon/label collisions, and invalid SVG/resources.
-Warnings: label text running into an icon, icons that are not 78x78 / 46x46 or lack the white stroke,
-icons with an inline label, edges that are not sharp orthogonal or carry a label, edges whose explicit
-route crosses an unrelated icon.
+Warnings include label/icon contact, nonstandard icon styles, non-orthogonal or
+unverified routes, explicit routes crossing components, and estimated edge-label
+collisions. These estimates cannot replace inspection in a renderer.
 
 Label sizes are estimated from the text (draw.io only stores the size of the last save), so a label that
 was edited by hand is still measured correctly.
@@ -28,6 +28,7 @@ import sys
 import urllib.parse
 import xml.etree.ElementTree as ET
 import zlib
+from layout_checks import check_layout
 
 TOL = 4.0  # px of overlap tolerated (anti aliasing, shared borders)
 PICTORIAL_SHAPE = re.compile(r"(?:umlactor|person|user|smartphone|mobile|tablet|laptop|computer|browser|device)", re.I)
@@ -121,6 +122,36 @@ def seg_hits_box(p, q, box, pad=2.0):
         x = p[0]
         return x1 < x < x2 and min(p[1], q[1]) < y2 and max(p[1], q[1]) > y1
     return False
+
+
+def edge_label_box(path, value, font_size, geometry):
+    """Estimate mxGraph's centered edge label, including its relative x/offset.
+
+    Font metrics and renderer routing vary. The result is a warning heuristic,
+    not evidence of the exact rendered label position.
+    """
+    segments = [(a, b, abs(b[0] - a[0]) + abs(b[1] - a[1]))
+                for a, b in zip(path, path[1:])]
+    total = sum(length for _, _, length in segments)
+    if not total:
+        return None
+    relative_x = max(-1.0, min(1.0, float(geometry.get("x", 0))))
+    distance = total * (relative_x + 1.0) / 2.0
+    midpoint = path[0]
+    for a, b, length in segments:
+        if length and distance <= length:
+            ratio = distance / length
+            midpoint = (a[0] + (b[0] - a[0]) * ratio, a[1] + (b[1] - a[1]) * ratio)
+            break
+        distance -= length
+    offset = geometry.find("mxPoint[@as='offset']")
+    dx = float(offset.get("x", 0)) if offset is not None else 0
+    dy = float(offset.get("y", 0)) if offset is not None else 0
+    lines = text_lines(value)
+    width = max(len(line) for line in lines) * font_size * 0.56 + 6
+    height = len(lines) * font_size * 1.25 + 4
+    x, y = midpoint[0] + dx, midpoint[1] + dy
+    return (x - width / 2, y - height / 2, x + width / 2, y + height / 2)
 
 
 def validate_embedded_svg(uri):
@@ -368,6 +399,7 @@ def check_model(name, model, errors, warnings):
             if o:
                 warnings.append(f"[{name}] label {label(a)} runs into icon {label(ic)} ({o[0]:.0f}x{o[1]:.0f}px)")
 
+    edge_labels = []
     for c in cells.values():
         if not c["edge"]:
             continue
@@ -378,19 +410,28 @@ def check_model(name, model, errors, warnings):
                 errors.append(f"[{name}] edge {c['id']} {end} points to missing cell {ref!r}")
         if not src or not tgt:
             warnings.append(f"[{name}] edge {c['id']} is not connected at both ends (it will not follow moved icons)")
-        if st.get("edgeStyle") != "orthogonalEdgeStyle" or str(st.get("rounded", "0")) != "0":
+        explicit_style = st.get("edgeStyle") == "none" and st.get("noEdgeStyle") == "1"
+        if (st.get("edgeStyle") != "orthogonalEdgeStyle" and not explicit_style) or str(st.get("rounded", "0")) != "0":
             warnings.append(f"[{name}] edge {c['id']} is not sharp orthogonal (edgeStyle=orthogonalEdgeStyle;rounded=0)")
-        if text_lines(c["value"]) != [""]:
-            warnings.append(f"[{name}] edge {c['id']} has a label: use a red annotation text cell instead")
         # explicit route: exit anchor -> waypoints -> entry anchor
         pts = [(float(p.get("x", 0)), float(p.get("y", 0)))
                for p in el.findall("./mxGeometry/Array[@as='points']/mxPoint")]
         if src in vertex_boxes and tgt in vertex_boxes:
             def anchor(box, kx, ky):
                 return (box[0] + (box[2] - box[0]) * kx, box[1] + (box[3] - box[1]) * ky)
+            if not all(k in st for k in ("exitX", "exitY", "entryX", "entryY")):
+                warnings.append(f"[{name}] edge {c['id']} uses automatic routing; rendered path and label position are unverified")
+                continue
             a = anchor(vertex_boxes[src], float(st.get("exitX", 0.5)), float(st.get("exitY", 0.5)))
             b = anchor(vertex_boxes[tgt], float(st.get("entryX", 0.5)), float(st.get("entryY", 0.5)))
+            parent = cells.get(c["parent"])
+            if parent is not None and parent["geo"] is not None:
+                px, py = parent["geo"][:2]
+                pts = [(x + px, y + py) for x, y in pts]
             path = [a] + pts + [b]
+            if any(abs(p[0] - q[0]) > 0.5 and abs(p[1] - q[1]) > 0.5 for p, q in zip(path, path[1:])):
+                warnings.append(f"[{name}] edge {c['id']} has an implicit route segment; rendered path is unverified")
+                continue
             for p, q in zip(path, path[1:]):
                 for ic in icons:
                     if ic["id"] in (src, tgt):
@@ -404,6 +445,28 @@ def check_model(name, model, errors, warnings):
                     if seg_hits_box(p, q, lboxes[txt["id"]], pad=0.0):
                         warnings.append(f"[{name}] edge {c['id']} ({label(cells[src])} -> {label(cells[tgt])}) "
                                         f"crosses label {label(txt)}")
+                for component in solids:
+                    if component['id'] in (src, tgt) or component in icons or component in texts:
+                        continue
+                    if seg_hits_box(p, q, vertex_boxes[component['id']]):
+                        warnings.append(f"[{name}] edge {c['id']} crosses component {label(component)}")
+            if text_lines(c["value"]) != [""]:
+                geometry = el.find("mxGeometry")
+                if geometry is not None and float(geometry.get("y", 0)) != 0:
+                    warnings.append(f"[{name}] edge {c['id']} label has nonzero relative y; rendered placement is unverified")
+                    continue
+                label_box_est = edge_label_box(path, c["value"], float(st.get("fontSize", 12)), el.find("mxGeometry"))
+                if label_box_est:
+                    edge_labels.append((c, label_box_est))
+                    for component in solids:
+                        box = lboxes.get(component['id'], vertex_boxes[component['id']])
+                        if overlap(label_box_est, box):
+                            warnings.append(f"[{name}] estimated edge label {c['id']} overlaps {label(component)}")
+    for i, (a, box_a) in enumerate(edge_labels):
+        for b, box_b in edge_labels[i + 1:]:
+            if overlap(box_a, box_b):
+                warnings.append(f"[{name}] estimated edge labels overlap: {a['id']} and {b['id']}")
+    check_layout(name, cells, warnings, edge_label_box)
     return len(icons), len(texts), sum(1 for c in cells.values() if c["edge"]), provider_counts
 
 

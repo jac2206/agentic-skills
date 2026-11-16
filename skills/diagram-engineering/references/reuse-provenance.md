@@ -5,7 +5,7 @@ package, local diagram scripts and IBM Cloud coverage. This supersedes the
 earlier choice to resolve resources through an installed sibling Skill.
 
 Source baseline: this repository's `skills/architecture-documentation/`, declared
-version `1.8.13`. The source package remains unchanged. The paths below are
+version `1.8.13` at the time of the original adaptation. The paths below are
 relative to each package; incorporated resources are maintained independently.
 
 | Source | Local destination | Adaptation |
@@ -24,6 +24,12 @@ request; version-1 task receipts remain readable and prior failures block retrie
 Only an external Mermaid CLI retains its own Node.js runtime requirement.
 There is no generic
 diagram generator, repository CLI, agent runtime or automatic icon downloader.
+
+The 2.2.0 boundary-title and connector layout heuristics are also packaged in
+Architecture Documentation's `scripts/layout_checks.py` at the user's request.
+The identical small helper is intentionally bundled in each independent Skill;
+compare both copies and run regression tests when changing it. Their main
+checkers retain their own validation behavior.
 
 The packaged reference diagrams are illustrative proposals, not verified
 deployments or current vendor catalogs. Their embedded phone/laptop and provider

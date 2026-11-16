@@ -1,9 +1,41 @@
 # Diagram Engineering authoring and validation
 
-Current revision: **2.0.0**, self-contained Python utilities and local validation.
+Current revision: **2.2.0**, self-contained Python utilities and local validation.
 The 1.0.0 and 1.1.0 records below are historical; current packaging and executed
 checks are recorded in the final section. The former sibling-resource dependency,
 absence of local scripts and JavaScript helper no longer describe this package.
+
+## 2.2.0 boundary and route review
+
+On 2026-11-16, both Diagram Engineering and Architecture Documentation received
+package-local layout heuristics for boundary-title collisions, explicit route
+crossings and shared segments. The AWS employee example reproduced the reported
+VPC title/edge-caption overlap as a warning. These heuristics cannot establish
+actual rendered positions or determine whether a shared route is intentional.
+The complete Python regression suite passed 42 tests, including checks of both
+packages and identical helper copies. The Architecture Documentation checker
+completed on all five bundled Draw.io reference files: zero errors, with 4 to 19
+warnings per file requiring review. No editor or renderer was launched; the
+existing screenshots are not evidence that the changed scripts repaired a view.
+
+## 2.1.0 visual-layout follow-up
+
+The supplied employee-system screenshots exposed overlapping connector captions,
+congested routes and an excessively wide Mermaid view. The local Draw.io checker
+now estimates label boxes on explicit routes, detects additional component
+crossings and flags unknown automatic routes. These checks are heuristic, not
+proof of a rendered layout. The Skill now calls for planned routes, label spacing
+and compact Mermaid layouts. Existing architecture-documentation files were not
+changed.
+
+On 2026-11-16, the complete Python regression suite passed 39 tests. Two revised
+local Draw.io examples passed the checker with zero errors and one warning each
+about provider-neutral embedded SVG provenance. XML comparisons preserved all
+cell identities, labels, containment and connection endpoints. A Mermaid copy
+changed only the layout direction and label line breaks. These files are local
+ignored examples. The revised files were not rendered, opened or visually
+inspected, and the Mermaid parser was not run; their visual and syntax status
+remain unverified. Existing screenshots are evidence of the earlier layouts only.
 
 Date: 2026-11-15. Scope: create `skill/diagram-engineering` version `1.0.0`
 using Skill Factory `1.2.1`, preserving existing Skills and repository architecture.

@@ -59,6 +59,8 @@ intentar esa herramienta durante el encargo; continúan los controles estáticos
   nodos, etiquetas y conectores siguen siendo editables.
 - Cada pareja mantiene componentes, relaciones y significado; la secuencia
   conserva participantes, mensajes, respuestas y orden suministrados.
+- Las rutas y etiquetas evitan superposiciones; el texto es legible y las rutas
+  automáticas o posiciones no verificadas se informan como limitaciones.
 - Se distinguen sintaxis, estructura, semántica, recursos, equivalencia y revisión
   visual; no se presenta un control no ejecutado como aprobado.
 
@@ -148,6 +150,8 @@ again during the task; static checks continue.
   and connectors remain editable.
 - Each pair preserves components, relationships and meaning; sequence preserves
   supplied participants, messages, returns and order.
+- Routes and labels avoid overlaps; text is legible and unverified automatic
+  routes or label positions are disclosed as limitations.
 - Syntax, structure, semantics, resources, equivalence and visual review are
   distinguished; an unexecuted check is never presented as passed.
 

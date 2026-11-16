@@ -111,4 +111,11 @@ python3 <skill-directory>/scripts/check_drawio.py --require-provider-icons googl
 python3 <skill-directory>/scripts/render_drawio.py preview docs/architecture/aws-infrastructure.drawio /tmp/aws-infrastructure-preview.png
 ```
 
+The checker also estimates boundary-title collisions with text cells and explicit edge labels,
+intersections with titles and other edge labels, and crossings or shared segments
+between explicit orthogonal routes. These are warnings, not render evidence;
+automatic routing, font metrics and renderer adjustments can change the result.
+Review intentional crossings and any unverified routing manually. The checker
+uses its package-local `layout_checks.py` and requires no sibling Skill.
+
 Report which levels of validation actually ran.

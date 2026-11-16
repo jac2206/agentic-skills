@@ -3,12 +3,15 @@
 import importlib.util
 from pathlib import Path
 import shutil
+import sys
 import unittest
 import uuid
 
 
 def load_script(name):
     path = Path(__file__).resolve().parents[1] / (name + ".py")
+    if str(path.parent) not in sys.path:
+        sys.path.insert(0, str(path.parent))
     spec = importlib.util.spec_from_file_location("diagram_test_" + name, path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)

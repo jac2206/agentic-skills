@@ -38,6 +38,9 @@ de Archify y las comprobaciones no disponibles.
 
 ### Criterios de revisión
 
+- Se revisan títulos de límites, cruces y tramos compartidos de conectores;
+  las advertencias estáticas no sustituyen una inspección visual.
+
 - Las vistas de componentes coinciden; la infraestructura describe el despliegue.
 - Las relaciones relevantes tienen evidencia o una etiqueta de propuesta/incógnita.
 - Los iconos del proveedor y las comprobaciones estructurales siguen la Skill.
@@ -81,6 +84,9 @@ with current and proposed facts separated. Archify status and unavailable checks
 are reported explicitly.
 
 ### Review criteria
+
+- Review boundary titles, connector crossings and shared segments; static
+  warnings do not replace visual inspection.
 
 - Component views agree; the infrastructure view describes deployment separately.
 - Material relationships have evidence or an explicit proposed/unknown status.

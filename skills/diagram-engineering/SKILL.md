@@ -6,7 +6,7 @@ description: >
   components, software components, layers, cloud infrastructure, deployment,
   integration, messaging, sequence, process, entity-relationship and data flow.
 metadata:
-  version: "2.0.0"
+  version: "2.2.0"
 ---
 
 # Diagram Engineering
@@ -161,6 +161,12 @@ thirteen by default. If only a format is missing, ask for that format alone.
   narrow the conversion or report what cannot be represented.
 - Retain readable labels, uniform spacing, hierarchy, alignment and directed
   relationships. Avoid crossings, text over connectors and decorative clutter.
+  Plan connector routes and their labels together: use explicit ports, waypoints
+  and label offsets or separate editable annotations where needed. Avoid placing
+  captions over components, boundary titles or other captions; minimize shared
+  connector segments and ambiguous crossings. Rerun checks after moving nodes.
+  Wrap long Mermaid labels and choose a suitable direction to avoid an
+  excessively wide view; assess readability at normal and fit-to-page scales.
   Split an overcrowded selected view into linked pages only when needed and
   preserve coverage; do not add unselected diagram types.
 

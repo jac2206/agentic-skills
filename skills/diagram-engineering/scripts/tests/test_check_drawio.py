@@ -4,6 +4,9 @@ import base64
 from contextlib import redirect_stdout
 import io
 import json
+from pathlib import Path
+import subprocess
+import sys
 import unittest
 import urllib.parse
 import xml.etree.ElementTree as ET
@@ -71,8 +74,91 @@ class DrawioTests(WorkspaceTestCase):
         vertex(graph, "b", x=250)
         edge(graph)
         errors, warnings, totals = inspect(graph)
-        self.assertEqual(errors + warnings, [])
+        self.assertEqual(errors, [])
+        self.assertTrue(any("automatic routing" in warning for warning in warnings))
         self.assertEqual(totals[2], 1)
+
+    def test_explicit_route_detects_component_and_estimated_label_collision(self):
+        graph = model()
+        vertex(graph, "a", x=0)
+        vertex(graph, "b", x=400)
+        vertex(graph, "obstacle", x=200)
+        connection = edge(graph, style="edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;")
+        connection.set("value", "Authentication")
+        errors, warnings, _ = inspect(graph)
+        self.assertEqual(errors, [])
+        self.assertTrue(any("crosses component obstacle" in w for w in warnings), warnings)
+        self.assertTrue(any("estimated edge label edge overlaps obstacle" in w for w in warnings), warnings)
+
+    def test_estimated_edge_labels_overlap(self):
+        graph = model()
+        vertex(graph, "a")
+        vertex(graph, "b", x=400)
+        style = "edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;"
+        first = edge(graph, style=style)
+        first.set("value", "First connection")
+        second = edge(graph, style=style)
+        second.set("id", "edge2")
+        second.set("value", "Second connection")
+        warnings = inspect(graph)[1]
+        self.assertTrue(any("estimated edge labels overlap: edge and edge2" in w for w in warnings), warnings)
+
+    def test_offset_edge_label_avoids_false_overlap(self):
+        graph = model()
+        vertex(graph, "a")
+        vertex(graph, "b", x=400)
+        style = "edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;"
+        first = edge(graph, style=style)
+        first.set("value", "First connection")
+        second = edge(graph, style=style)
+        second.set("id", "edge2")
+        second.set("value", "Second connection")
+        ET.SubElement(second.find("mxGeometry"), "mxPoint", x="0", y="60", **{"as": "offset"})
+        self.assertFalse(any("estimated edge labels overlap" in w for w in inspect(graph)[1]))
+
+    def test_boundary_title_overlap_and_routes_in_both_skills(self):
+        graph = model()
+        vertex(graph, "frame", x=100, y=0, width=400, height=300,
+               value="Network boundary", style="fillColor=none;dashed=1;align=left;verticalAlign=top;fontSize=14;", **{"data-role": "boundary"})
+        vertex(graph, "caption", x=120, y=0, width=80, height=20, style="text;", value="Caption")
+        vertex(graph, "a", x=0, y=0, width=30, height=30)
+        vertex(graph, "b", x=400, y=0, width=30, height=30)
+        route_style = "edgeStyle=none;noEdgeStyle=1;rounded=0;exitX=1;exitY=0.5;entryX=0;entryY=0.5;"
+        first = edge(graph, style=route_style)
+        first.set("value", "Connection to network")
+        second = edge(graph, style=route_style)
+        second.set("id", "edge2")
+        warnings = inspect(graph)[1]
+        self.assertTrue(any("boundary title frame overlaps edge label" in w for w in warnings), warnings)
+        self.assertTrue(any("boundary title frame overlaps text caption" in w for w in warnings), warnings)
+        self.assertTrue(any("edge edge crosses estimated boundary title frame" in w for w in warnings), warnings)
+        self.assertTrue(any("edges edge and edge2 share a segment" in w for w in warnings), warnings)
+        path = self.write("layout.drawio", ET.tostring(graph, encoding="unicode"))
+        arch = Path(__file__).resolve().parents[3] / "architecture-documentation/scripts/check_drawio.py"
+        result = subprocess.run([sys.executable, "-B", str(arch), str(path)], capture_output=True, text=True)
+        self.assertIn("boundary title frame overlaps edge label", result.stdout)
+        self.assertIn("edges edge and edge2 share a segment", result.stdout)
+
+    def test_route_crossing_and_disjoint_routes(self):
+        graph = model()
+        vertex(graph, "a", x=0, y=100, width=20, height=20)
+        vertex(graph, "b", x=400, y=100, width=20, height=20)
+        vertex(graph, "c", x=200, y=0, width=20, height=20)
+        vertex(graph, "d", x=200, y=200, width=20, height=20)
+        first = edge(graph, style="edgeStyle=none;noEdgeStyle=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;")
+        second = edge(graph, source="c", target="d", style="edgeStyle=none;noEdgeStyle=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;")
+        second.set("id", "edge2")
+        self.assertTrue(any("edges edge and edge2 cross" in w for w in inspect(graph)[1]))
+        graph.find("root/mxCell[@id='c']/mxGeometry").set("x", "500")
+        graph.find("root/mxCell[@id='d']/mxGeometry").set("x", "500")
+        self.assertFalse(any("edges edge and edge2 cross" in w for w in inspect(graph)[1]))
+
+    def test_layout_helpers_match_and_ignore_degenerate_segments(self):
+        from layout_checks import _relationship
+        self.assertIsNone(_relationship((1, 1), (1, 1), (1, 1), (1, 1)))
+        scripts = Path(__file__).resolve().parents[1]
+        other = scripts.parents[1] / "architecture-documentation/scripts/layout_checks.py"
+        self.assertEqual((scripts / "layout_checks.py").read_bytes(), other.read_bytes())
 
     def test_duplicate_ids(self):
         graph = model()
@@ -221,7 +307,7 @@ class DrawioTests(WorkspaceTestCase):
         connection.set("value", "Note")
         errors, warnings, _ = inspect(graph)
         self.assertEqual(errors, [])
-        for message in ("not sharp orthogonal", "has a label", "crosses icon"):
+        for message in ("not sharp orthogonal", "crosses icon"):
             self.assertTrue(any(message in warning for warning in warnings), message)
 
     def test_cli_status_and_provider_enforcement(self):
