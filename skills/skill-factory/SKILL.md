@@ -6,7 +6,7 @@ description: >
   responsibilities, or choose between a prompt, Skill, workflow, agent, or
   application.
 metadata:
-  version: "1.2.1"
+  version: "1.2.2"
 ---
 
 # Skill Factory
@@ -55,6 +55,14 @@ may include:
 Ask a concise question only when a missing decision materially affects the
 design and cannot be reasonably inferred. Otherwise, state a reasonable
 assumption and proceed.
+
+When clarification is needed, explain the decision's impact and recommend a
+context-backed option. Offer two or three meaningful alternatives only when they
+help the user choose, using an available host question control or plain text.
+Ask the most important one to three questions together, preserve prior answers
+and explicit delegated choices, and continue independent work. Wait for an answer
+before dependent work on an unresolved critical decision; silence or a recommendation
+does not supply that answer. Do not add a mandatory discovery questionnaire.
 
 ## Outputs
 
@@ -133,6 +141,15 @@ Specify only relevant items:
 - The minimum workflow and meaningful decision points.
 - Rules, constraints, tools, and composition relationships that affect results.
 - Observable quality criteria and proportionate validation.
+
+For a Skill that encounters consequential user choices, define when it should
+inspect context, guide a decision or ask a focused question. Preserve existing
+defaults and delegated choices, state what work can continue while blocked, and
+keep recommendations distinct from user decisions. Do not generalize a specialized
+component's mandatory selection step into a universal questionnaire. Include this
+guidance in the owning instructions only where it serves the capability; do not
+create a question section merely to fill the template. Review usage examples for
+both sufficient-context and missing-decision behavior without claiming execution.
 
 ### 5. Decide which supporting resources add value
 
@@ -391,6 +408,10 @@ For each task, apply only the relevant checks:
 7. Confirm revisions preserve intended behavior and keep related resources
    consistent.
 8. State which checks were performed and distinguish inspection from execution.
+9. Where user choices matter, review sufficient-context and missing-decision paths:
+   no redundant questions, useful recommendations, preserved defaults and authority,
+   and independent work while critical answers are pending. Label walkthroughs
+   separately from actual host execution.
 
 ---
 

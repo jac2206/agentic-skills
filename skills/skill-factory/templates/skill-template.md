@@ -54,6 +54,14 @@ Do not use this Skill when:
   - Description:
   - Default:
 
+### Clarification and guidance (when relevant)
+
+<Identify decisions that require user input after inspecting available context.
+Explain their impact, recommend meaningful options when helpful, and preserve
+existing defaults, answers and explicitly delegated choices. State what work can
+continue while a critical answer is pending. Do not treat silence as consent or
+add a mandatory questionnaire. Omit this section when it adds no value.>
+
 ## Outputs
 
 The Skill should produce:

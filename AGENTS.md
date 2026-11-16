@@ -66,6 +66,22 @@ Do not use a Skill simply because it is available.
 
 ---
 
+# Clarification and Decision Guidance
+
+Inspect applicable context, prior answers and component defaults before asking.
+Ask only when a missing decision materially changes the result and cannot be
+resolved from evidence or bounded authority explicitly delegated by the caller.
+Explain its impact and, when helpful, recommend an option with meaningful
+alternatives. Group the most important one to three questions using available
+host controls or plain text; preserve free-text answers.
+
+Continue independent work while waiting, and block only dependent work on a
+critical unresolved choice. Recommendations, silence and timeouts are not consent.
+Reuse decisions across agents, Skills and workflows instead of asking repeatedly.
+Do not add a mandatory questionnaire or reconfirm authorized actions. Preserve
+component-specific rules, including Diagram Engineering's explicit selection when
+type or format is missing; an existing selection does not require another question.
+
 # Skill Composition
 
 Skills should be designed so they can be combined without duplicating responsibilities.

@@ -37,6 +37,8 @@ también es válido.
 
 ### Criterios de revisión
 
+- Solo se pregunta por decisiones relevantes no resueltas; se aprovecha el contexto, se recomiendan opciones cuando ayudan y continúa el trabajo independiente.
+
 - La recomendación identifica necesidades reales de juicio o aislamiento.
 - Las Skills se resuelven por su nombre declarado y no se copian sus procedimientos.
 - La evidencia faltante es explícita; no se afirma ejecución ni compatibilidad.
@@ -78,6 +80,8 @@ A justified abstraction recommendation, relevant capability references, authorit
 boundaries and unresolved prerequisites. Recommending a simpler option is valid.
 
 ### Review criteria
+
+- Questions concern only material unresolved decisions; available context is reused, options are recommended when helpful, and independent work continues.
 
 - The recommendation identifies actual judgment or isolation needs.
 - Referenced Skills resolve by declared name and their procedures are not copied.

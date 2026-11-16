@@ -5,7 +5,7 @@ description: >
   across web and mobile, respecting existing identities and technology while
   using the JAC Design System when no other identity is established.
 metadata:
-  version: "1.4.1"
+  version: "1.4.2"
 ---
 
 # UI/UX Design System
@@ -25,6 +25,22 @@ Do not use for requirements ownership, technical architecture redesign, security
 ## Inputs
 
 Required: the requested outcome or interface scope. Inspect available project evidence; ask only when a missing decision blocks safe or meaningful progress. Optional inputs include users, tasks, requirements and acceptance criteria, brand and visual references, platforms, accessibility targets, existing UI and architecture, stack, constraints, and available validation tools. Separate confirmed facts, assumptions, and pending decisions; do not invent business behavior.
+
+### Guided design decisions
+
+Use supplied choices, existing flows, brand rules and project evidence before
+asking. Clarify unresolved product behavior or a visual direction only when the
+choice materially changes the requested flow or substantial design work. Explain
+the impact, recommend a context-appropriate direction and, when useful, offer two
+or three distinct options in an available host question control or plain text.
+Group only the most important one to three questions; allow another answer.
+
+Continue independent analysis while a blocking answer is pending. Do not invent
+business behavior, treat silence as approval or ask again about a choice the user
+or calling agent/workflow has already supplied or explicitly delegated. Routine
+layout details remain engineering/design judgment. Preserve the identity precedence,
+JAC fallback, default HTML deliverable and read-only modes below; these defaults
+do not require an extra selection or confirmation step.
 
 ## Outputs
 
@@ -117,6 +133,10 @@ The result is ready when applicable criteria are supported by evidence:
 - [ ] Audit findings distinguish observations, risks and unassessed areas.
 
 ## Validation
+
+When clarification is relevant, verify that questions identify consequential product
+or design choices, reuse prior answers, preserve identity/output defaults and leave
+independent work moving without inventing behavior or changing read-only modes.
 
 1. Check the deliverable against the requested scope, relevant flows, states and existing design conventions.
    Check identity precedence, asset provenance and actual source conflicts; for a non-JAC identity check that JAC tokens and marks do not leak into the result.

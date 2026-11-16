@@ -36,6 +36,12 @@ dependencies: []
 
 <Required and optional context, scope, preconditions and missing-input behavior.>
 
+<Where relevant, explain when to inspect context, guide a choice or ask the caller.
+Recommend options with their consequences, reuse prior answers and delegated
+choices, and continue independent work while a critical answer is pending.
+Avoid repeated questions, blanket confirmation and treating silence as consent.
+Omit this paragraph if the responsibility has no consequential unresolved choices.>
+
 ## Outputs
 
 <Deliverable format, evidence and completion criteria.>

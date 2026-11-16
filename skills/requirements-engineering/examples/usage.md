@@ -37,6 +37,8 @@ verificables, incertidumbres visibles y niveles de épica/funcionalidad solo si 
 
 ### Criterios de revisión
 
+- Solo se pregunta por decisiones relevantes no resueltas; se aprovecha el contexto, se recomiendan opciones cuando ayudan y continúa el trabajo independiente.
+
 - Se cubren devolución normal, identificador desconocido y devolución ya registrada.
 - Las políticas no sustentadas quedan como preguntas, no como requisitos aprobados.
 - IDs, relaciones padre e identificadores de fuente son consistentes donde aplican.
@@ -77,6 +79,8 @@ A small draft backlog grounded in the supplied rules, with testable acceptance
 criteria, visible uncertainties and only justified epic/feature levels.
 
 ### Review criteria
+
+- Questions concern only material unresolved decisions; available context is reused, options are recommended when helpful, and independent work continues.
 
 - Normal return, unknown ID and already-recorded return are covered.
 - Unsupported policies remain questions rather than approved requirements.

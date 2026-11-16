@@ -7,7 +7,7 @@ description: >
   agent responsibilities, authority, handoffs, and execution requirements.
   Does not install or execute agents or implement runtime integrations.
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Agent Factory
@@ -58,6 +58,13 @@ Inspect available evidence before asking for missing information. State reasonab
 assumptions for reversible design choices. If missing context affects the agent's
 purpose, authority, or required outputs, ask a focused question and continue only
 independent work. Do not invent tool access, contracts, or execution evidence.
+
+For a necessary question, explain the decision's impact and recommend an option
+grounded in the available evidence. Offer two or three viable alternatives when
+useful, through an available host question control or plain text, and group only
+the most important one to three questions. Honor prior answers, documented
+defaults and bounded choices explicitly delegated by the caller. Do not repeat
+authorization requests already resolved or treat silence as an answer.
 
 ## Outputs
 
@@ -138,6 +145,13 @@ Using the agent contract, define:
   optional capabilities, permitted actions, prohibitions, and unavailable-tool behavior.
 - Failure and recovery behavior, including partial results and avoiding duplicate
   effects when an operation's outcome is uncertain.
+
+Where consequential user decisions arise, specify how the generated agent uses
+context before asking, recommends choices with their impact, preserves supplied
+or delegated decisions, and continues independent work while a blocking answer
+is pending. Route unresolved decisions through the caller when delegated; do not
+assume direct user access. Avoid a mandatory questionnaire, repeated questions
+from selected Skills or extra confirmation for already authorized actions.
 
 Separate read-only work, authorized local writes, and authorized remote writes
 where applicable. Preserve existing authorization; do not require blanket
@@ -279,6 +293,9 @@ only the criteria relevant to the deliverable and identify what remains unverifi
    wrong kinds, and cycles. Do not count authoring templates as components.
 3. Review responsibility overlap, copied Skill procedures, input/output compatibility,
    authority, failure behavior, and handoffs. Static structure cannot decide these.
+   Where user choices matter, review sufficient-context and missing-decision paths:
+   useful recommendations, preserved decisions/defaults, caller ownership, no
+   repeated questions and independent work while a critical answer is pending.
 4. Use [validation scenarios](references/validation-scenarios.md) when reviewing
    decisions and failure paths. Select relevant cases and distinguish a manual
    instruction walkthrough from exercising a generated agent in a host.

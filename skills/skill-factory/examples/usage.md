@@ -34,6 +34,8 @@ de recursos inspeccionados, comportamiento no verificado y abstracción elegida.
 
 ### Criterios de revisión
 
+- Solo se pregunta por decisiones relevantes no resueltas; se aprovecha el contexto, se recomiendan opciones cuando ayudan y continúa el trabajo independiente.
+
 - Los hallazgos citan la definición o sus recursos, no preferencias genéricas.
 - Las recomendaciones preservan la responsabilidad y comportamiento válidos.
 - Los escenarios documentados no se presentan como pruebas funcionales aprobadas.
@@ -73,6 +75,8 @@ An evidence-based evaluation with actionable recommendations and a clear account
 of inspected resources, unverified behavior and the chosen abstraction.
 
 ### Review criteria
+
+- Questions concern only material unresolved decisions; available context is reused, options are recommended when helpful, and independent work continues.
 
 - Findings cite the actual definition or resources rather than generic preferences.
 - Recommendations preserve the Skill's valid responsibility and behavior.

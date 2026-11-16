@@ -4,7 +4,7 @@ description: >
   Analyze, design, evolve, compare, review, and validate software architectures
   against real requirements and constraints without prescribing a stack or pattern.
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Software Architecture Design
@@ -43,6 +43,23 @@ output location. Distinguish user-reported context from independently observed
 facts. Never invent workloads, targets, budgets, requirements, components or
 existing behavior. Identify unknowns, conflicts, impact and evidence needed to
 resolve material gaps.
+
+### Decision guidance
+
+Inspect project decisions and supplied constraints before asking. Clarify an
+unresolved constraint only when it materially changes the recommendation or makes
+a dependent commitment indefensible, such as required compatibility, deployment
+boundaries, data residency or a workload target essential to the choice. Explain
+why it matters and, when useful, offer two or three viable options with trade-offs
+and a context-backed recommendation. Use an available host question control or
+plain text; keep the first round to the most important one to three questions.
+
+Continue evidence gathering and conditional comparisons while a blocking answer
+is pending; do not invent targets or select a provider as a confirmed constraint.
+Preserve explicit choices, documented defaults and bounded decisions delegated by
+the caller. For reversible details, state a supported assumption and proceed.
+Recommendations and silence do not authorize a dependent change or resolve an
+unanswered constraint. Analyze remains read-only throughout clarification.
 
 ## Outputs
 
@@ -160,6 +177,10 @@ The result is ready when applicable criteria are supported by evidence:
 - [ ] Verifiable designs specify checks for material claims and their limits.
 
 ## Validation
+
+When clarification is relevant, verify that questions concern material constraints,
+recommendations remain evidence-based and conditional, and independent analysis
+continues without converting unknowns into confirmed targets or permissions.
 
 1. Check the mode, authorization, evidence and status labels.
 2. Trace relevant requirements and constraints to decisions and identify gaps.

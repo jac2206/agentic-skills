@@ -35,6 +35,8 @@ consecuencias, incertidumbres y evidencia necesaria antes de implementar.
 
 ### Criterios de revisión
 
+- Solo se pregunta por decisiones relevantes no resueltas; se aprovecha el contexto, se recomiendan opciones cuando ayudan y continúa el trabajo independiente.
+
 - Se distingue el comportamiento actual de los componentes propuestos.
 - Se evalúan alternativas sencillas antes de introducir colas o servicios.
 - No se inventan cargas, niveles de servicio, proveedor cloud ni hechos de despliegue.
@@ -75,6 +77,8 @@ A conditional recommendation grounded in the existing system, with alternatives,
 consequences, uncertainty and the evidence needed before implementation.
 
 ### Review criteria
+
+- Questions concern only material unresolved decisions; available context is reused, options are recommended when helpful, and independent work continues.
 
 - Current behavior and proposed components are clearly distinguished.
 - Simpler alternatives are assessed before introducing queues or new services.

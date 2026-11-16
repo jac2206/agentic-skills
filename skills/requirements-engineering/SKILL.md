@@ -5,7 +5,7 @@ description: >
   of epics, features, and professional user stories with acceptance criteria,
   Gherkin scenarios, business rules, and functional and non-functional requirements.
 metadata:
-  version: "1.1.1"
+  version: "1.1.2"
 ---
 
 # Requirements Engineering
@@ -75,6 +75,22 @@ Do not use this Skill to:
 If context is incomplete, continue with the supported parts, record open
 questions and assumptions, and do not present assumptions as confirmed policy.
 Ask only when a missing decision prevents a useful and safe result.
+
+### Guided clarification
+
+Inspect supplied sources and previous stakeholder answers first. Ask about missing
+business decisions that materially change roles, permissions, outcomes, exceptions
+or acceptance criteria; do not ask users to repeat documented rules. Explain the
+decision and its consequence briefly. When alternatives help, offer two or three
+plausible options and a recommendation grounded in the supplied context, while
+allowing another answer. Use an available host question control or plain text.
+
+Group only the most important one to three questions at a time. Continue supported
+Draft work and unrelated items while answers are pending. Keep affected rules and
+criteria provisional and below development-ready until the responsible stakeholder
+resolves them. A recommendation, silence or timeout is not a confirmed business
+rule. Honor a decision explicitly delegated to the agent within its stated bounds;
+record the choice and rationale instead of asking again.
 
 ## Outputs
 
@@ -234,6 +250,10 @@ The backlog is ready for stakeholder review when:
   requested backlog structure.
 
 ## Validation
+
+When clarification is relevant, verify that sources and prior answers were checked,
+questions identify decision impact, and unresolved policy remains provisional.
+Verify that supported Draft work continues without treating recommendations as facts.
 
 Before returning the result:
 

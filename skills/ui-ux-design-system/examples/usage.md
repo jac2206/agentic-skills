@@ -36,6 +36,8 @@ con decisiones de identidad y comportamiento simulado explícitos.
 
 ### Criterios de revisión
 
+- Solo se pregunta por decisiones relevantes no resueltas; se aprovecha el contexto, se recomiendan opciones cuando ayudan y continúa el trabajo independiente.
+
 - Las restricciones de marca existentes prevalecen sobre la identidad predeterminada.
 - El significado del estado y la línea de tiempo se conserva entre tamaños de pantalla.
 - Foco, etiquetas, contraste y desbordamiento se revisan con evidencia cuando es posible.
@@ -77,6 +79,8 @@ A coherent HTML prototype covering the supplied states and responsive layouts,
 with identity decisions and simulated behavior made clear.
 
 ### Review criteria
+
+- Questions concern only material unresolved decisions; available context is reused, options are recommended when helpful, and independent work continues.
 
 - Existing brand constraints take precedence over the default design identity.
 - Status and timeline meaning remain consistent across screen sizes.

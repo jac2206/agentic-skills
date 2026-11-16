@@ -328,8 +328,8 @@ criteria, and execution status. They describe the same task and authority bounda
 `SKILL.md` remains the operational source of truth. The guides are illustrative
 documentation, not additional operational rules. Skill Factory and the authoring
 templates require this bilingual guide for new Skills. Skill Factory is version
-1.2.1, including bilingual authoring and the packaging fix that bundles its required
-templates. Agent Factory is version 1.0.1; see each Skill's frontmatter for its
+1.2.2, including bilingual authoring, bundled templates and conditional decision
+guidance. Agent Factory is version 1.0.2; see each Skill's frontmatter for its
 current version. Generated deliverables may use the
 language requested in the prompt.
 

@@ -5,7 +5,7 @@ YAML workflow and a shared static validator with manual semantic review. There i
 executor, host adapter or repository CLI.
 
 Current authoring state: thirteen Skills, including Agent Factory, with bilingual
-usage guides. Skill Factory is version 1.2.1, maintains the guide convention and
+usage guides. Skill Factory is version 1.2.2, maintains the guide convention and
 bundles its required authoring templates within its own installation package.
 Two portable engineer definitions have pilot records. The reference workflow
 remains `draft` and has static review only. Validation records describe their
