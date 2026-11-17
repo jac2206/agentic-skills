@@ -7,7 +7,8 @@ This repository contains Skills that help AI systems perform specialized tasks c
 The eleven original Skills retain their structure and behavior. Agent Factory
 uses the existing contracts and templates to author reusable agent definitions;
 Diagram Engineering adds focused Mermaid and Draw.io diagram authoring and validation.
-The library now contains thirteen Skills. The repository also defines authoring
+Code Review adds local, read-only reviews with temporary offline HTML reports.
+The library now contains fourteen Skills. The repository also defines authoring
 standards, frontend and backend engineer definitions, and one draft YAML workflow
 for architecture and security review. It includes no workflow executor, adapters,
 or repository-specific CLI.
@@ -50,6 +51,7 @@ agentic-skills/
 │   ├── application-security-review/
 │   ├── architecture-documentation/
 │   ├── backend-documentation/
+│   ├── code-review/
 │   ├── diagram-engineering/
 │   ├── presentations/                # Declared Skill name: html-presentations
 │   ├── project-documentation-blueprint/
@@ -65,7 +67,7 @@ agentic-skills/
     └── architecture-security-review/workflow.yaml  # Draft declarative reference
 ```
 
-The repository contains thirteen Skills. Every Skill must have a `SKILL.md` and a
+The repository contains fourteen Skills. Every Skill must have a `SKILL.md` and a
 bilingual `examples/usage.md`; add other references, templates, examples, or scripts
 only when they provide real value. Keep Skill-specific resources inside that
 Skill's directory. Skill authoring templates are bundled under
@@ -85,7 +87,7 @@ documented decisions, not runnable application code or deployment configuration.
 
 | Resource | Purpose | Availability |
 | --- | --- | --- |
-| [Skills](#skills) | Reusable procedures and their supporting resources | Thirteen Skills |
+| [Skills](#skills) | Reusable procedures and their supporting resources | Fourteen Skills |
 | [Agents](agents/README.md) | Bounded delegated judgment using referenced capabilities | Authoring guide and two definitions |
 | [Workflows](workflows/README.md) | Process ordering, input/output mapping and failure rules | One draft YAML reference; no executor |
 | [Common contract](contracts/components.md) | Identity, metadata profiles, references and discovery boundaries | Written authoring contract |
@@ -173,7 +175,7 @@ For example, install the UI/UX Skill globally from this checkout:
 npx skills add . --skill ui-ux-design-system --agent codex --global --copy
 ```
 
-Replace `architecture-documentation` with a Skill name such as `agent-factory`, `agentic-project-setup`, `application-security-review`, `architecture-documentation`, `backend-documentation`, `diagram-engineering`, `html-presentations`, `project-documentation-blueprint`, `requirements-engineering`, `spec-driven-development`, `software-architecture-design`, `ui-ux-design-system`, or `skill-factory`. The `presentations/` directory declares the Skill name `html-presentations` in its frontmatter.
+Replace `architecture-documentation` with a Skill name such as `agent-factory`, `agentic-project-setup`, `application-security-review`, `architecture-documentation`, `backend-documentation`, `code-review`, `diagram-engineering`, `html-presentations`, `project-documentation-blueprint`, `requirements-engineering`, `spec-driven-development`, `software-architecture-design`, `ui-ux-design-system`, or `skill-factory`. The `presentations/` directory declares the Skill name `html-presentations` in its frontmatter.
 
 Diagram Engineering bundles adapted scripts, icon references and visual examples
 from Architecture Documentation. It can be installed independently, including
@@ -303,6 +305,7 @@ criteria, and execution status. They describe the same task and authority bounda
 | [application-security-review](skills/application-security-review/SKILL.md) | Assesses application and delivery risks and validates authorized remediations. | [Guide and prompt](skills/application-security-review/examples/usage.md) |
 | [architecture-documentation](skills/architecture-documentation/SKILL.md) | Creates evidence-based architecture documents, Mermaid/Draw.io views and optional native Archify output. | [Guide and prompt](skills/architecture-documentation/examples/usage.md) |
 | [backend-documentation](skills/backend-documentation/SKILL.md) | Documents implemented backend behavior and use-case flows from source evidence. | [Guide and prompt](skills/backend-documentation/examples/usage.md) |
+| [code-review](skills/code-review/SKILL.md) | Reviews local changes, branches or modules with evidence, alignment scores, temporary offline HTML, exported decisions and manual commit advice. | [Guide and prompt](skills/code-review/examples/usage.md) |
 | [diagram-engineering](skills/diagram-engineering/SKILL.md) | Selects, creates, improves and validates thirteen technical diagram types in Mermaid and editable Draw.io, with local collision checks and AWS/Azure/Google Cloud/IBM guidance. | [Guide and prompt](skills/diagram-engineering/examples/usage.md) |
 | [html-presentations](skills/presentations/SKILL.md) | Creates self-contained HTML slide decks with presentation controls and visual guidance. | [Guide and prompt](skills/presentations/examples/usage.md) |
 | [project-documentation-blueprint](skills/project-documentation-blueprint/SKILL.md) | Turns project evidence into a visual, navigable HTML Blueprint. | [Guide and prompt](skills/project-documentation-blueprint/examples/usage.md) |
