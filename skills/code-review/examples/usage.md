@@ -49,19 +49,23 @@ no verificada. Genera el HTML temporal sin modificar el proyecto ni escribir Git
 ### Resultado esperado
 
 Ruta exacta a un HTML independiente con dashboard, cobertura, reglas, hallazgos,
-diffs reales, validaciones y propuesta de commits. `Accept recommendation`,
-`Reject with reason` y `Defer` guardan decisiones en la sesión del HTML; usa
-`Copy decisions for Codex` o exporta JSON y pégalo/entrégalo a Codex antes de cerrar.
-Aceptar no aplica correcciones. Confirma explícitamente el fin de la revisión
-antes de pedir su limpieza. Markdown/JSON de resultados son opcionales y temporales.
+diffs reales, validaciones y propuesta de commits. `Aceptar recomendación`,
+`Rechazar con motivo` y `Posponer` guardan decisiones en la sesión del HTML; usa
+`Copiar decisiones para Codex` o exporta JSON y entrégalo a Codex antes de cerrar.
+Cuando haya un ejemplo de código, ábrelo con `Ver ejemplo de corrección`. Al aceptar,
+la exportación incluye la recomendación y el ejemplo disponible. El commit se
+propone aunque haya hallazgos; aceptar no aplica ni valida correcciones. Confirma
+explícitamente el fin de la revisión antes de pedir su limpieza. Markdown/JSON de
+resultados son opcionales y temporales.
 
 ### Criterios de revisión
 
 - Estados staged/unstaged/untracked, ramas y merge-base correctos.
 - Hallazgos con evidencia real y lados/líneas correctos; sin secretos completos.
-- Puntuación calculada, cobertura visible y `Not assessed` cuando falta evidencia.
+- Puntuación calculada, cobertura visible y `Sin evaluar` cuando falta evidencia.
 - Filtros, navegación y decisiones funcionan; exportación identifica revisión y snapshot.
 - Commit Advisor refleja las convenciones; Commitlint solo aparece validado si se ejecutó.
+- Los ejemplos respetan la arquitectura observada y se identifican como propuestas.
 - Proyecto intacto y reporte conservado hasta confirmación explícita de cierre.
 
 ### Estado de ejecución
@@ -119,19 +123,24 @@ evidence. Generate temporary HTML without modifying the project or writing Git.
 ### Expected result
 
 An exact path to self-contained HTML with dashboard, coverage, rules, findings,
-actual diffs, validations and commit proposals. `Accept recommendation`,
-`Reject with reason` and `Defer` retain decisions in the HTML session; use
-`Copy decisions for Codex` or export JSON and paste/provide it to Codex before
-closing. Acceptance applies no corrections. Explicitly confirm review completion
-before requesting cleanup. Markdown/JSON result exports are optional and temporary.
+actual diffs, validations and commit proposals. In the Spanish report requested
+above, `Aceptar recomendación`, `Rechazar con motivo` and `Posponer` retain
+decisions in the HTML session; use `Copiar decisiones para Codex` or export JSON
+and paste/provide it to Codex before closing. When available, open a code sample
+with `Ver ejemplo de corrección`. On
+acceptance, the export includes the recommendation and available example. A commit
+is proposed even with findings; acceptance does not apply or validate corrections.
+Explicitly confirm review completion before requesting cleanup. Markdown/JSON
+result exports are optional and temporary.
 
 ### Review criteria
 
 - Correct staged/unstaged/untracked states, branches and merge-base.
 - Findings have actual evidence and correct sides/lines; no complete secrets.
-- Computed score, visible coverage and `Not assessed` for insufficient evidence.
+- Computed score, visible coverage and `Sin evaluar` for insufficient evidence.
 - Working filters/navigation/decisions; export identifies the review and snapshot.
 - Commit Advisor reflects conventions; Commitlint is validated only if actually run.
+- Examples respect the observed architecture and are identified as proposals.
 - Target stays intact and the report remains until explicit completion confirmation.
 
 ### Execution status

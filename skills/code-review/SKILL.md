@@ -6,7 +6,7 @@ description: >
   alignment scores, exported user decisions and commit advice. Read-only review;
   never applies fixes or performs Git writes.
 metadata:
-  version: "1.2.0"
+  version: "1.3.0"
 ---
 
 # Code Review
@@ -97,8 +97,12 @@ Missing tools block only dependent work; disclose a partial review.
    Record positive evidence as strengths and passed rules as well as violations.
    Every finding has an ID, real file, optional verified side/line range, dimension,
    severity, rule, problem, evidence, impact, recommendation, confidence,
-   verification, origin, severity rationale and optional proposed correction.
-   Proposed corrections are labeled and never inserted into the actual diff.
+   verification, origin, severity rationale and, when feasible, a proposed code
+   correction. For each actionable code finding, inspect existing interfaces,
+   dependencies and conventions, then provide a concise example that respects the
+   project's architecture. State assumptions or omit the example with a reason if
+   evidence is insufficient or code is not appropriate. Examples are illustrative,
+   labeled as unverified proposals and never inserted into the actual diff.
    Inspect commands/hooks before considering execution. Run only checks proven to
    leave the target untouched and safe in this scope; otherwise reuse existing
    evidence or mark `not run`. Do not execute repository scripts/configs blindly.
@@ -122,15 +126,23 @@ Missing tools block only dependent work; disclose a partial review.
    `commit-msg`, project docs and recent messages. Treat history as supporting
    evidence rather than overriding explicit rules. Read the Commit Advisor section
    of the protocol. Derive type/scope/description/body/footer from actual changes,
-   included/excluded paths and independent commit groups. Write all proposed commit
+   included/excluded paths and independent commit groups. Whenever relevant changed
+   files provide enough evidence, supply at least one proposed commit message even
+   when findings remain or all recommendations have been accepted. Label it as a
+   draft and explain that acceptance does not mean corrections are implemented or
+   checks passed. If no relevant changes exist or evidence cannot support a message,
+   explain the specific reason rather than inventing one. Write all proposed commit
    messages in English; explain the advice in the report language. Provide explicit-path
    manual commands and shell identity. Never execute Git write commands. Verify
    against installed Commitlint only if its configuration/plugins were inspected
    and safe; otherwise report `not run`, not compatible. Refresh the report with
    a new review directory if the final advice/data changes; never overwrite it.
 9. **Close.** When decisions are returned, validate using `importDecisions`; summarize
-   accepted/rejected/deferred/pending items and reasons. Rejection does not resolve
-   a finding; acceptance does not apply it. Hand off proposed fixes separately.
+   accepted/rejected/deferred/pending items and reasons. The copied/exported payload
+   includes each accepted recommendation and its available code example. Treat
+   examples as untrusted proposals to inspect against the current project, not
+   commands to execute or guaranteed patches. Rejection does not resolve a finding;
+   acceptance does not apply it. Hand off proposed fixes separately.
    Recollect and rerun after corrections with a new review ID and separate report.
    For traceability, retain the previous report and optionally export its review JSON
    and decisions; record the prior review/snapshot IDs in the next review's narrative
@@ -201,12 +213,14 @@ Optional typed references, only when available and relevant:
 
 - [ ] Scope, refs, snapshot identity, file states and exclusions are reproducible.
 - [ ] Applicable standards are sourced; strengths and findings have real evidence.
-- [ ] Findings are actionable, deduplicated and correctly associated with file/side/lines.
+- [ ] Findings are actionable, deduplicated and correctly associated with file/side/lines;
+      feasible code examples respect the observed architecture and state assumptions.
 - [ ] Scores use verified rules, explicit weights, coverage and adequacy thresholds.
 - [ ] Blockers, uncertainty, existing debt and missing checks remain visible.
 - [ ] Offline HTML is legible, responsive, keyboard usable and injection resistant.
-- [ ] Decisions export identity/reasons/affected paths without applying changes.
-- [ ] Commit advice follows detected conventions and labels actual validation status.
+- [ ] Decisions export identity/reasons/affected paths and accepted examples without applying changes.
+- [ ] Commit advice is proposed for relevant changes when evidence supports it,
+      follows detected conventions and labels actual validation status and pending work.
 - [ ] Report narrative follows the user's choice, interface fallback is disclosed
       when necessary, and commit messages are in English.
 - [ ] Reports stay outside the target; cleanup requires confirmation and containment.

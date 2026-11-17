@@ -72,6 +72,7 @@ export function validateReview(data) {
       ['introduced', 'existing', 'unknown'].includes(f.origin), 'Finding verification/confidence/origin required');
     for (const k of ['title', 'description', 'impact', 'recommendation', 'severityRationale']) requireValue(text(f[k]), `Finding ${k} required`);
     requireValue(evidence(f.evidence), 'Finding evidence required');
+    if (f.correction !== undefined) requireValue(text(f.correction), 'Correction example must be nonempty text');
     if (f.verification === 'confirmed') requireValue(rule.state === 'failed', 'Confirmed finding requires a failed rule');
     if (f.blocking) requireValue(f.verification === 'confirmed' && text(f.blockingReason), 'Blocker requires confirmation and policy/impact reason');
     if (f.location != null) {
@@ -111,7 +112,12 @@ export function exportDecisions(data, decisions = {}) {
     const d = decisions[f.id] || { status: 'pending', reason: '' };
     requireValue(['accepted', 'rejected', 'deferred', 'pending'].includes(d.status) && typeof d.reason === 'string', 'Invalid decision');
     requireValue(d.status !== 'rejected' || !!d.reason.trim(), 'Reject with reason');
-    return { findingId: f.id, status: d.status, reason: d.reason, file: f.file };
+    const item = { findingId: f.id, status: d.status, reason: d.reason, file: f.file };
+    if (d.status === 'accepted') {
+      item.recommendation = f.recommendation;
+      if (f.correction) item.proposedCorrection = f.correction;
+    }
+    return item;
   });
   return { schemaVersion: '1.0', reviewId: data.snapshot.reviewId, snapshotId: data.snapshot.snapshotId,
     decisions: items, affectedFiles: [...new Set(items.filter(d => d.status !== 'pending').map(d => d.file))] };
@@ -122,7 +128,10 @@ export function importDecisions(data, payload) {
   requireValue(Array.isArray(payload.decisions) && payload.decisions.length === data.findings.length && unique(payload.decisions.map(d => d.findingId)), 'Decision set mismatch');
   const decisions = Object.create(null);
   for (const d of payload.decisions) {
-    requireValue(data.findings.some(f => f.id === d.findingId && f.file === d.file), 'Unknown finding/file');
+    const finding = data.findings.find(f => f.id === d.findingId && f.file === d.file);
+    requireValue(finding, 'Unknown finding/file');
+    if (d.recommendation !== undefined) requireValue(d.status === 'accepted' && d.recommendation === finding.recommendation, 'Modified recommendation');
+    if (d.proposedCorrection !== undefined) requireValue(d.status === 'accepted' && d.proposedCorrection === finding.correction, 'Modified correction example');
     decisions[d.findingId] = { status: d.status, reason: d.reason };
   }
   return exportDecisions(data, decisions);

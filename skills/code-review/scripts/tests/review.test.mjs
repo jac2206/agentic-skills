@@ -153,10 +153,21 @@ test('Decisions include identities, all statuses, reasons and paths; reject stal
   try {
     const p = exportDecisions(data, { F1: { status: 'accepted', reason: '' }, F2: { status: 'rejected', reason: 'Already covered by fixture integration case' } });
     assert.deepEqual(importDecisions(data, p), p); assert.deepEqual(p.affectedFiles, ['auth.js']);
+    assert.equal(p.decisions[0].recommendation, data.findings[0].recommendation);
+    assert.equal(p.decisions[0].proposedCorrection, data.findings[0].correction);
+    assert.equal(p.decisions[1].proposedCorrection, undefined);
+    const oldPayload = structuredClone(p);
+    delete oldPayload.decisions[0].recommendation; delete oldPayload.decisions[0].proposedCorrection;
+    assert.deepEqual(importDecisions(data, oldPayload), p);
+    const tampered = structuredClone(p); tampered.decisions[0].proposedCorrection = 'untrusted replacement';
+    assert.throws(() => importDecisions(data, tampered), /Modified correction/);
+    const misplaced = structuredClone(p); misplaced.decisions[1].proposedCorrection = data.findings[1].correction;
+    assert.throws(() => importDecisions(data, misplaced), /Modified correction/);
     assert.throws(() => exportDecisions(data, { F1: { status: 'rejected', reason: '' } }), /reason/);
     assert.throws(() => importDecisions(data, { ...p, snapshotId: 'stale' }), /foreign/);
     assert.throws(() => importDecisions(data, { ...p, decisions: [p.decisions[0], p.decisions[0]] }), /mismatch/);
-    assert.equal(exportDecisions(data, { F1: { status: 'deferred', reason: 'Later' } }).decisions[1].status, 'pending');
+    const deferred = exportDecisions(data, { F1: { status: 'deferred', reason: 'Later' } });
+    assert.equal(deferred.decisions[1].status, 'pending'); assert.equal(deferred.decisions[0].proposedCorrection, undefined);
   } finally { fixture.close(); }
 });
 

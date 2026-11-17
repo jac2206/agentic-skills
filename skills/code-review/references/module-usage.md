@@ -86,7 +86,11 @@ Open `output.report` in a trusted VS Code HTML preview or local browser. A previ
 may block scripts/clipboard/downloads; prefer a local browser if needed. The HTML
 uses no network and has no direct Codex event channel. Browser state lives only in
 memory, so copy/export decisions before refresh/close. Rejection requires a reason;
-acceptance/defer may include one. Copy exports all finding decisions and identities.
+acceptance/defer may include one. Copy exports all finding decisions and identities;
+accepted items also contain the recommendation and any proposed code example.
+The example is illustrative and unexecuted; verify it against the current snapshot
+and architecture before any separately authorized implementation. Older decision
+payloads without the new fields remain importable against their original review.
 
 ```js
 import { importDecisions } from './skills/code-review/scripts/model.mjs';

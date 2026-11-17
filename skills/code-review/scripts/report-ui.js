@@ -40,7 +40,15 @@
   const decisions = new Map(data.initialDecisions.decisions.map(d => [d.findingId, { ...d }]));
   let selectedFile = files[0]?.id;
   const payload = () => ({ schemaVersion: '1.0', reviewId: data.snapshot.reviewId, snapshotId: data.snapshot.snapshotId,
-    decisions: [...decisions.values()], affectedFiles: [...new Set([...decisions.values()].filter(d => d.status !== 'pending').map(d => d.file))] });
+    decisions: [...decisions.values()].map(d => {
+      const item = { ...d };
+      const finding = data.findings.find(f => f.id === d.findingId);
+      if (d.status === 'accepted') {
+        item.recommendation = finding.recommendation;
+        if (finding.correction) item.proposedCorrection = finding.correction;
+      }
+      return item;
+    }), affectedFiles: [...new Set([...decisions.values()].filter(d => d.status !== 'pending').map(d => d.file))] });
   function decisionText() {
     const invalid = [...decisions.values()].find(d => d.status === 'rejected' && !d.reason.trim());
     if (invalid) { notice(`Add a rejection reason for ${invalid.findingId} before exporting.`); return null; }
@@ -171,6 +179,10 @@
   [...new Set(data.findings.map(f => f.category))].sort().forEach(s => { const option = make('option', display(s)); option.value = s; byId('category').append(option); });
   function decisionSummary() {
     byId('decision-summary').textContent = ['accepted', 'rejected', 'deferred', 'pending'].map(s => `${[...decisions.values()].filter(d => d.status === s).length} ${display(s)}`).join(' · ');
+    const allAccepted = decisions.size > 0 && [...decisions.values()].every(d => d.status === 'accepted');
+    byId('commit-decision-state').textContent = allAccepted
+      ? (es ? 'Todas las recomendaciones están aceptadas. El commit sigue siendo una propuesta: primero aplica y verifica las correcciones.' : 'All recommendations are accepted. The commit remains a proposal: first apply and verify the corrections.')
+      : (es ? 'El mensaje es una propuesta basada en el alcance revisado. Atiende las decisiones y validaciones pendientes antes del commit.' : 'The message is a proposal based on the reviewed scope. Address pending decisions and checks before committing.');
   }
   function renderFindings() {
     const root = byId('findings'); root.replaceChildren();
@@ -192,7 +204,11 @@
         ['Verification', `${display(f.verification)} · ${display(f.confidence)} confidence · ${display(f.origin)}`], ['Severity basis', f.severityRationale], ...(f.blocking ? [['Blocking reason', f.blockingReason]] : [])])
         dl.append(make('dt', key), make('dd', value));
       article.append(dl);
-      if (f.correction) { article.append(make('h3', 'Proposed correction · not applied'), make('pre', f.correction)); }
+      if (f.correction) {
+        const example = make('details');
+        example.append(make('summary', 'View correction example'), make('p', 'Proposed example · not applied', 'muted'), make('pre', f.correction));
+        article.append(example);
+      } else paragraph(article, 'No code example available for this finding.', 'muted');
       const reasonLabel = make('label', 'Decision reason (required to reject)');
       const reason = make('textarea'); reason.rows = 2; reason.value = decisions.get(f.id).reason; reasonLabel.append(reason);
       reason.addEventListener('input', () => { decisions.get(f.id).reason = reason.value; });
@@ -220,7 +236,7 @@
   data.validations.forEach(v => { const div = make('div', undefined, 'validation'); div.append(badge(v.status), make('strong', ` ${v.name} · ${v.kind}`)); paragraph(div, v.evidence); byId('validation-list').append(div); });
   const commits = byId('commit-content'); list(commits, data.commitAdvisor.conventionEvidence);
   paragraph(commits, `Commitlint: ${display(data.commitAdvisor.commitlint?.status || 'not run')} · ${data.commitAdvisor.commitlint?.evidence || 'No executed validation evidence supplied'}`);
-  if (!data.commitAdvisor.groups.length) paragraph(commits, 'No commit proposed for this scope.');
+  if (!data.commitAdvisor.groups.length) paragraph(commits, 'No commit proposed for this scope. Ask Codex for a proposal if there are relevant changes.');
   data.commitAdvisor.groups.forEach((g, i) => {
     const div = make('div', undefined, 'commit-group'); div.append(make('h3', `Commit ${i + 1}${g.type ? ` · ${g.type}${g.scope ? `(${g.scope})` : ''}` : ''}`));
     paragraph(div, g.rationale); div.append(make('pre', g.message), button('Copy commit message', () => copy(g.message)));

@@ -114,6 +114,13 @@ test('Spanish report preserves decision payload and English commit message', {
     assert.equal(await page.locator('.finding').count(), 2);
     await page.selectOption('#severity', 'High'); assert.equal(await page.locator('.finding').count(), 1);
     await page.selectOption('#severity', '');
+    const example = page.locator('[data-finding-id="F1"] details');
+    await example.getByText('Ver ejemplo de corrección').click();
+    assert.match(await example.locator('pre').textContent(), /return !!user/);
+    if (process.env.CODE_REVIEW_KEEP_REPORT === '1') {
+      await page.locator('[data-finding-id="F1"]').screenshot({ path: join(out.directory, 'desktop.png') });
+      console.log(JSON.stringify({ spanishReview: out.report, screenshot: join(out.directory, 'desktop.png') }));
+    }
     await page.locator('[data-finding-id="F1"]').getByRole('button', { name: 'Aceptar recomendación' }).click();
     await page.locator('[data-finding-id="F2"]').getByRole('button', { name: 'Posponer', exact: true }).click();
     const download = page.waitForEvent('download');
@@ -121,9 +128,16 @@ test('Spanish report preserves decision payload and English commit message', {
     const payload = JSON.parse(readFileSync(await (await download).path(), 'utf8'));
     assert.equal(importDecisions(data, payload).decisions[0].status, 'accepted');
     assert.equal(payload.decisions[1].status, 'deferred');
+    assert.equal(payload.decisions[0].proposedCorrection, data.findings[0].correction);
+    assert.equal(payload.decisions[0].recommendation, data.findings[0].recommendation);
+    assert.equal(payload.decisions[1].proposedCorrection, undefined);
     assert.match(await page.locator('#commit-content').textContent(), /fix\(auth\): restore caller permission check/);
+    await page.locator('[data-finding-id="F2"]').getByRole('button', { name: 'Aceptar recomendación' }).click();
+    assert.match(await page.locator('#commit-decision-state').textContent(), /Todas las recomendaciones están aceptadas/);
+    assert.match(await page.locator('#commit-decision-state').textContent(), /primero aplica y verifica/);
     assert.deepEqual(errors, []);
   } finally {
-    if (browser) await browser.close(); fixture.close(); cleanupReview({ ...out, confirmed: true });
+    if (browser) await browser.close(); fixture.close();
+    if (process.env.CODE_REVIEW_KEEP_REPORT !== '1') cleanupReview({ ...out, confirmed: true });
   }
 });

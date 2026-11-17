@@ -112,3 +112,28 @@ Version 1.2.0 adds the Spanish/English/Other language selection to the instructi
 Other languages use reviewer-authored narrative and the existing English-interface
 fallback. No new translation or automatic language detection is claimed; this
 selection scenario still needs a real host execution.
+
+## Decision examples and commit proposal — version 1.3.0
+
+A user-provided Quick Review report for a real backend exposed an empty commit
+proposal and lacked code examples. The report's data contained an empty commit
+groups list; it did not establish why the reviewer left it empty. The Skill now
+asks the reviewer to derive a draft proposal from relevant changes when supported,
+and to supply architecture-aware code examples where the evidence permits.
+
+After implementation, the full suite ran with existing Chromium/Playwright and
+synthetic Git fixtures: 21 tests, 20 passed, 0 failed and 1 skipped because Windows
+denied symlink creation. Tests checked accepted-example export, omission for other
+decisions, rejection of modified examples, import of older decision payloads and
+the all-accepted commit message. The Spanish browser test opened a correction
+example, exported it with an accepted recommendation and verified that the commit
+remains a proposal pending implementation and verification. Two browser tests passed
+again after correcting Spanish labels. A screenshot of the expanded example was
+visually inspected; it led to the label correction. The shared component validator
+passed with 14 Skills, 2 agents, 1 workflow and no errors or warnings.
+
+These checks exercise the interface and model with synthetic input. They do not
+establish that Codex generated a correct code example, populated a commit proposal,
+or interpreted exported decisions in a new real-backend review after version 1.3.0.
+Those behaviors still require a representative host pilot. Neither acceptance nor
+export changes code, verifies a fix, or authorizes a Git write.
