@@ -202,6 +202,25 @@ test('HTML embeds escaped JSON, hash CSP, inline assets and no source HTML execu
   } finally { fixture.close(); }
 });
 
+test('Spanish and English reports localize interface without altering source or English commit message', () => {
+  const { fixture, data } = sampleReview();
+  try {
+    const originalTitle = 'Source evidence: Findings & recommendations';
+    data.findings[0].title = originalTitle;
+    const spanish = renderHtml(data, { locale: 'es' });
+    const english = renderHtml(data, { locale: 'en' });
+    assert.match(spanish, /<html lang="es">/);
+    assert.match(spanish, /Hallazgos y recomendaciones/);
+    assert.match(spanish, /Copiar decisiones para Codex/);
+    assert.match(english, /<html lang="en">/);
+    assert.match(english, /Findings & recommendations/);
+    const parsed = JSON.parse(spanish.match(/<script id="review-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);
+    assert.equal(parsed.findings[0].title, originalTitle);
+    assert.equal(parsed.commitAdvisor.groups[0].message, 'fix(auth): restore caller permission check');
+    assert.throws(() => renderHtml(data, { locale: 'fr' }), /locale/);
+  } finally { fixture.close(); }
+});
+
 test('Temporary outputs do not touch target; explicit cleanup verifies ownership, containment and contents', () => {
   const { fixture, data } = sampleReview(); let out, other;
   try {

@@ -85,6 +85,9 @@ evidence. Otherwise use `not run` with reason; finding a config is not compatibi
 Derive a group per independent intent with `type`, `scope`, `description`, optional
 `body`, `footer`, full `message`, `include`, `exclude`, `rationale`, shell identity
 and explicit commands. List sensitive/unrelated files to exclude with reasons;
+write every proposed commit message (description, body and footer) in English,
+independently of the chosen report language. Explain advice in the chosen language;
+never translate actual historical commit messages or source evidence.
 include both old and new paths for renames and deleted paths where appropriate.
 Review staged content against each group; staging only some paths does not unstage
 other staged work. Warn the user to inspect the index before committing. Do not

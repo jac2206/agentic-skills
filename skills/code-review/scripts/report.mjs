@@ -5,6 +5,7 @@ import { join, dirname, basename, relative, isAbsolute, sep, resolve } from 'nod
 import { createHash } from 'node:crypto';
 import { validateReview, calculateScore, reviewStatus, exportDecisions } from './model.mjs';
 import { redact } from './collect.mjs';
+import { localizeHtmlTemplate, localizeUiScript } from './localization.mjs';
 
 const OWNER = 'agentic-code-review-v1';
 const ALLOWED = new Set(['owner.json', 'report.html', 'review.json', 'review.md', 'desktop.png', 'workspace.png', 'mobile.png', 'mobile-workspace.png']);
@@ -30,15 +31,16 @@ export function prepareReport(input) {
   return data;
 }
 
-export function renderHtml(input) {
+export function renderHtml(input, { locale = 'en' } = {}) {
+  if (!['en', 'es'].includes(locale)) throw new Error('Report locale must be en or es');
   const data = prepareReport(input);
   // HTML parsing normalizes CRLF; hash the same normalized text on every checkout.
   const css = readFileSync(new URL('./report.css', import.meta.url), 'utf8').replace(/\r\n?/g, '\n');
-  const script = readFileSync(new URL('./report-ui.js', import.meta.url), 'utf8').replace(/\r\n?/g, '\n');
+  const script = localizeUiScript(readFileSync(new URL('./report-ui.js', import.meta.url), 'utf8').replace(/\r\n?/g, '\n'), locale);
   const json = JSON.stringify(data).replaceAll('<', '\\u003c').replaceAll('>', '\\u003e').replaceAll('&', '\\u0026').replaceAll('\u2028', '\\u2028').replaceAll('\u2029', '\\u2029');
   const csp = `default-src 'none'; script-src 'sha256-${hash(script)}'; style-src 'sha256-${hash(css)}'; img-src data:; connect-src 'none'; font-src 'none'; base-uri 'none'; form-action 'none'; object-src 'none'`;
-  return `<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  const template = `<!doctype html>
+<html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="Content-Security-Policy" content="${csp}"><meta name="color-scheme" content="dark light">
 <title>Code Review · ${escaped(data.snapshot.reviewId)}</title><style>${css}</style></head>
 <body><a class="skip" href="#main">Skip to review</a>
@@ -56,7 +58,8 @@ export function renderHtml(input) {
 <section id="closing"><p class="eyebrow">Handoff & lifecycle</p><h2>Conclusions & next steps</h2><div id="next-steps"></div><p>Keep the temporary report while work is pending. Ask Codex to remove this specific review only after confirming you are finished. Closing VS Code does not clean it up.</p></section>
 <section id="transfer" hidden><h2>Copy fallback</h2><p>Select and copy the text below. A preview may restrict clipboard or downloads.</p><textarea id="transfer-text" readonly rows="12" aria-label="Structured text to copy"></textarea></section>
 </main><p id="notice" role="status" aria-live="polite"></p><noscript>This report needs local JavaScript for navigation and decisions. Open in a trusted local browser if preview scripts are blocked.</noscript>
-<script id="review-data" type="application/json">${json}</script><script>${script}</script></body></html>`;
+<script id="review-data" type="application/json">__REVIEW_DATA__</script><script>__REVIEW_SCRIPT__</script></body></html>`;
+  return localizeHtmlTemplate(template, locale).replace('__REVIEW_DATA__', () => json).replace('__REVIEW_SCRIPT__', () => script);
 }
 
 export function renderMarkdown(input) {
@@ -84,9 +87,9 @@ function ownedRoot() {
     throw new Error('Temporary root must be a real owned directory, not a link');
   return root;
 }
-export function writeReport(input, { json = false, markdown = false } = {}) {
+export function writeReport(input, { json = false, markdown = false, locale = 'en' } = {}) {
   const data = prepareReport(input);
-  const html = renderHtml(data);
+  const html = renderHtml(data, { locale });
   const root = ownedRoot(), target = realpathSync(data.snapshot.root);
   if (root === target || childOf(target, root)) throw new Error('Report must be outside analyzed repository');
   const directory = mkdtempSync(join(root, `${data.snapshot.reviewId}-`));

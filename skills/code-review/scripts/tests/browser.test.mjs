@@ -94,3 +94,36 @@ test('Offline Chromium: filters, navigation, diff comments, decisions/export, CS
     if (process.env.CODE_REVIEW_KEEP_REPORT !== '1') cleanupReview({ ...out, confirmed: true });
   }
 });
+
+test('Spanish report preserves decision payload and English commit message', {
+  skip: !process.env.CODE_REVIEW_PLAYWRIGHT || !process.env.CODE_REVIEW_BROWSER ? 'Existing Playwright entry and browser paths not supplied' : false,
+  timeout: 90_000
+}, async () => {
+  const { chromium } = await import(pathToFileURL(process.env.CODE_REVIEW_PLAYWRIGHT).href);
+  const { fixture, data } = sampleReview();
+  const out = writeReport(data, { locale: 'es', json: true });
+  let browser;
+  try {
+    browser = await chromium.launch({ executablePath: process.env.CODE_REVIEW_BROWSER, headless: true });
+    const context = await browser.newContext({ offline: true, acceptDownloads: true });
+    const page = await context.newPage();
+    const errors = []; page.on('pageerror', e => errors.push(e.message));
+    await page.goto(pathToFileURL(out.report).href);
+    await page.getByRole('heading', { name: 'Hallazgos y recomendaciones' }).waitFor();
+    assert.equal(await page.locator('html').getAttribute('lang'), 'es');
+    assert.equal(await page.locator('.finding').count(), 2);
+    await page.selectOption('#severity', 'High'); assert.equal(await page.locator('.finding').count(), 1);
+    await page.selectOption('#severity', '');
+    await page.locator('[data-finding-id="F1"]').getByRole('button', { name: 'Aceptar recomendación' }).click();
+    await page.locator('[data-finding-id="F2"]').getByRole('button', { name: 'Posponer', exact: true }).click();
+    const download = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Exportar decisiones en JSON' }).click();
+    const payload = JSON.parse(readFileSync(await (await download).path(), 'utf8'));
+    assert.equal(importDecisions(data, payload).decisions[0].status, 'accepted');
+    assert.equal(payload.decisions[1].status, 'deferred');
+    assert.match(await page.locator('#commit-content').textContent(), /fix\(auth\): restore caller permission check/);
+    assert.deepEqual(errors, []);
+  } finally {
+    if (browser) await browser.close(); fixture.close(); cleanupReview({ ...out, confirmed: true });
+  }
+});

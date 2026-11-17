@@ -23,9 +23,14 @@ validated, redacted input. User decisions are a separate export.
 | `scorePolicy` | Optional `{ weights, minCoverage }`; defaults below. |
 | `commitAdvisor` | `conventionEvidence` (nonempty strings), `groups` (possibly empty), `commitlint: { status, evidence }`. |
 
-All text may use the requested artifact language. Identifiers/enums remain stable.
-The interface labels are English in v1; repository operational documentation is
-English. Do not describe v1 as a fully localized UI.
+Reviewer-authored assessment narrative uses the selected report language. Bundled
+interface translations support Spanish and English; when another language is
+selected, use the English interface and disclose the fallback to the user.
+Commit messages, including their description, body and footer, always
+use English. Preserve identifiers, enums, source evidence, code, paths and existing
+commit history as observed. The renderer translates its own interface labels; it
+does not translate user-provided prose, code, evidence or commit messages. The
+reviewer must prepare the narrative in the selected language and check consistency.
 
 Snapshot fields: UUID `reviewId`, SHA-256 `snapshotId`, absolute `root`, mode
 `quick|pr|full`, `branch`, nullable `base/head/mergeBase`, `commits` with SHAs and

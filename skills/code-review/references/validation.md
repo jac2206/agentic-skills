@@ -85,3 +85,30 @@ temporarily for inspection; a real user's review remains until explicit closure.
 - Symlink creation tests may be unavailable under Windows policy; record actual skip.
 - Git collection requires an available local repository; non-Git full audits use
   a manually verified snapshot shape. No automatic filesystem crawler is provided.
+
+## Language update — version 1.1.0
+
+After adding Spanish and English report interfaces, the full Node suite was run
+again with the existing offline Chromium and Playwright Core installation:
+21 tests, 20 passed, 0 failed, 1 skipped because Windows denied symlink creation.
+The browser test opened an actual Spanish report, filtered findings, accepted and
+deferred recommendations, exported decisions, verified the structured decision
+IDs/statuses and confirmed that the sample commit message remained in English.
+The English browser test and safety/collection tests also passed. A separate unit
+test confirmed that localization does not translate supplied finding text or commit
+messages and rejects unsupported locales. `py -3 -B validators/validate_components.py`
+passed for 14 Skills, 2 agents and 1 workflow with no errors or warnings.
+
+The Spanish interface test used synthetic evidence; a real backend review, an actual
+Spanish-language assessment by Codex and manual visual inspection of the Spanish
+interface were not performed. Human review remains responsible for writing the
+assessment in the chosen language and commit messages in English; language is not
+automatically inferred or verified by the renderer. Optional Markdown retains
+English structural labels. No automatic cross-review JSON history or migration of
+decisions was implemented; the user can retain optional review JSON and separately
+export decisions, referencing previous review IDs in the next assessment.
+
+Version 1.2.0 adds the Spanish/English/Other language selection to the instructions.
+Other languages use reviewer-authored narrative and the existing English-interface
+fallback. No new translation or automatic language detection is claimed; this
+selection scenario still needs a real host execution.

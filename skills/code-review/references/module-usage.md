@@ -58,12 +58,21 @@ const assessment = {
 };
 validateReview(assessment);
 const score = calculateScore(assessment.rules, assessment.scorePolicy);
-const output = writeReport(assessment); // HTML only by default
-// Optional: writeReport(assessment, { json: true, markdown: true });
+const output = writeReport(assessment, { locale: 'es' }); // Spanish HTML
+// For English, use locale: 'en'. Optional exports: { locale: 'es', json: true }.
 console.log(output); // Exact temporary directory, report path and review ID
 ```
 
 All undeclared names above are reviewer-supplied evidence, never generated defaults.
+Ask for the report language when it has not been explicitly selected or established,
+offering Spanish, English and the host's Other/free-text option. For another language,
+author the narrative in that language, use `locale: 'en'` for the interface and
+disclose the English-interface fallback. No other interface translation is bundled.
+The low-level renderer defaults to English for backward compatibility; it cannot
+ask a user. Supply `locale: 'es'` or `locale: 'en'` explicitly after selection.
+Prepare assessment prose in the selected language; source material stays unchanged.
+Always write proposed commit messages in English. Optional Markdown retains its
+English structural labels; its assessment prose is whatever the reviewer supplied.
 Keep canonical input in host context or a private temporary file, not the target.
 `renderHtml`/`renderMarkdown` return strings without writing; `prepareReport`
 validates/redacts and derives score/status. Redaction is conservative and incomplete
@@ -106,6 +115,12 @@ analyzed target. Repeated generation creates another directory; it never overwri
 a report. No `.gitignore` change is needed. Reports are sensitive local artifacts;
 portable permissions are requested, but OS ACLs and temporary storage policy still
 apply. There is no automatic retention timer or VS Code close detection.
+
+For a subsequent revision create a new review and directory. Optional `review.json`
+captures that review's assessment, while user decisions require a separate copy or
+download. Keep prior IDs and files only as long as useful; reference them in the
+new review's narrative if the user wants traceability. No automatic history or
+cross-snapshot decision migration exists. Never overwrite a previous review.
 
 ```js
 import { cleanupReview } from './skills/code-review/scripts/report.mjs';

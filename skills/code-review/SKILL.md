@@ -6,7 +6,7 @@ description: >
   alignment scores, exported user decisions and commit advice. Read-only review;
   never applies fixes or performs Git writes.
 metadata:
-  version: "1.0.0"
+  version: "1.2.0"
 ---
 
 # Code Review
@@ -39,6 +39,19 @@ Optional: base/head refs, module paths, specifications, standards, prior finding
 existing safe validation results, score weights/coverage threshold, output language,
 Markdown/JSON exports and decisions from a previous report. Preserve prior decisions
 but revalidate them against the review ID, snapshot ID and finding IDs.
+
+Honor an explicit report language or established preference. Otherwise, before
+generating the report, ask the user to select **Spanish**, **English**, or **Other**
+and enter the desired language. Use the host's free-text Other option when provided;
+do not duplicate it. Continue independent evidence gathering while waiting, and
+reuse the answer for subsequent revisions without asking again unnecessarily.
+
+For Spanish or English, use that language for both interface and reviewer-authored
+narrative. For another language, write the narrative in the requested language,
+use the bundled English interface as a fallback, and clearly disclose this limitation
+before delivering the report; do not claim the interface was translated. Preserve
+code, filenames, Git identifiers and evidence as observed. Always write proposed
+commit messages, including description, body and footer, in English.
 
 Git is required for Quick/PR collection; Full Audit also supports non-Git folders
 through explicitly assembled file evidence. Node.js 20+ is required only for the
@@ -96,7 +109,10 @@ Missing tools block only dependent work; disclose a partial review.
    additional blockers use an evidenced project policy. Decisions never change scores.
 7. **HTML and decisions.** Review/redact the complete input, including paths, diffs,
    messages and validation output, before passing it to `writeReport` in
-   `scripts/report.mjs`. Automated redaction is defense in depth, not a guarantee.
+   `scripts/report.mjs`, passing `locale: 'es'` for Spanish and `locale: 'en'`
+   for English or an explicitly disclosed fallback for another language. Write the
+   assessment narrative in the user's selected language. Automated redaction is defense in depth,
+   not a guarantee; the renderer does not translate supplied evidence or prose.
    Open its returned path in a local browser or a trusted VS Code HTML preview.
    If the preview blocks scripts, use a browser; never weaken its security policy.
    Check file navigation, diff modes, filters and decision export. Retain evidence
@@ -106,7 +122,8 @@ Missing tools block only dependent work; disclose a partial review.
    `commit-msg`, project docs and recent messages. Treat history as supporting
    evidence rather than overriding explicit rules. Read the Commit Advisor section
    of the protocol. Derive type/scope/description/body/footer from actual changes,
-   included/excluded paths and independent commit groups. Provide explicit-path
+   included/excluded paths and independent commit groups. Write all proposed commit
+   messages in English; explain the advice in the report language. Provide explicit-path
    manual commands and shell identity. Never execute Git write commands. Verify
    against installed Commitlint only if its configuration/plugins were inspected
    and safe; otherwise report `not run`, not compatible. Refresh the report with
@@ -114,7 +131,12 @@ Missing tools block only dependent work; disclose a partial review.
 9. **Close.** When decisions are returned, validate using `importDecisions`; summarize
    accepted/rejected/deferred/pending items and reasons. Rejection does not resolve
    a finding; acceptance does not apply it. Hand off proposed fixes separately.
-   Recollect and rerun after corrections with a new review ID. Delete only the
+   Recollect and rerun after corrections with a new review ID and separate report.
+   For traceability, retain the previous report and optionally export its review JSON
+   and decisions; record the prior review/snapshot IDs in the next review's narrative
+   when supplied. This is not an automatic history or decision migration: compare
+   evidence and revalidate each finding rather than carrying decisions forward blindly.
+   Delete only the
    exact owned temporary review using `cleanupReview` after explicit user confirmation
    that the review is finished. Verify deletion and report it; never infer it from
    closing VS Code, a timeout or a clean score.
@@ -185,6 +207,8 @@ Optional typed references, only when available and relevant:
 - [ ] Offline HTML is legible, responsive, keyboard usable and injection resistant.
 - [ ] Decisions export identity/reasons/affected paths without applying changes.
 - [ ] Commit advice follows detected conventions and labels actual validation status.
+- [ ] Report narrative follows the user's choice, interface fallback is disclosed
+      when necessary, and commit messages are in English.
 - [ ] Reports stay outside the target; cleanup requires confirmation and containment.
 - [ ] No target file, index, ref or configuration is changed by the review utilities.
 

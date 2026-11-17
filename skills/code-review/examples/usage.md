@@ -17,8 +17,10 @@ recomendaciones atender. No modifica código ni ejecuta escrituras Git.
 Abre el proyecto objetivo en Codex y proporciona esta Skill con todos sus recursos.
 Para los módulos incluidos necesitas Node.js 20+ y Git; no hay dependencias nuevas.
 Reemplaza `<backend-path>`, `<base-branch>` y `<module-path>` por valores reales.
-El HTML se crea en el temporal del sistema, fuera del backend. La interfaz usa
-etiquetas en inglés; el contenido de la revisión puede solicitarse en español.
+El HTML se crea en el temporal del sistema, fuera del backend. Si no has elegido
+idioma, la Skill te preguntará: español, inglés u otro que puedas escribir. Para
+otro idioma, el contenido se redacta en ese idioma y la interfaz usa inglés; la
+Skill informará de esta limitación. Los mensajes de commit siempre van en inglés.
 
 ### Prompt de ejemplo
 
@@ -26,7 +28,7 @@ etiquetas en inglés; el contenido de la revisión puede solicitarse en español
 Usa $code-review en <backend-path> en modo Quick Review. Inspecciona AGENTS.md,
 especificaciones y convenciones del proyecto. Incluye staged, unstaged y untracked
 relevantes, con hallazgos verificables y Quality Score. Genera el HTML temporal
-offline con Commit Advisor y exportación de decisiones. No modifiques el proyecto
+    offline en español con Commit Advisor y exportación de decisiones. No modifiques el proyecto
 ni ejecutes operaciones Git de escritura. Informa ruta, cobertura y checks reales.
 ```
 
@@ -84,8 +86,11 @@ decisions. It never changes code or executes Git writes.
 Open the target project in Codex and make this Skill and its bundled resources
 available. Included modules need Node.js 20+ and Git; no new dependencies are needed.
 Replace `<backend-path>`, `<base-branch>` and `<module-path>` with actual values.
-HTML goes to system temporary storage outside the backend. Interface labels are
-English; assessment content may be requested in Spanish.
+HTML goes to system temporary storage outside the backend. If no language has been
+selected, the Skill will ask: Spanish, English or another language you can enter.
+For another language, the assessment uses that language and the interface falls
+back to English; the Skill will disclose this limitation. Proposed commit messages
+are always written in English.
 
 ### Example prompt
 
@@ -93,7 +98,7 @@ English; assessment content may be requested in Spanish.
 Use $code-review on <backend-path> in Quick Review mode. Inspect AGENTS.md,
 specifications and project conventions. Include relevant staged, unstaged and
 untracked changes, verifiable findings and a Quality Score. Generate temporary
-offline HTML with Commit Advisor and decision export. Do not modify the project
+offline HTML in Spanish with Commit Advisor and decision export. Do not modify the project
 or execute Git writes. Report the exact path, coverage and actual checks.
 ```
 
