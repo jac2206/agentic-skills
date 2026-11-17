@@ -51,10 +51,13 @@ no verificada. Genera el HTML temporal sin modificar el proyecto ni escribir Git
 Ruta exacta a un HTML independiente con dashboard, cobertura, reglas, hallazgos,
 diffs reales, validaciones y propuesta de commits. `Aceptar recomendación`,
 `Rechazar con motivo` y `Posponer` guardan decisiones en la sesión del HTML; usa
-`Copiar decisiones para Codex` o exporta JSON y entrégalo a Codex antes de cerrar.
+`Copiar decisiones para un agente de IA` o exporta JSON y entrégalo al agente antes de cerrar.
 Cuando haya un ejemplo de código, ábrelo con `Ver ejemplo de corrección`. Al aceptar,
-la exportación incluye la recomendación y el ejemplo disponible. El commit se
-propone aunque haya hallazgos; aceptar no aplica ni valida correcciones. Confirma
+la exportación incluye la recomendación y el ejemplo disponible. Tras aceptar,
+elige si quieres que el agente corrija las recomendaciones y pégale las decisiones:
+Sí solicita los cambios aceptados; No o no responder deja el código sin cambios.
+El HTML no envía mensajes ni aplica correcciones. El commit se propone aunque haya
+hallazgos; aceptar no aplica ni valida correcciones. Confirma
 explícitamente el fin de la revisión antes de pedir su limpieza. Markdown/JSON de
 resultados son opcionales y temporales.
 
@@ -125,11 +128,14 @@ evidence. Generate temporary HTML without modifying the project or writing Git.
 An exact path to self-contained HTML with dashboard, coverage, rules, findings,
 actual diffs, validations and commit proposals. In the Spanish report requested
 above, `Aceptar recomendación`, `Rechazar con motivo` and `Posponer` retain
-decisions in the HTML session; use `Copiar decisiones para Codex` or export JSON
-and paste/provide it to Codex before closing. When available, open a code sample
+decisions in the HTML session; use `Copiar decisiones para un agente de IA` or export JSON
+and paste/provide it to an AI agent before closing. When available, open a code sample
 with `Ver ejemplo de corrección`. On
-acceptance, the export includes the recommendation and available example. A commit
-is proposed even with findings; acceptance does not apply or validate corrections.
+acceptance, the export includes the recommendation and available example. After
+accepting, choose whether to ask the agent to correct the recommendations, then
+paste the decisions to it: Yes requests the accepted changes; No or no answer leaves
+code unchanged. HTML cannot send messages or apply corrections. A commit is
+proposed even with findings; acceptance does not apply or validate corrections.
 Explicitly confirm review completion before requesting cleanup. Markdown/JSON
 result exports are optional and temporary.
 

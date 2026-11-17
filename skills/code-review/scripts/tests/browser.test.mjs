@@ -46,7 +46,7 @@ test('Offline Chromium: filters, navigation, diff comments, decisions/export, CS
     await first.getByRole('textbox').fill('Fixture policy already handled elsewhere');
     await first.getByRole('button', { name: 'Reject with reason' }).click();
     await first.getByRole('textbox').fill('');
-    await page.getByRole('button', { name: 'Copy decisions for Codex' }).click();
+    await page.getByRole('button', { name: 'Copy decisions for an AI agent' }).click();
     assert.match(await page.locator('#notice').textContent(), /rejection reason/);
     await first.getByRole('textbox').fill('Fixture policy already handled elsewhere');
     await page.locator('[data-finding-id="F2"]').getByRole('button', { name: 'Defer', exact: true }).click();
@@ -56,12 +56,13 @@ test('Offline Chromium: filters, navigation, diff comments, decisions/export, CS
     assert.match(await page.locator('#decision-summary').textContent(), /1 accepted.*1 deferred/);
     // Force clipboard restrictions to exercise the visible copy fallback.
     await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true }));
-    await page.getByRole('button', { name: 'Copy decisions for Codex' }).click();
+    await page.getByRole('button', { name: 'Copy decisions for an AI agent' }).click();
     await page.locator('#transfer:not([hidden])').waitFor();
     const payload = JSON.parse(await page.locator('#transfer-text').inputValue());
     assert.equal(importDecisions(data, payload).decisions[0].status, 'accepted'); assert.equal(payload.decisions[1].status, 'deferred');
     const download = page.waitForEvent('download'); await page.getByRole('button', { name: 'Export decisions JSON' }).click();
     const exported = await download; assert.deepEqual(JSON.parse(readFileSync(await exported.path(), 'utf8')), payload);
+    await page.getByText('View manual commands').click();
     await page.getByRole('button', { name: 'Copy manual commands' }).click();
     assert.match(await page.locator('#transfer-text').inputValue(), /git --literal-pathspecs add -- 'auth.js'/);
     await page.selectOption('#diff-mode', 'split'); await page.evaluate(() => scrollTo(0, 0));
@@ -114,6 +115,7 @@ test('Spanish report preserves decision payload and English commit message', {
     assert.equal(await page.locator('.finding').count(), 2);
     await page.selectOption('#severity', 'High'); assert.equal(await page.locator('.finding').count(), 1);
     await page.selectOption('#severity', '');
+    assert.equal(await page.locator('#implementation-request').isHidden(), true);
     const example = page.locator('[data-finding-id="F1"] details');
     await example.getByText('Ver ejemplo de corrección').click();
     assert.match(await example.locator('pre').textContent(), /return !!user/);
@@ -123,6 +125,12 @@ test('Spanish report preserves decision payload and English commit message', {
     }
     await page.locator('[data-finding-id="F1"]').getByRole('button', { name: 'Aceptar recomendación' }).click();
     await page.locator('[data-finding-id="F2"]').getByRole('button', { name: 'Posponer', exact: true }).click();
+    assert.equal(await page.locator('#implementation-request').isVisible(), true);
+    if (process.env.CODE_REVIEW_KEEP_REPORT === '1') {
+      await page.locator('#implementation-request').screenshot({ path: join(out.directory, 'workspace.png') });
+      console.log(JSON.stringify({ implementationScreenshot: join(out.directory, 'workspace.png') }));
+    }
+    await page.getByLabel('Sí, solicitar correcciones').check();
     const download = page.waitForEvent('download');
     await page.getByRole('button', { name: 'Exportar decisiones en JSON' }).click();
     const payload = JSON.parse(readFileSync(await (await download).path(), 'utf8'));
@@ -131,8 +139,23 @@ test('Spanish report preserves decision payload and English commit message', {
     assert.equal(payload.decisions[0].proposedCorrection, data.findings[0].correction);
     assert.equal(payload.decisions[0].recommendation, data.findings[0].recommendation);
     assert.equal(payload.decisions[1].proposedCorrection, undefined);
+    assert.deepEqual(payload.implementationRequest, { decision: 'yes', findingIds: ['F1'] });
+    assert.equal(payload.targetRoot, data.snapshot.root);
     assert.match(await page.locator('#commit-content').textContent(), /fix\(auth\): restore caller permission check/);
+    assert.equal(await page.locator('#commit-content').getByText('Incluir', { exact: true }).count(), 0);
+    assert.equal(await page.locator('#commit-content').getByText('Excluir', { exact: true }).count(), 0);
+    await page.getByLabel('No, dejar el código sin cambios').check();
+    await page.evaluate(() => Object.defineProperty(navigator, 'clipboard', { value: undefined, configurable: true }));
+    await page.getByRole('button', { name: 'Copiar decisiones para un agente de IA' }).click();
+    const noPayload = JSON.parse(await page.locator('#transfer-text').inputValue());
+    assert.deepEqual(noPayload.implementationRequest, { decision: 'no', findingIds: [] });
+    assert.deepEqual(importDecisions(data, noPayload), noPayload);
+    await page.getByLabel('Sí, solicitar correcciones').check();
     await page.locator('[data-finding-id="F2"]').getByRole('button', { name: 'Aceptar recomendación' }).click();
+    assert.equal(await page.getByLabel('Sí, solicitar correcciones').isChecked(), false);
+    await page.getByRole('button', { name: 'Copiar decisiones para un agente de IA' }).click();
+    const undecidedPayload = JSON.parse(await page.locator('#transfer-text').inputValue());
+    assert.deepEqual(undecidedPayload.implementationRequest, { decision: 'not_decided', findingIds: [] });
     assert.match(await page.locator('#commit-decision-state').textContent(), /Todas las recomendaciones están aceptadas/);
     assert.match(await page.locator('#commit-decision-state').textContent(), /primero aplica y verifica/);
     assert.deepEqual(errors, []);

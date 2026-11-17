@@ -35,9 +35,15 @@
     const b = make('button', text, className); b.type = 'button'; b.addEventListener('click', action); return b;
   };
   const badge = (label, color = label.toLowerCase()) => make('span', display(label), `badge ${color}`);
-  const notice = message => { byId('notice').textContent = message; };
+  let noticeTimer;
+  const notice = message => {
+    byId('notice').textContent = message;
+    clearTimeout(noticeTimer);
+    noticeTimer = setTimeout(() => { byId('notice').textContent = ''; }, 5000);
+  };
   const files = data.snapshot.files;
   const decisions = new Map(data.initialDecisions.decisions.map(d => [d.findingId, { ...d }]));
+  let implementationDecision = 'not_decided';
   let selectedFile = files[0]?.id;
   const payload = () => ({ schemaVersion: '1.0', reviewId: data.snapshot.reviewId, snapshotId: data.snapshot.snapshotId,
     decisions: [...decisions.values()].map(d => {
@@ -48,7 +54,10 @@
         if (finding.correction) item.proposedCorrection = finding.correction;
       }
       return item;
-    }), affectedFiles: [...new Set([...decisions.values()].filter(d => d.status !== 'pending').map(d => d.file))] });
+    }), targetRoot: data.snapshot.root,
+    implementationRequest: { decision: implementationDecision,
+      findingIds: implementationDecision === 'yes' ? [...decisions.values()].filter(d => d.status === 'accepted').map(d => d.findingId) : [] },
+    affectedFiles: [...new Set([...decisions.values()].filter(d => d.status !== 'pending').map(d => d.file))] });
   function decisionText() {
     const invalid = [...decisions.values()].find(d => d.status === 'rejected' && !d.reason.trim());
     if (invalid) { notice(`Add a rejection reason for ${invalid.findingId} before exporting.`); return null; }
@@ -63,7 +72,7 @@
   async function copy(text) {
     try {
       if (!navigator.clipboard?.writeText) throw new Error('Unavailable');
-      await navigator.clipboard.writeText(text); notice('Copied. Paste into Codex when ready.');
+      await navigator.clipboard.writeText(text); notice('Copied. Paste into your AI agent when ready.');
     } catch { copyFallback(text); }
   }
   byId('copy-decisions').addEventListener('click', () => { const text = decisionText(); if (text) copy(text); });
@@ -72,8 +81,11 @@
     const url = URL.createObjectURL(new Blob([text], { type: 'application/json' }));
     const a = make('a'); a.href = url; a.download = `code-review-${data.snapshot.reviewId}-decisions.json`;
     document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 3000);
-    notice('Export requested. If this preview blocks downloads, use Copy decisions for Codex.');
+    notice('Export requested. If this preview blocks downloads, copy decisions for your AI agent.');
   });
+  document.querySelectorAll('input[name="implementation"]').forEach(input => input.addEventListener('change', () => {
+    implementationDecision = input.value;
+  }));
   byId('theme').addEventListener('click', () => {
     const light = document.documentElement.dataset.theme !== 'light';
     document.documentElement.dataset.theme = light ? 'light' : 'dark';
@@ -179,6 +191,8 @@
   [...new Set(data.findings.map(f => f.category))].sort().forEach(s => { const option = make('option', display(s)); option.value = s; byId('category').append(option); });
   function decisionSummary() {
     byId('decision-summary').textContent = ['accepted', 'rejected', 'deferred', 'pending'].map(s => `${[...decisions.values()].filter(d => d.status === s).length} ${display(s)}`).join(' · ');
+    byId('implementation-request').hidden = ![...decisions.values()].some(d => d.status === 'accepted');
+    document.querySelectorAll('input[name="implementation"]').forEach(input => { input.checked = input.value === implementationDecision; });
     const allAccepted = decisions.size > 0 && [...decisions.values()].every(d => d.status === 'accepted');
     byId('commit-decision-state').textContent = allAccepted
       ? (es ? 'Todas las recomendaciones están aceptadas. El commit sigue siendo una propuesta: primero aplica y verifica las correcciones.' : 'All recommendations are accepted. The commit remains a proposal: first apply and verify the corrections.')
@@ -216,6 +230,7 @@
       for (const [status, label] of [['accepted', 'Accept recommendation'], ['rejected', 'Reject with reason'], ['deferred', 'Defer']]) {
         const b = button(label, () => {
           if (status === 'rejected' && !reason.value.trim()) { reason.focus(); notice('Add a reason before rejecting this recommendation.'); return; }
+          if (decisions.get(f.id).status !== status) implementationDecision = 'not_decided';
           decisions.set(f.id, { findingId: f.id, status, reason: reason.value, file: f.file });
           renderFindings(); decisionSummary(); notice(`${f.id}: ${display(status)}. No code was changed.`);
         });
@@ -236,13 +251,16 @@
   data.validations.forEach(v => { const div = make('div', undefined, 'validation'); div.append(badge(v.status), make('strong', ` ${v.name} · ${v.kind}`)); paragraph(div, v.evidence); byId('validation-list').append(div); });
   const commits = byId('commit-content'); list(commits, data.commitAdvisor.conventionEvidence);
   paragraph(commits, `Commitlint: ${display(data.commitAdvisor.commitlint?.status || 'not run')} · ${data.commitAdvisor.commitlint?.evidence || 'No executed validation evidence supplied'}`);
-  if (!data.commitAdvisor.groups.length) paragraph(commits, 'No commit proposed for this scope. Ask Codex for a proposal if there are relevant changes.');
+  if (!data.commitAdvisor.groups.length) paragraph(commits, 'No commit proposed for this scope. Ask your AI agent for a proposal if there are relevant changes.');
   data.commitAdvisor.groups.forEach((g, i) => {
     const div = make('div', undefined, 'commit-group'); div.append(make('h3', `Commit ${i + 1}${g.type ? ` · ${g.type}${g.scope ? `(${g.scope})` : ''}` : ''}`));
     paragraph(div, g.rationale); div.append(make('pre', g.message), button('Copy commit message', () => copy(g.message)));
-    paragraph(div, 'Include'); list(div, g.include); paragraph(div, 'Exclude'); list(div, g.exclude);
-    if (g.manual) { paragraph(div, `${g.manual.shell} · ${display(g.manual.warning)}`); div.append(make('pre', g.manual.commands.join('\n')),
-      button('Copy manual commands', () => copy(g.manual.commands.join('\n')))); }
+    if (g.manual) {
+      const manual = make('details'); manual.append(make('summary', 'View manual commands'));
+      paragraph(manual, `${g.manual.shell} · ${display(g.manual.warning)}`);
+      manual.append(make('pre', g.manual.commands.join('\n')), button('Copy manual commands', () => copy(g.manual.commands.join('\n'))));
+      div.append(manual);
+    }
     commits.append(div);
   });
   list(byId('next-steps'), data.nextSteps);

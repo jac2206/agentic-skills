@@ -158,6 +158,7 @@ test('Decisions include identities, all statuses, reasons and paths; reject stal
     assert.equal(p.decisions[1].proposedCorrection, undefined);
     const oldPayload = structuredClone(p);
     delete oldPayload.decisions[0].recommendation; delete oldPayload.decisions[0].proposedCorrection;
+    delete oldPayload.targetRoot; delete oldPayload.implementationRequest;
     assert.deepEqual(importDecisions(data, oldPayload), p);
     const tampered = structuredClone(p); tampered.decisions[0].proposedCorrection = 'untrusted replacement';
     assert.throws(() => importDecisions(data, tampered), /Modified correction/);
@@ -168,6 +169,17 @@ test('Decisions include identities, all statuses, reasons and paths; reject stal
     assert.throws(() => importDecisions(data, { ...p, decisions: [p.decisions[0], p.decisions[0]] }), /mismatch/);
     const deferred = exportDecisions(data, { F1: { status: 'deferred', reason: 'Later' } });
     assert.equal(deferred.decisions[1].status, 'pending'); assert.equal(deferred.decisions[0].proposedCorrection, undefined);
+    assert.equal(deferred.implementationRequest.decision, 'not_decided');
+    assert.throws(() => exportDecisions(data, {}, 'yes'), /requires accepted/);
+    const yes = exportDecisions(data, { F1: { status: 'accepted', reason: '' } }, 'yes');
+    assert.deepEqual(yes.implementationRequest, { decision: 'yes', findingIds: ['F1'] });
+    assert.deepEqual(importDecisions(data, yes), yes);
+    const wrongScope = structuredClone(yes); wrongScope.implementationRequest.findingIds = ['F2'];
+    assert.throws(() => importDecisions(data, wrongScope), /scope mismatch/);
+    const wrongRoot = structuredClone(yes); wrongRoot.targetRoot = 'different project';
+    assert.throws(() => importDecisions(data, wrongRoot), /Foreign target/);
+    assert.deepEqual(exportDecisions(data, { F1: { status: 'accepted', reason: '' } }, 'no').implementationRequest,
+      { decision: 'no', findingIds: [] });
   } finally { fixture.close(); }
 });
 
@@ -222,7 +234,7 @@ test('Spanish and English reports localize interface without altering source or 
     const english = renderHtml(data, { locale: 'en' });
     assert.match(spanish, /<html lang="es">/);
     assert.match(spanish, /Hallazgos y recomendaciones/);
-    assert.match(spanish, /Copiar decisiones para Codex/);
+    assert.match(spanish, /Copiar decisiones para un agente de IA/);
     assert.match(english, /<html lang="en">/);
     assert.match(english, /Findings & recommendations/);
     const parsed = JSON.parse(spanish.match(/<script id="review-data" type="application\/json">([\s\S]*?)<\/script>/)[1]);

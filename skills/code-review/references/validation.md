@@ -137,3 +137,26 @@ establish that Codex generated a correct code example, populated a commit propos
 or interpreted exported decisions in a new real-backend review after version 1.3.0.
 Those behaviors still require a representative host pilot. Neither acceptance nor
 export changes code, verifies a fix, or authorizes a Git write.
+
+## AI-agent decision handoff — version 1.4.0
+
+On 2026-11-17, a user-provided backend report was reviewed as feedback. Its examples
+were available through a collapsed control, and its commit section displayed long
+include/exclude lists. The new interface hides those lists, collapses manual commands,
+uses an AI-agent-neutral copy label, and asks for a Yes/No implementation request
+after a finding is accepted. A changed finding decision clears that choice.
+
+The full suite ran with synthetic Git fixtures and existing offline Chromium:
+21 tests, 20 passed, 0 failed and 1 skipped because Windows denied symlink creation.
+It checked examples before acceptance, Yes/No/undecided export, target and accepted
+finding IDs, changing selection, rejection of mismatched scope, old payload import,
+and absence of visible include/exclude headings. The browser tests passed again
+after collapsing manual commands and updating the temporary notification behavior.
+The Spanish Yes/No control was visually inspected in a synthetic report; no visual
+inspection with screen readers or every browser is claimed.
+
+The new version has not been exercised end-to-end by a receiving AI agent on a real
+project. In particular, the tests verify the exported request and model validation,
+not that an agent will implement changes. HTML cannot send the payload automatically;
+only a user-submitted explicit Yes requests implementation within the accepted scope.
+No selection authorizes Git writes. No project changes were made in these checks.

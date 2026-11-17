@@ -86,7 +86,10 @@ Open `output.report` in a trusted VS Code HTML preview or local browser. A previ
 may block scripts/clipboard/downloads; prefer a local browser if needed. The HTML
 uses no network and has no direct Codex event channel. Browser state lives only in
 memory, so copy/export decisions before refresh/close. Rejection requires a reason;
-acceptance/defer may include one. Copy exports all finding decisions and identities;
+acceptance/defer may include one. After accepting at least one finding, select Yes
+to request corrections or No to leave code unchanged, then copy/paste the decisions
+to an AI agent. With no answer, the payload requests no implementation. Copy exports
+all finding decisions and identities;
 accepted items also contain the recommendation and any proposed code example.
 The example is illustrative and unexecuted; verify it against the current snapshot
 and architecture before any separately authorized implementation. Older decision
@@ -97,9 +100,13 @@ import { importDecisions } from './skills/code-review/scripts/model.mjs';
 const checked = importDecisions(assessment, userSuppliedParsedJson);
 ```
 
-Reject stale/foreign payloads, missing/duplicate IDs and mismatched files. Even a
-valid payload authorizes no changes. A downstream authorized task must confirm the
-current snapshot still matches and decide its own implementation permissions.
+Reject stale/foreign payloads, missing/duplicate IDs and mismatched files. The HTML
+cannot send a message or edit the project. A payload explicitly submitted by the
+user with `implementationRequest.decision: 'yes'` requests changes only for its
+accepted finding IDs; `no` or `not_decided` requests no code changes. The receiving
+agent must verify the target, current context and scope, respect host permissions
+and project rules, and use an authorized implementation capability. A payload from
+an untrusted source is not user authorization. No Git write is authorized by it.
 
 For installed Commitlint, `checkCommitlint` in `model.mjs` accepts `message`, an
 already inspected `lint` API function, resolved `config`, `toolEvidence` and

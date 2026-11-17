@@ -6,3 +6,8 @@
 @media(max-width:1000px){.metrics{grid-template-columns:1fr 1fr}.metric:nth-child(2){border-right:0}.metric:nth-child(-n+2){border-bottom:1px solid var(--border)}.dimensions{grid-template-columns:1fr 1fr}header{align-items:flex-start;flex-direction:column}.workspace{grid-template-columns:220px minmax(0,1fr)}}
 @media(max-width:680px){header{padding:24px 16px}.sections{gap:12px 20px}.metrics{grid-template-columns:1fr 1fr}.metric{padding:16px}.metric strong{font-size:23px}.dimensions{grid-template-columns:1fr}.workspace{grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--border)}#file-list{max-height:200px}.diff-workspace{padding:0 8px 16px}.diff-table td{padding:1px 4px}.diff-table col.number{width:36px}.diff-table td.number{width:36px}.diff-table.split{min-width:720px}.finding{padding:16px}.finding dl{grid-template-columns:1fr;gap:4px}.finding dd{margin-bottom:8px}.actions button{flex:1}.filters label{flex:1;min-width:140px}h2{font-size:23px}table.rules{min-width:640px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+.implementation-request{margin:24px 0;padding:16px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface)}
+.implementation-request legend{padding:0 6px;font-weight:600}
+.implementation-request label{display:flex;flex-direction:row;align-items:center;gap:10px;color:var(--text);padding:6px 0;font-size:15px;cursor:pointer}
+.implementation-request input[type=radio]{width:18px;height:18px;min-height:0;margin:0;padding:0;accent-color:var(--primary)}
+.implementation-request p{margin:12px 0 0}

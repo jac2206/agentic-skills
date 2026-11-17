@@ -107,7 +107,7 @@ export function reviewStatus(data, score = calculateScore(data.rules, data.score
   blockers: blockers.map(f => f.id) };
 }
 
-export function exportDecisions(data, decisions = {}) {
+export function exportDecisions(data, decisions = {}, implementationDecision = 'not_decided') {
   const items = data.findings.map(f => {
     const d = decisions[f.id] || { status: 'pending', reason: '' };
     requireValue(['accepted', 'rejected', 'deferred', 'pending'].includes(d.status) && typeof d.reason === 'string', 'Invalid decision');
@@ -119,12 +119,18 @@ export function exportDecisions(data, decisions = {}) {
     }
     return item;
   });
+  requireValue(['yes', 'no', 'not_decided'].includes(implementationDecision), 'Invalid implementation request');
+  const acceptedIds = items.filter(d => d.status === 'accepted').map(d => d.findingId);
+  requireValue(implementationDecision !== 'yes' || acceptedIds.length > 0, 'Implementation request requires accepted findings');
   return { schemaVersion: '1.0', reviewId: data.snapshot.reviewId, snapshotId: data.snapshot.snapshotId,
-    decisions: items, affectedFiles: [...new Set(items.filter(d => d.status !== 'pending').map(d => d.file))] };
+    targetRoot: data.snapshot.root, decisions: items,
+    implementationRequest: { decision: implementationDecision, findingIds: implementationDecision === 'yes' ? acceptedIds : [] },
+    affectedFiles: [...new Set(items.filter(d => d.status !== 'pending').map(d => d.file))] };
 }
 export function importDecisions(data, payload) {
   requireValue(payload.schemaVersion === '1.0' && payload.reviewId === data.snapshot.reviewId &&
     payload.snapshotId === data.snapshot.snapshotId, 'Stale or foreign decision payload');
+  if (payload.targetRoot !== undefined) requireValue(payload.targetRoot === data.snapshot.root, 'Foreign target');
   requireValue(Array.isArray(payload.decisions) && payload.decisions.length === data.findings.length && unique(payload.decisions.map(d => d.findingId)), 'Decision set mismatch');
   const decisions = Object.create(null);
   for (const d of payload.decisions) {
@@ -134,7 +140,12 @@ export function importDecisions(data, payload) {
     if (d.proposedCorrection !== undefined) requireValue(d.status === 'accepted' && d.proposedCorrection === finding.correction, 'Modified correction example');
     decisions[d.findingId] = { status: d.status, reason: d.reason };
   }
-  return exportDecisions(data, decisions);
+  const request = payload.implementationRequest;
+  if (request !== undefined) requireValue(request && Array.isArray(request.findingIds) &&
+    ['yes', 'no', 'not_decided'].includes(request.decision), 'Invalid implementation request');
+  const result = exportDecisions(data, decisions, request?.decision ?? 'not_decided');
+  if (request) requireValue(JSON.stringify(request.findingIds) === JSON.stringify(result.implementationRequest.findingIds), 'Implementation scope mismatch');
+  return result;
 }
 
 export function checkConventionalMessage(message) {
